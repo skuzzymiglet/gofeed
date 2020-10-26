@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	ext "github.com/mmcdole/gofeed/extensions"
+	ext "github.com/skuzzymiglet/gofeed/extensions"
 	"github.com/skuzzymiglet/gofeed/internal"
 	xpp "github.com/mmcdole/goxpp"
 )

@@ -9,9 +9,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/mmcdole/gofeed/atom"
-	"github.com/mmcdole/gofeed/json"
-	"github.com/mmcdole/gofeed/rss"
+	"github.com/skuzzymiglet/gofeed/atom"
+	"github.com/skuzzymiglet/gofeed/json"
+	"github.com/skuzzymiglet/gofeed/rss"
 )
 
 // ErrFeedTypeNotDetected is returned when the detection system can not figure

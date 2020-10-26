@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	jsoniter "github.com/json-iterator/go"
+	jsoniter "encoding/json"
 	"github.com/skuzzymiglet/gofeed/internal"
 	xpp "github.com/mmcdole/goxpp"
 )

@@ -4,11 +4,7 @@ import (
 	"bytes"
 	"io"
 
-	jsoniter "github.com/json-iterator/go"
-)
-
-var (
-	j = jsoniter.ConfigCompatibleWithStandardLibrary
+	j "encoding/json"
 )
 
 // Parser is an JSON Feed Parser
