@@ -1,6 +1,8 @@
 # gofeed
 
-[![Build Status](https://travis-ci.org/skuzzymiglet/gofeed.svg?branch=master)](https://travis-ci.org/skuzzymiglet/gofeed) [![Coverage Status](https://coveralls.io/repos/github/skuzzymiglet/gofeed/badge.svg?branch=master)](https://coveralls.io/github/skuzzymiglet/gofeed?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/skuzzymiglet/gofeed)](https://goreportcard.com/report/github.com/skuzzymiglet/gofeed) [![](https://godoc.org/github.com/skuzzymiglet/gofeed?status.svg)](http://godoc.org/github.com/skuzzymiglet/gofeed) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+[![Go Report Card](https://goreportcard.com/badge/github.com/skuzzymiglet/gofeed)](https://goreportcard.com/report/github.com/skuzzymiglet/gofeed)
+[![](https://godoc.org/github.com/skuzzymiglet/gofeed?status.svg)](http://godoc.org/github.com/skuzzymiglet/gofeed)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 
 
 _**FORK** that aims to reduce dependency bloat and improve thread-safety_
