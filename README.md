@@ -3,6 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/skuzzymiglet/gofeed)](https://goreportcard.com/report/github.com/skuzzymiglet/gofeed)
 [![](https://godoc.org/github.com/skuzzymiglet/gofeed?status.svg)](http://godoc.org/github.com/skuzzymiglet/gofeed)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+![GitHub Actions](https://github.com/skuzzymiglet/gofeed/workflows/Go/badge.svg?branch=master)
 
 
 _**FORK** that aims to reduce dependency bloat and improve thread-safety_
