@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/skuzzymiglet/gofeed"
 	"github.com/stretchr/testify/assert"
 )
 
-var feedTests = []struct {
+type feedTest struct {
 	file      string
 	feedType  string
 	feedTitle string
 	hasError  bool
-}{
+}
+
+var feedTests = []feedTest{
 	{"atom03_feed.xml", "atom", "Feed Title", false},
 	{"atom10_feed.xml", "atom", "Feed Title", false},
 	{"rss_feed.xml", "rss", "Feed Title", false},
@@ -29,7 +32,6 @@ var feedTests = []struct {
 }
 
 func TestParser_Parse(t *testing.T) {
-
 	for _, test := range feedTests {
 		fmt.Printf("Testing %s... ", test.file)
 
