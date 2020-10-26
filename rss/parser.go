@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	ext "github.com/mmcdole/gofeed/extensions"
-	"github.com/mmcdole/gofeed/internal/shared"
 	xpp "github.com/mmcdole/goxpp"
+	shared "github.com/skuzzymiglet/gofeed/internal"
 )
 
 // Parser is a RSS Parser

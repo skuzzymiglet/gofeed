@@ -7,7 +7,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	ext "github.com/mmcdole/gofeed/extensions"
-	"github.com/mmcdole/gofeed/internal/shared"
+	"github.com/skuzzymiglet/gofeed/internal"
 	xpp "github.com/mmcdole/goxpp"
 )
 
