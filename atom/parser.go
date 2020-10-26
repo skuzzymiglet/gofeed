@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	xpp "github.com/mmcdole/goxpp"
 	ext "github.com/skuzzymiglet/gofeed/extensions"
 	"github.com/skuzzymiglet/gofeed/internal"
-	xpp "github.com/mmcdole/goxpp"
 )
 
 var (
