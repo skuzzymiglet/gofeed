@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"sync"
 
 	"golang.org/x/net/html"
 
@@ -32,26 +33,40 @@ var (
 	}
 )
 
-type urlStack []*url.URL
+type urlStack struct {
+	u []*url.URL
+	m *sync.RWMutex
+}
 
 func (s *urlStack) push(u *url.URL) {
-	*s = append([]*url.URL{u}, *s...)
+	s.m.Lock()
+	defer s.m.Unlock()
+	s.u = append([]*url.URL{u}, s.u...)
 }
 
 func (s *urlStack) pop() *url.URL {
-	if s == nil || len(*s) == 0 {
+	s.m.RLock()
+	if s == nil || len(s.u) == 0 {
 		return nil
 	}
+	s.m.RUnlock()
 	var top *url.URL
-	top, *s = (*s)[0], (*s)[1:]
+	s.m.Lock()
+	defer s.m.Unlock()
+	top, s.u = s.u[0], s.u[1:]
 	return top
 }
 
 func (s *urlStack) top() *url.URL {
-	if s == nil || len(*s) == 0 {
+	s.m.RLock()
+	if s == nil || len(s.u) == 0 {
 		return nil
 	}
-	return (*s)[0]
+	s.m.RUnlock()
+	s.m.Lock()
+	defer s.m.Unlock()
+	top := s.u[0]
+	return top
 }
 
 type XMLBase struct {
