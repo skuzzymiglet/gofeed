@@ -2,11 +2,9 @@ package gofeed
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"strings"
 
 	"github.com/skuzzymiglet/gofeed/atom"
@@ -35,7 +33,6 @@ type Parser struct {
 	AtomTranslator Translator
 	RSSTranslator  Translator
 	JSONTranslator Translator
-	Client         *http.Client
 	rp             *rss.Parser
 	ap             *atom.Parser
 	jp             *json.Parser
@@ -78,49 +75,6 @@ func (f *Parser) Parse(feed io.Reader) (*Feed, error) {
 	}
 
 	return nil, ErrFeedTypeNotDetected
-}
-
-// ParseURL fetches the contents of a given url and
-// attempts to parse the response into the universal feed type.
-func (f *Parser) ParseURL(feedURL string) (feed *Feed, err error) {
-	return f.ParseURLWithContext(feedURL, context.Background())
-}
-
-// ParseURLWithContext fetches contents of a given url and
-// attempts to parse the response into the universal feed type.
-// Request could be canceled or timeout via given context
-func (f *Parser) ParseURLWithContext(feedURL string, ctx context.Context) (feed *Feed, err error) {
-	client := f.httpClient()
-
-	req, err := http.NewRequest("GET", feedURL, nil)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	req.Header.Set("User-Agent", "Gofeed/1.0")
-	resp, err := client.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if resp != nil {
-		defer func() {
-			ce := resp.Body.Close()
-			if ce != nil {
-				err = ce
-			}
-		}()
-	}
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, HTTPError{
-			StatusCode: resp.StatusCode,
-			Status:     resp.Status,
-		}
-	}
-
-	return f.Parse(resp.Body)
 }
 
 // ParseString parses a feed XML string and into the
@@ -176,12 +130,4 @@ func (f *Parser) jsonTrans() Translator {
 	}
 	f.JSONTranslator = &DefaultJSONTranslator{}
 	return f.JSONTranslator
-}
-
-func (f *Parser) httpClient() *http.Client {
-	if f.Client != nil {
-		return f.Client
-	}
-	f.Client = &http.Client{}
-	return f.Client
 }

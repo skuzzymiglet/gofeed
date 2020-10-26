@@ -7,7 +7,7 @@ import (
 
 	"github.com/skuzzymiglet/gofeed/atom"
 	ext "github.com/skuzzymiglet/gofeed/extensions"
-	"github.com/skuzzymiglet/gofeed/internal"
+	shared "github.com/skuzzymiglet/gofeed/internal"
 	"github.com/skuzzymiglet/gofeed/json"
 	"github.com/skuzzymiglet/gofeed/rss"
 )
