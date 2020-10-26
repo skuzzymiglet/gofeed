@@ -3,7 +3,6 @@ package gofeed
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"strings"
 
@@ -15,16 +14,6 @@ import (
 // ErrFeedTypeNotDetected is returned when the detection system can not figure
 // out the Feed format
 var ErrFeedTypeNotDetected = errors.New("Failed to detect feed type")
-
-// HTTPError represents an HTTP error returned by a server.
-type HTTPError struct {
-	StatusCode int
-	Status     string
-}
-
-func (err HTTPError) Error() string {
-	return fmt.Sprintf("http error: %s", err.Status)
-}
 
 // Parser is a universal feed parser that detects
 // a given feed type, parsers it, and translates it

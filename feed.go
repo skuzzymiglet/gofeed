@@ -85,20 +85,19 @@ type Enclosure struct {
 	Type   string `json:"type,omitempty"`
 }
 
-// Len returns the length of Items.
+// Len implements sort.Interface
 func (f Feed) Len() int {
 	return len(f.Items)
 }
 
-// Less compares PublishedParsed of Items[i], Items[k]
-// and returns true if Items[i] is less than Items[k].
+// Less implements sort.Interface
 func (f Feed) Less(i, k int) bool {
 	return f.Items[i].PublishedParsed.Before(
 		*f.Items[k].PublishedParsed,
 	)
 }
 
-// Swap swaps Items[i] and Items[k].
+// Swap implements sort.Interface
 func (f Feed) Swap(i, k int) {
 	f.Items[i], f.Items[k] = f.Items[k], f.Items[i]
 }
