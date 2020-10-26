@@ -1,6 +1,9 @@
 # gofeed
 
-[![Build Status](https://travis-ci.org/mmcdole/gofeed.svg?branch=master)](https://travis-ci.org/mmcdole/gofeed) [![Coverage Status](https://coveralls.io/repos/github/mmcdole/gofeed/badge.svg?branch=master)](https://coveralls.io/github/mmcdole/gofeed?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/mmcdole/gofeed)](https://goreportcard.com/report/github.com/mmcdole/gofeed) [![](https://godoc.org/github.com/mmcdole/gofeed?status.svg)](http://godoc.org/github.com/mmcdole/gofeed) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+[![Build Status](https://travis-ci.org/skuzzymiglet/gofeed.svg?branch=master)](https://travis-ci.org/skuzzymiglet/gofeed) [![Coverage Status](https://coveralls.io/repos/github/skuzzymiglet/gofeed/badge.svg?branch=master)](https://coveralls.io/github/skuzzymiglet/gofeed?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/skuzzymiglet/gofeed)](https://goreportcard.com/report/github.com/skuzzymiglet/gofeed) [![](https://godoc.org/github.com/skuzzymiglet/gofeed?status.svg)](http://godoc.org/github.com/skuzzymiglet/gofeed) [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+
+
+_**FORK** that aims to reduce dependency bloat and improve thread-safety_
 
 The `gofeed` library is a robust feed parser that supports parsing both [RSS](https://en.wikipedia.org/wiki/RSS), [Atom](<https://en.wikipedia.org/wiki/Atom_(standard)>) and [JSON](https://jsonfeed.org/version/1) feeds. The library provides a universal `gofeed.Parser` that will parse and convert all feed types into a hybrid `gofeed.Feed` model. You also have the option of utilizing the feed specific `atom.Parser` or `rss.Parser` or `json.Parser` parsers which generate `atom.Feed`, `rss.Feed` and `json.Feed` respectively.
 
@@ -165,8 +168,8 @@ First we must define a custom translator:
 import (
     "fmt"
 
-    "github.com/mmcdole/gofeed"
-    "github.com/mmcdole/gofeed/rss"
+    "github.com/skuzzymiglet/gofeed"
+    "github.com/skuzzymiglet/gofeed/rss"
 )
 
 type MyCustomTranslator struct {
@@ -264,11 +267,10 @@ Enclosures | /rss/channel/item/enclosure | /feed/entry/link[@rel=”enclosure”
 - [goxpp](https://github.com/mmcdole/goxpp) - XML Pull Parser
 - [goquery](https://github.com/PuerkitoBio/goquery) - Go jQuery-like interface
 - [testify](https://github.com/stretchr/testify) - Unit test enhancements
-- [jsoniter](https://github.com/json-iterator/go) - Faster JSON Parsing
 
 ## License
 
-This project is licensed under the [MIT License](https://raw.githubusercontent.com/mmcdole/gofeed/master/LICENSE)
+This project is licensed under the [MIT License](https://raw.githubusercontent.com/skuzzymiglet/gofeed/master/LICENSE)
 
 ## Credits
 
