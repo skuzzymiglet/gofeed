@@ -17,24 +17,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var feedTests = []struct {
+	file      string
+	feedType  string
+	feedTitle string
+	hasError  bool
+}{
+	{"atom03_feed.xml", "atom", "Feed Title", false},
+	{"atom10_feed.xml", "atom", "Feed Title", false},
+	{"rss_feed.xml", "rss", "Feed Title", false},
+	{"rss_feed_bom.xml", "rss", "Feed Title", false},
+	{"rss_feed_leading_spaces.xml", "rss", "Feed Title", false},
+	{"rdf_feed.xml", "rss", "Feed Title", false},
+	{"sample.json", "json", "title", false},
+	{"unknown_feed.xml", "", "", true},
+	{"invalid.json", "", "", true},
+}
+
 func TestParser_Parse(t *testing.T) {
-	var feedTests = []struct {
-		file      string
-		feedType  string
-		feedTitle string
-		hasError  bool
-	}{
-		{"atom03_feed.xml", "atom", "Feed Title", false},
-		{"atom10_feed.xml", "atom", "Feed Title", false},
-		{"rss_feed.xml", "rss", "Feed Title", false},
-		{"rss_feed_bom.xml", "rss", "Feed Title", false},
-		{"rss_feed_leading_spaces.xml", "rss", "Feed Title", false},
-		{"rdf_feed.xml", "rss", "Feed Title", false},
-		{"sample.json", "json", "title", false},
-		{"unknown_feed.xml", "", "", true},
-		{"empty_feed.xml", "", "", true},
-		{"invalid.json", "", "", true},
-	}
 
 	for _, test := range feedTests {
 		fmt.Printf("Testing %s... ", test.file)
@@ -60,23 +60,6 @@ func TestParser_Parse(t *testing.T) {
 }
 
 func TestParser_ParseString(t *testing.T) {
-	var feedTests = []struct {
-		file      string
-		feedType  string
-		feedTitle string
-		hasError  bool
-	}{
-		{"atom03_feed.xml", "atom", "Feed Title", false},
-		{"atom10_feed.xml", "atom", "Feed Title", false},
-		{"rss_feed.xml", "rss", "Feed Title", false},
-		{"rss_feed_bom.xml", "rss", "Feed Title", false},
-		{"rss_feed_leading_spaces.xml", "rss", "Feed Title", false},
-		{"rdf_feed.xml", "rss", "Feed Title", false},
-		{"sample.json", "json", "title", false},
-		{"unknown_feed.xml", "", "", true},
-		{"empty_feed.xml", "", "", true},
-		{"invalid.json", "", "", true},
-	}
 
 	for _, test := range feedTests {
 		fmt.Printf("Testing %s... ", test.file)
@@ -102,22 +85,6 @@ func TestParser_ParseString(t *testing.T) {
 }
 
 func TestParser_ParseURL_Success(t *testing.T) {
-	var feedTests = []struct {
-		file      string
-		feedType  string
-		feedTitle string
-		hasError  bool
-	}{
-		{"atom03_feed.xml", "atom", "Feed Title", false},
-		{"atom10_feed.xml", "atom", "Feed Title", false},
-		{"rss_feed.xml", "rss", "Feed Title", false},
-		{"rss_feed_bom.xml", "rss", "Feed Title", false},
-		{"rss_feed_leading_spaces.xml", "rss", "Feed Title", false},
-		{"rdf_feed.xml", "rss", "Feed Title", false},
-		{"sample.json", "json", "title", false},
-		{"unknown_feed.xml", "", "", true},
-		{"invalid.json", "", "", true},
-	}
 
 	for _, test := range feedTests {
 		fmt.Printf("Testing %s... ", test.file)
