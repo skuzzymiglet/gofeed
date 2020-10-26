@@ -6,8 +6,9 @@ import (
 	"strings"
 
 	jsoniter "encoding/json"
+
 	xpp "github.com/mmcdole/goxpp"
-	"github.com/skuzzymiglet/gofeed/internal"
+	shared "github.com/skuzzymiglet/gofeed/internal"
 )
 
 // FeedType represents one of the possible feed

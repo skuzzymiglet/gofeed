@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/skuzzymiglet/gofeed/extensions"
+	ext "github.com/skuzzymiglet/gofeed/extensions"
 )
 
 // Feed is the universal Feed type that atom.Feed

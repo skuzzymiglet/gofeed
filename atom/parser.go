@@ -8,7 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	xpp "github.com/mmcdole/goxpp"
 	ext "github.com/skuzzymiglet/gofeed/extensions"
-	"github.com/skuzzymiglet/gofeed/internal"
+	shared "github.com/skuzzymiglet/gofeed/internal"
 )
 
 var (

@@ -3,8 +3,8 @@ package shared
 import (
 	"strings"
 
-	"github.com/mmcdole/goxpp"
-	"github.com/skuzzymiglet/gofeed/extensions"
+	xpp "github.com/mmcdole/goxpp"
+	ext "github.com/skuzzymiglet/gofeed/extensions"
 )
 
 // IsExtension returns whether or not the current
