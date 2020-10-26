@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
@@ -36,6 +38,7 @@ func TestParser_Parse(t *testing.T) {
 		fmt.Printf("Testing %s... ", test.file)
 
 		// Get feed content
+		// This is horrible lol TODO: clean up
 		path := fmt.Sprintf("testdata/parser/universal/%s", test.file)
 		f, _ := ioutil.ReadFile(path)
 
@@ -53,6 +56,33 @@ func TestParser_Parse(t *testing.T) {
 			assert.Equal(t, feed.Title, test.feedTitle)
 		}
 	}
+}
+
+// BUG: THIS creates a data race
+func TestRealWorldConcurrent(t *testing.T) {
+	var wg sync.WaitGroup
+	realWorldTests, err := filepath.Glob("testdata/realworld/*")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fp := gofeed.NewParser()
+	for _, test := range realWorldTests {
+		wg.Add(1)
+		go func(w *sync.WaitGroup, test string) {
+			defer wg.Done()
+			fmt.Printf("Testing %s... ", test)
+			f, err := os.Open(test)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			_, err = fp.Parse(f)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}(&wg, test)
+	}
+	wg.Wait()
 }
 
 func TestParser_ParseString(t *testing.T) {

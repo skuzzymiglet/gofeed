@@ -1,0 +1,3144 @@
+<?xml version="1.0" encoding="UTF-8"?><feed
+	xmlns="http://www.w3.org/2005/Atom"
+	xmlns:thr="http://purl.org/syndication/thread/1.0"
+	xml:lang="en-US"
+	xml:base="https://dave.cheney.net/wp-atom.php"
+	>
+	<title type="text">Dave Cheney</title>
+	<subtitle type="text">#BlackLivesMatter</subtitle>
+
+	<updated>2020-06-19T03:39:34Z</updated>
+
+	<link rel="alternate" type="text/html" href="https://dave.cheney.net" />
+	<id>https://dave.cheney.net/feed/atom</id>
+	<link rel="self" type="application/atom+xml" href="https://dave.cheney.net/feed/atom" />
+
+	<generator uri="https://wordpress.org/" version="5.5.1">WordPress</generator>
+	<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[How to dump the GOSSAFUNC graph for a method]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/06/19/how-to-dump-the-gossafunc-graph-for-a-method" />
+
+		<id>https://dave.cheney.net/?p=4188</id>
+		<updated>2020-06-19T03:39:34Z</updated>
+		<published>2020-06-19T03:36:57Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="compiler" /><category scheme="https://dave.cheney.net" term="gossafunc" /><category scheme="https://dave.cheney.net" term="ssa" />
+		<summary type="html"><![CDATA[The Go compiler&#8217;s SSA backend contains a facility to produce HTML debugging output of the compilation phases. This post covers how to print the SSA output for function and methods. Let&#8217;s start with a sample program which contains a function, a value method, and a pointer method: Control of the SSA debugging output is via [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/06/19/how-to-dump-the-gossafunc-graph-for-a-method"><![CDATA[
+<p>The Go compiler&#8217;s SSA backend contains a facility to produce HTML debugging output of the compilation phases. This post covers how to print the SSA output for function <em>and</em> methods.</p>
+
+
+
+<p>Let&#8217;s start with a sample program which contains a function, a value method, and a pointer method:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "fmt"
+)
+
+type Numbers struct {
+    vals &#091;]int
+}
+
+func (n *Numbers) Add(v int) {
+    n.vals = append(n.vals, v)
+}
+
+func (n Numbers) Average() float64 {
+    sum := 0.0
+    for _, num := range n.vals {
+        sum += float64(num)
+    }
+    return sum / float64(len(n.vals))
+}
+
+
+func main() {
+    var numbers Numbers
+    numbers.Add(200)
+    numbers.Add(43)
+    numbers.Add(-6)
+    fmt.Println(numbers.Average())
+}</code></pre>
+
+
+
+<p>Control of the SSA debugging output is via the <code>GOSSAFUNC</code> environment variable. This variable takes the name of the function to dump. This is <em>not</em> the functions fully qualified name. For <code>func main</code> above the name of the function is <code>main</code> <em>not</em> <code>main.main</code>.</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>env GOSSAFUNC=main go build</strong>
+runtime
+dumped SSA to ../../go/src/runtime/ssa.html
+t
+dumped SSA to ./ssa.html</pre>
+
+
+
+<p>In this example <code>GOSSAFUNC=main</code> matched both <code>main.main</code> and a function called <code>runtime.main</code>.<span id='easy-footnote-1-4188' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/06/19/how-to-dump-the-gossafunc-graph-for-a-method#easy-footnote-bottom-1-4188' title='If you didn&amp;#8217;t build Go from source then the path to the &lt;code&gt;runtime&lt;/code&gt; package may be read only and you might receive an error. Please don&amp;#8217;t use the &lt;code&gt;sudo&lt;/code&gt; hammer to fix this.'><sup>1</sup></a></span> This is a little unfortunate, but in practice probably not a big deal as, if you&#8217;re performance tuning your code, it won&#8217;t be in a giant spaghetti blob in <code>func main</code>. </p>
+
+
+
+<p>What is more likely is your code will be in a <em>method</em>, so you&#8217;ve probably landed on this post looking for the correct incantation to dump the SSA output for a method.</p>
+
+
+
+<p>To print the SSA debug for the pointer method <code>func (n *Numbers) Add</code>, the equivalent function name is<code>(*Numbers).Add</code>:<span id='easy-footnote-2-4188' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/06/19/how-to-dump-the-gossafunc-graph-for-a-method#easy-footnote-bottom-2-4188' title='Please pay attention to the shell quoting.'><sup>2</sup></a></span></p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>env "GOSSAFUNC=(*Numbers).Add" go build</strong>
+t
+dumped SSA to ./ssa.html</pre>
+
+
+
+<p>To print the SSA debug for a value method <code>func (n Numbers) Average</code>, the equivalent function name is <code>(*Numbers).Average</code> <em>even though this is a value method</em>:</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>env "GOSSAFUNC=(*Numbers).Average" go build</strong>
+t
+dumped SSA to ./ssa.html</pre>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Diamond interface composition in Go 1.14]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/05/24/diamond-interface-composition-in-go-1-14" />
+
+		<id>https://dave.cheney.net/?p=4179</id>
+		<updated>2020-05-24T08:49:02Z</updated>
+		<published>2020-05-24T08:49:01Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="compiler" /><category scheme="https://dave.cheney.net" term="interfaces" />
+		<summary type="html"><![CDATA[Per the overlapping interfaces proposal, Go 1.14 now permits embedding of interfaces with overlapping method sets. This is a brief post explain what this change means: Let&#8217;s start with the definition of the three key interfaces from the io package; io.Reader, io.Writer, and io.Closer: Just as embedding a type inside a struct allows the embedded type&#8217;s [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/05/24/diamond-interface-composition-in-go-1-14"><![CDATA[
+<p>Per the <a href="https://github.com/golang/proposal/blob/master/design/6977-overlapping-interfaces.md">overlapping interfaces proposal</a>, Go 1.14 now permits embedding of interfaces with overlapping method sets. This is a brief post explain what this change means:</p>
+
+
+
+<p>Let&#8217;s start with the definition of the three key interfaces from the <code>io</code> package; <code>io.Reader</code>, <code>io.Writer</code>, and <code>io.Closer</code>:</p>
+
+
+
+<pre class="wp-block-code"><code>package io
+
+type Reader interface {
+    Read(&#091;]byte) (int, error)
+}
+
+type Writer interface {
+    Write(&#091;]byte) (int, error)
+}
+
+type Closer interface {
+    Close() error
+}    </code></pre>
+
+
+
+<p>Just as embedding a type inside a struct allows the embedded type&#8217;s fields and methods to be accessed as if it were declared on the embedding type<span id='easy-footnote-1-4179' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/24/diamond-interface-composition-in-go-1-14#easy-footnote-bottom-1-4179' title='It is said that embedding promotes the type&amp;#8217;s fields and methods.'><sup>1</sup></a></span>, the process is true for interfaces. Thus there is no difference between explicitly declaring</p>
+
+
+
+<pre class="wp-block-code"><code>type ReadCloser interface {
+    Read(&#091;]byte) (int, error)
+    Close() error
+}</code></pre>
+
+
+
+<p>and using embedding to compose the interface</p>
+
+
+
+<pre class="wp-block-code"><code>type ReadCloser interface {
+    Reader
+    Closer
+}</code></pre>
+
+
+
+<p>You can even mix and match </p>
+
+
+
+<pre class="wp-block-code"><code>type WriteCloser interface {
+    Write(&#091;]byte) (int, error)
+    Closer
+}</code></pre>
+
+
+
+<p>However, prior to Go 1.14, if you continued to compose interface declarations in this manner you would likely find that something like this,</p>
+
+
+
+<pre class="wp-block-code"><code>type ReadWriteCloser interface {
+    ReadCloser
+    WriterCloser
+}</code></pre>
+
+
+
+<p>would fail to compile</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go build interfaces.go</strong>
+command-line-arguments
+./interfaces.go:27:2: duplicate method Close</pre>
+
+
+
+<p>Fortunately, with Go 1.14 this is no longer a limitation, thus solving problems that typically occur with diamond-shaped embedding graphs.</p>
+
+
+
+<p>However, there is a catch that I ran into attempting to demonstrate this feature to the local user group&#8211;this feature is only enabled when the Go compiler uses the 1.14 (or later) spec.</p>
+
+
+
+<p>As near as I can make out the rules for which version of the Go spec is used during compilation appear to be:</p>
+
+
+
+<ol><li>If your source code is stored inside <code>GOPATH</code> (or you have <em>disabled</em> modules with <code>GO111MODULE=off</code>) then the version of the Go spec used to compile with matches the version of the compiler you are using. Said another way, if  you have Go 1.13 installed, your Go version is 1.13. If you have Go 1.14 installed, your version is 1.14. No surprises here.</li><li>If your source code is stored outside <code>GOPATH</code> (or you have forced modules on with <code>GO111MODULE=on</code>) then the <code>go</code> tool will take the Go version from the <code>go.mod</code> file.</li><li> If there is no Go version listed in <code>go.mod</code> then the version of the spec will be the version of Go installed. This is identical to point 1.</li><li>If you are in module mode, either by being outside <code>GOPATH</code> or with <code>GO111MODULE=on</code>, but there is no <code>go.mod</code> file in the current, or any parent, directory then the version of the Go spec used to compile your code defaults to Go 1.13.</li></ol>
+
+
+
+<p>The last point caught me out.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Fatih&#8217;s question]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/05/16/fatihs-question" />
+
+		<id>https://dave.cheney.net/?p=4153</id>
+		<updated>2020-05-16T13:19:20Z</updated>
+		<published>2020-05-16T11:31:37Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="json" />
+		<summary type="html"><![CDATA[A few days ago Fatih posted this question on twitter. I’m going to attempt to give my answer, however to do that I need to apply some simplifications as my previous attempts to answer it involved a lot of phrases like a pointer to a pointer, and other unhelpful waffling. Hopefully my simplified answer can [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/05/16/fatihs-question"><![CDATA[
+<p>A few days ago Fatih posted <a href="https://twitter.com/fatih/status/1260683136842608640">this question</a> on twitter.</p>
+
+
+
+<p>I’m going to attempt to give my answer, however to do that I need to apply some simplifications as my previous attempts to answer it involved a lot of phrases like <em>a pointer to a pointer</em>, and other unhelpful waffling. Hopefully my simplified answer can be useful in building a mental framework to answer Fatih’s original question.</p>
+
+
+
+<h2>Restating the question</h2>
+
+
+
+<p>Fatih&#8217;s original tweet showed <a href="https://play.golang.org/p/g2yUIYrV67F">four different variations</a> of <code>json.Unmarshal</code>. I&#8217;m going to focus on the last two, which I&#8217;ll rewrite a little:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type Result struct {
+    Foo string `json:"foo"`
+}
+
+func main() {
+    content := &#091;]byte(`{"foo": "bar"}`)
+    var result1, result2 *Result
+
+    err := json.Unmarshal(content, &amp;result1)
+    fmt.Println(result1, err) // &amp;{bar} &lt;nil>
+
+    err = json.Unmarshal(content, result2)
+    fmt.Println(result2, err) // &lt;nil> json: Unmarshal(nil *main.Result)
+}</code></pre>
+
+
+
+<p>Restated in words, <code>result1</code> and <code>result2</code> are the same type; <code>*Result</code>. Decoding into <code>result1</code> works as expected, whereas decoding into <code>result2</code> causes the <code>json</code> package to complain that the value passed to <code>Unmarshal</code> is <code>nil</code>. However, both values were declared without an initialiser so both would have taken on the type&#8217;s zero value, <code>nil</code>.</p>
+
+
+
+<p>Eagle eyed readers will have spotted that the reason for the difference is the first<code> </code>invocation is passed <code>&amp;result1</code>, while the second is passed <code>result2</code>, but this explanation is unsatisfactory because the documentation for <code>json.Unmarshal</code> states:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Unmarshal parses the JSON-encoded data and stores the result in the value pointed to by v. <strong>If v is nil or not a pointer</strong>, Unmarshal returns an InvalidUnmarshalError.</p></blockquote>
+
+
+
+<p>Which is confusing because <code>result1</code> and <code>result2</code> <em>are</em> pointers. Furthermore, without initialisation, both <em>are</em> <code>nil</code>. Now, the documentation is correct (as you&#8217;d expect from a package that has been hammered on for a decade), but explaining <em>why</em> takes a little more investigation.</p>
+
+
+
+<h2>Functions receive a copy of their arguments</h2>
+
+
+
+<p>Every assignment in Go is a copy, this includes function arguments and return values.</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "fmt"
+)
+
+func increment(v int) {
+    v++
+}
+
+func main() {
+    v := 1
+    increment(v)
+    fmt.Println(v) // 1
+}</code></pre>
+
+
+
+<p>In this example, <code>increment</code> is operating on a <em>copy</em> of <code>main</code>&#8216;s <code>v</code>. This is because the <code>v</code> declared in <code>main</code> and <code>increment</code>&#8216;s <code>v</code> parameter have different addresses in memory. Thus changes to <code>increment</code>&#8216;s <code>v</code> cannot affect the contents of <code>main</code>&#8216;s <code>v</code>.</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "fmt"
+)
+
+func increment(v *int) {
+    *v++
+}
+
+func main() {
+    v := 1
+    increment(&amp;v)
+    fmt.Println(v) // 2
+}</code></pre>
+
+
+
+<p>If we wanted to write <code>increment</code> in a way that it could affect the contents of its caller we would need to pass a reference, a pointer, to <code>main.v</code>.<span id='easy-footnote-1-4153' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/16/fatihs-question#easy-footnote-bottom-1-4153' title='This does not violate the &lt;em&gt;everything is a copy&lt;/em&gt; rule, a copy of a pointer to &lt;code&gt;main.v&lt;/code&gt; still points to &lt;code&gt;main.v&lt;/code&gt;.'><sup>1</sup></a></span> This example demonstrates why <code>json.Unmarshal</code> needs a pointer to the value to decode JSON into.</p>
+
+
+
+<h2>Pointers to pointers</h2>
+
+
+
+<p>Returning to the original question, both <code>result1</code> and <code>result2</code> are declared as <code>*Result</code>, that is, pointers to a <code>Result</code> value. We established that you have to pass the address of caller&#8217;s value to <code>json.Unmarshal</code> otherwise it won&#8217;t be able to alter the contents of the caller&#8217;s value. Why then must we pass the address of <code>result1</code>, a <code>**Result</code>, a pointer to a pointer to a <code>Result</code>, for the operation to succeed.</p>
+
+
+
+<p>To explain this another detour is required. Consider this code:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+type Result struct {
+    Foo *string `json:"foo"`
+}
+
+func main() {
+    content := &#091;]byte(`{"foo": "bar"}`)
+    var result1 *Result
+
+    err := json.Unmarshal(content, &amp;result1)
+    fmt.Printf("%#v %v", result1, err) // &amp;main.Result{Foo:(*string)(0xc0000102f0)} &lt;nil>
+}</code></pre>
+
+
+
+<p>In this example <code>Result</code> contains a pointer typed field, <code>Foo *string</code>. During JSON decoding <code>Unmarshal</code> allocated a new <code>string</code> value, stored the value <code>bar</code> in it, then placed the address of the string in <code>Result.Foo</code>. This behaviour is quite handy as it frees the caller from having to initialise <code>Result.Foo</code> and makes it easier to detect when a field was not initialised because the JSON did not contain a value. Beyond the convenience this offers for simple examples it would be prohibitively difficult for the caller to properly initialise all the reference type fields in a structure before decoding unknown JSON without first inspecting the incoming JSON which itself may be problematic if the input is coming from an <code>io.Reader</code> without the ability to rewind the input.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>To unmarshal JSON into a pointer, Unmarshal first handles the case of the JSON being the JSON literal null. In that case, Unmarshal sets the pointer to nil. Otherwise, Unmarshal unmarshals the JSON into the value pointed at by the pointer. <strong>If the pointer is nil, Unmarshal allocates a new value for it to point to</strong>.</p></blockquote>
+
+
+
+<p><code>json.Unmarshal</code>&#8216;s handling of pointer fields is clearly documented, and works as you would expect, allocating a new value whenever there is a need to decode into a pointer shaped field. It is this behaviour that gives us a hint to what is happening in the original example.</p>
+
+
+
+<p>We&#8217;ve seen that when <code>json.Unmarshal</code> encounters a field which points to <code>nil</code> it will allocate a new value of the correct type and assign its address the field before proceeding. Not only is does behaviour is applied recursively&#8211;for example in the case of a complex structure which contains pointers to other structures&#8211;but it also applies to the <em>value passed to <code>Unmarshal</code>.</em></p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "encoding/json"
+    "fmt"
+)
+
+func main() {
+    content := &#091;]byte(`1`)
+    var result *int
+
+    err := json.Unmarshal(content, &amp;result)
+    fmt.Println(*result, err) // 1 &lt;nil>
+}</code></pre>
+
+
+
+<p>In this example <code>result</code> is not a struct, but a simple <code>*int</code> which, lacking an initialiser, defaults to <code>nil</code>. After JSON decoding, <code>result</code> now points to an <code>int</code> with the value <code>1</code>.</p>
+
+
+
+<h2>Putting the pieces together</h2>
+
+
+
+<p>Now I think I&#8217;m ready to take a shot at answering Fatih&#8217;s question.</p>
+
+
+
+<p><code>json.Unmarshal</code> requires the address of the variable you want to decode into, otherwise it would decode into a temporary copy which would be discard on return. Normally this is done by declaring a value, then passing its address, or explicitly initialising the the value</p>
+
+
+
+<pre class="wp-block-code"><code>var result1 Result
+err := json.Unmarshal(content, &amp;result1) // this is fine
+
+var result2 = new(Result)
+err = json.Unmarshal(content, result2) // and this
+
+var result3 = &amp;Result{}
+err = json.Unmarshal(content, result3) // this is also fine</code></pre>
+
+
+
+<p>In all three cases the address that the <code>*Result</code> points too is not <code>nil</code>, it points to initialised memory that <code>json.Unmarshal</code> decodes into.</p>
+
+
+
+<p>Now consider what happens when <code>json.Unmarshal</code> encounters this</p>
+
+
+
+<pre class="wp-block-code"><code>var result4 *Result
+err = json.Unmarshal(content, result4) // err json: Unmarshal(nil *main.Result)</code></pre>
+
+
+
+<p><code>result2</code>, <code>result3</code>, and the expression <code>&amp;result1</code> point to a <code>Result</code>. However <code>result4</code>, even though it has the same type as the previous three, does not point to initialised memory, it points to <code>nil</code>. Thus, according to the examples we saw previously, before <code>json.Unmarshal</code> can decode into it, the memory <code>result4</code> points too must be initialised. </p>
+
+
+
+<p>However, because each function receives a copy of its arguments, the caller&#8217;s <code>result4</code> variable and the copy inside <code>json.Unmarshal</code> are unique. <code>json.Unmarshal</code> can allocate a new <code>Result</code> value and decode into it, but it cannot alter <code>result4</code> to point to this new value because it was not provided with a reference to <code>result4</code>, only a copy of its contents.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Ensmallening Go binaries by prohibiting comparisons]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons" />
+
+		<id>https://dave.cheney.net/?p=4116</id>
+		<updated>2020-05-09T13:27:39Z</updated>
+		<published>2020-05-09T10:23:17Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" />
+		<summary type="html"><![CDATA[Conventional wisdom dictates that the larger the number of types declared in a Go program, the larger the resulting binary. Intuitively this makes sense, after all, what&#8217;s the point in defining a bunch of types if you&#8217;re not going to write code that operates on them. However, part of the job of a linker is [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons"><![CDATA[
+<p>Conventional wisdom dictates that the larger the number of types declared in a Go program, the larger the resulting binary. Intuitively this makes sense, after all, what&#8217;s the point in defining a bunch of types if you&#8217;re not going to write code that operates on them. However, part of the job of a linker is to detect functions which are not referenced by a program&#8211;say they are part of a library of which only a subset of functionality is used&#8211;and remove them from the final output. Yet, the adage mo&#8217; types, mo&#8217; binary holds true for the majority of Go programs.</p>
+
+
+
+<p>In this post I&#8217;ll dig into what equality, in the context of a Go program, means and why changes <a href="https://github.com/golang/net/commit/e0ff5e5a1de5b859e2d48a2830d7933b3ab5b75f">like this</a> have a measurable impact on the size of a Go program.</p>
+
+
+
+<h2>Defining equality between two values</h2>
+
+
+
+<p>The Go spec defines the concepts of assignability and equality. Assignabiity is the act of assigning a value to an identifier. Not everything which is declared can be assigned, for example constants and functions. Equality is the act of comparing two identifies by asking <em>are their contents the same?</em></p>
+
+
+
+<p>Being a strongly typed language, the notion of sameness is fundamentally rooted in the identifier&#8217;s type. Two things can only be the same if they are of the same type. Beyond that, the type of the values defines how they are compared.</p>
+
+
+
+<p>For example, integers are compared arithmetically. For pointer types, equality is determining if the addresses they point too are the same. Reference types like maps and channels, like pointers, are considered to be the same if they have the same address.</p>
+
+
+
+<p>These are all examples of bitwise equality, that is, if the bit patterns of the memory that value occupies are the same, those values are equal. This is known as memcmp, short for memory comparison, as equality is defined by comparing the contents of two areas of memory.</p>
+
+
+
+<p>Hold on to this idea, I&#8217;ll come back to in a second.</p>
+
+
+
+<h2>Struct equality</h2>
+
+
+
+<p>Beyond scalar types like integers, floats, and pointers is the realm of compound types; structs. All structs are laid out in memory in program order, thus this declaration:</p>
+
+
+
+<pre class="wp-block-code"><code>type S struct {
+    a, b, c, d int64
+}</code></pre>
+
+
+
+<p>will consume 32 bytes of memory; 8 bytes for <code>a</code>, then 8 bytes for <code>b</code>, and so on. The spec says that <em>struct values are comparable if all their fields are comparable</em>. Thus two structs are equal iff each of their fields are equal.</p>
+
+
+
+<pre class="wp-block-code"><code>a := S{1, 2, 3, 4}
+b := S{1, 2, 3, 4}
+fmt.Println(a == b) // prints true</code></pre>
+
+
+
+<p>Under the hood the compiler uses memcmp to compare the 32 bytes of <code>a</code> and <code>b</code>.</p>
+
+
+
+<h2>Padding and alignment</h2>
+
+
+
+<p>However the simplistic bitwise comparison strategy will fail in situations like this:</p>
+
+
+
+<pre class="wp-block-code"><code>type S struct {
+    a byte
+    b uint64
+    c int16
+    d uint32
+}
+
+func main()
+    a := S{1, 2, 3, 4}
+    b := S{1, 2, 3, 4}
+    fmt.Println(a == b) // prints true
+}</code></pre>
+
+
+
+<p>The code compiles, the comparison is still true, but under the hood the compiler cannot rely on comparing the bit patterns of <code>a</code> and <code>b</code> because the structure contains <em>padding</em>.</p>
+
+
+
+<p>Go requires each field in a struct to be naturally aligned. 2 byte values must start on an even address, four byte values on an address divisible by 4, and so on<span id='easy-footnote-1-4116' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons#easy-footnote-bottom-1-4116' title='On 32bit platforms &lt;code&gt;int64&lt;/code&gt; and &lt;code&gt;uint64&lt;/code&gt; values may not be 8 byte aligned as the natural alignment of the platform is 4 bytes. See &lt;a href=&quot;https://github.com/golang/go/issues/599&quot;&gt;issue 599&lt;/a&gt; for the gory details.'><sup>1</sup></a></span>. The compiler inserts padding to ensure the fields are <em>aligned</em> to according to their type and the underlying platform. In effect, after padding, this is what the compiler sees<span id='easy-footnote-2-4116' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons#easy-footnote-bottom-2-4116' title='32 bit platforms would see &lt;code&gt;_ [3]byte&lt;/code&gt; padding between the declaration of &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt;. See previous.'><sup>2</sup></a></span>:</p>
+
+
+
+<pre class="wp-block-code"><code>type S struct {
+    a byte
+    _ &#091;7]byte // padding
+    b uint64
+    c int16
+    _ &#091;2]int16 // padding
+    d uint32
+}</code></pre>
+
+
+
+<p>Padding exists to ensure the correct field alignments, and while it does take up space in memory, the contents of those padding bytes are unknown. You might assume that, being Go, the padding bytes are always zero, but it turns out that&#8217;s not the case&#8211;the contents of padding bytes are simply not defined. Because they&#8217;re not defined to always be a certain value, doing a bitwise comparison may return false because the nine bytes of padding spread throughout the 24 bytes of <code>S</code> are may not be the same.</p>
+
+
+
+<p>The Go compiler solves this problem by generating what is known as an equality function. In this case <code>S</code>&#8216;s equality function knows how to compare two values of type <code>S</code> by comparing only the fields in the function while skipping over the padding.</p>
+
+
+
+<h2>Type algorithms</h2>
+
+
+
+<p>Phew, that was a lot of setup to illustrate why, for each type defined in a Go program, the compiler may generate several supporting functions, known inside the compiler as the type&#8217;s algorithms. In addition to the equality function the compiler will generate a hash function if the type is used as a map key. Like the equality function, the hash function must consider factors like padding when computing its result to ensure it remains stable. </p>
+
+
+
+<p>It turns out that it can be hard, and sometimes non obvious, to intuit when the compiler will generate these functions&#8211;it&#8217;s more than you’d expect&#8211;and it can be hard for the linker to eliminate the ones that are not needed as reflection often causes the linker to be more conservative when trimming types.</p>
+
+
+
+<h2>Reducing binary size by prohibiting comparisons</h2>
+
+
+
+<p>Now we&#8217;re at a point to explain Brad&#8217;s change. By adding an incomparable field <span id='easy-footnote-3-4116' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons#easy-footnote-bottom-3-4116' title='Brad used &lt;code&gt;[0]func()&lt;/code&gt;, but any type that the spec limits or prohibits comparisons on will do. By declaring the array has zero elements the type has no impact on the size or alignment of the struct.'><sup>3</sup></a></span> to the type, the resulting struct is by extension incomparable, thus forcing the compiler to elide the generation of eq and hash algorithms, short circuiting the linkers elimination of those types and, in practice, reducing the size of the final binary. As an example of this technique, this program:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import "fmt"
+
+func main() {
+    type t struct {
+        // _ &#091;0]&#091;]byte uncomment to prevent comparison
+        a byte
+        b uint16
+        c int32
+        d uint64
+    }
+    var a t
+    fmt.Println(a)
+}</code></pre>
+
+
+
+<p>when compiled with Go 1.14.2 (darwin/amd64), decreased from 2174088 to 2174056, a saving of 32 bytes. In isolation this 32 byte saving may seem like small beer, but consider that equality and hash functions can be generated for every type in the transitive closure of your program and all its dependencies, and the size of these functions varies depending on the size of the type and its complexity, prohibiting them can have a sizeable impact on the final binary over and above the old saw of <code>-ldflags="-s -w"</code>.</p>
+
+
+
+<p>The bottom line, if you don’t wish to make your types comparable, a hack like this enforces it at the source level while contributing to a small reduction in the size of your binary.</p>
+
+
+
+<hr class="wp-block-separator"/>
+
+
+
+<p>Addendum: thanks to Brad’s prodding, Go 1.15 already has a bunch of improvements by <a href="https://go-review.googlesource.com/c/go/+/231397">Cherry Zhang</a> and <a href="https://go-review.googlesource.com/c/go/+/191198">Keith Randall</a> that fix the most egregious of the failures to eliminate unnecessary equality and hash functions (although I suspect it was also to avoid the proliferation of this class of CLs).</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Mid-stack inlining in Go]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go" />
+
+		<id>https://dave.cheney.net/?p=4076</id>
+		<updated>2020-05-06T08:00:49Z</updated>
+		<published>2020-05-02T05:09:15Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="inlining" /><category scheme="https://dave.cheney.net" term="optimisation" /><category scheme="https://dave.cheney.net" term="performance" />
+		<summary type="html"><![CDATA[In the previous post I discussed how leaf inlining allows the Go compiler to reduce the overhead of function calls and extend optimisation opportunities across function boundaries. In this post I&#8217;ll discuss the limits of inlining and leaf vs mid-stack inlining. The limits of inlining Inlining a function into its caller removes the call&#8217;s overhead [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go"><![CDATA[
+<p>In the <a href="https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go">previous post</a> I discussed how leaf inlining allows the Go compiler to reduce the overhead of function calls and extend optimisation opportunities across function boundaries. In this post I&#8217;ll discuss the limits of inlining and leaf vs mid-stack inlining.</p>
+
+
+
+<h2>The limits of inlining</h2>
+
+
+
+<p>Inlining a function into its caller removes the call&#8217;s overhead and increases the opportunity for the compiler to apply additional optimisations so the question should be asked, if some inlining is good, would more be better, <em>why not inline as much as possible?</em></p>
+
+
+
+<p>Inlining trades possibly larger program sizes for potentially faster execution time. The main reason to limit inlining is creating many inlined copies of a function can increase compile time and result in larger binaries for marginal gain. Even taking into account the opportunities for further optimisation, aggressive inlining tends to increase the size of, and the time too compile, the resulting binary.</p>
+
+
+
+<p>Inlining works best for <a href="https://medium.com/@joshsaintjacque/small-functions-considered-awesome-c95b3fd1812f">small functions</a> that do relatively little work compared to the overhead of calling them. As the size of a function grows, the time saved avoiding the call&#8217;s overhead diminishes relative to the work done inside the function. Larger functions tend to be more complex, thus the benefits of optimising their inlined forms vs in situ are reduced.</p>
+
+
+
+<h2>Inlining budget</h2>
+
+
+
+<p>During compilation each function&#8217;s inlineabilty is calculated using what is known as the <em>inlining budget</em><span id='easy-footnote-1-4076' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go#easy-footnote-bottom-1-4076' title='The budget the Go compiler applies to each function when considering if it is eligible for inlining changes release to release.'><sup>1</sup></a></span>. The cost calculation can be tricky to internalise but is broadly one unit per node in the AST for simple things like unary and binary operations but can be higher for complex operations like <code>make</code>. Consider this example:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+func small() string {
+    s := "hello, " + "world!"
+    return s
+}
+
+func large() string {
+    s := "a"
+    s += "b"
+    s += "c"
+    s += "d"
+    s += "e"
+    s += "f"
+    s += "g"
+    s += "h"
+    s += "i"
+    s += "j"
+    s += "k"
+    s += "l"
+    s += "m"
+    s += "n"
+    s += "o"
+    s += "p"
+    s += "q"
+    s += "r"
+    s += "s"
+    s += "t"
+    s += "u"
+    s += "v"
+    s += "w"
+    s += "x"
+    s += "y"
+    s += "z"
+    return s
+}
+
+func main() {
+    small()
+    large()
+}</code></pre>
+
+
+
+<p>Compiling this function with <code>-gcflags=-m=2</code> allows us to see the cost the compiler assigns to each function.</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go build -gcflags=-m=2 inl.go </strong>
+# command-line-arguments
+./inl.go:3:6: can inline small with cost 7 as: func() string { s := "hello, world!"; return s }
+./inl.go:8:6: cannot inline large: function too complex: cost 82 exceeds budget 80
+./inl.go:38:6: can inline main with cost 68 as: func() { small(); large() }
+./inl.go:39:7: inlining call to small func() string { s := "hello, world!"; return s }</pre>
+
+
+
+<p>The compiler determined that <code>func small()</code> can be inlined due to its cost of 7. <code>func large()</code> was determined to be too expensive. <code>func main()</code>has been marked as eligible and assigned a cost of 68; 7 from the body of <code>small</code>, 57 from the function call to <code>small</code> and the remainder in its own overhead.</p>
+
+
+
+<p>The inlining budget can be controlled to some degree with the <code>-gcflag=-l</code> flag. Currently the values that apply are:</p>
+
+
+
+<ul><li><code>-gcflags=-l=0</code> is the default level of inlining.</li><li><code>-gcflags=-l</code> (or <code>-gcflags=-l=1</code>) disables inlining.</li><li><code>-gcflags=-l=2</code> and <code>-gcflags=-l=3</code> are currently unused and have no effect over <code>-gcflags=-l=0</code></li><li><code>-gcflags=-l=4</code> reduces the cost for inlining non-leaf functions and calls through interfaces.<span id='easy-footnote-2-4076' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go#easy-footnote-bottom-2-4076' title='Keep in mind that the compiler authors warn that &amp;#8220;&lt;a href=&quot;https://github.com/golang/go/blob/be08e10b3bc07f3a4e7b27f44d53d582e15fd6c7/src/cmd/compile/internal/gc/inl.go#L11&quot;&gt;Additional levels of inlining (beyond -l) may be buggy and are not supported&amp;#8221;&lt;/a&gt;. Caveat emptor.'><sup>2</sup></a></span></li></ul>
+
+
+
+<h3>Hairy optimisations</h3>
+
+
+
+<p>Some functions with a relatively low inlining cost may be ineligible because of their complexity. This is known as the function&#8217;s hairiness as the semantics of some operations are hard to reason about once inlined, for example <code>recover</code>, <code>break</code>. Others, like <code>select</code> and <code>go</code>, involve co-ordination with the runtime so the extra effort of inlining doesn&#8217;t pay for itself.</p>
+
+
+
+<p>The list of hairy statements also includes things like <code>for </code>and <code>range</code> which don&#8217;t have an inherently large cost, but simply haven&#8217;t been optimised yet.</p>
+
+
+
+<h2>Mid stack inlining</h2>
+
+
+
+<p>Historically the Go compiler only performed leaf inlining&#8211;only functions which did not call other functions were eligible. In the context of the hairiness discussion previously, a function call would disqualify the function from being inlined.</p>
+
+
+
+<p>Enter mid stack inlining which, as its name implies, allows functions in the middle of a call stack to be inlined without requiring everything below them to be eligible. Mid stack inlining was introduced by David Lazar in Go 1.9 and improved in subsequent releases. <a href="https://docs.google.com/presentation/d/1Wcblp3jpfeKwA0Y4FOmj63PW52M_qmNqlQkNaLj0P5o/edit#slide=id.p">This presentation</a> goes into some of the difficulties with retaining the behaviour of stack traces and <code>runtime.Callers</code> in code paths that had been heavily inlined.</p>
+
+
+
+<p>We see an example of mid-stack inlining in the previous example. After inlining, <code>func main()</code> contains the body of <code>func small()</code> and a call to <code>func large()</code>, thus it is considered a non-leaf function. Historically this would have prevented it from being further inlined even though its combined cost was less than the inlining budget.</p>
+
+
+
+<p>The primary use case for mid stack inlining is to reduce the overhead of a path through the call stack. Consider this example:</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+    "fmt"
+    "strconv"
+)
+
+type Rectangle struct {}
+
+//go:noinline
+func (r *Rectangle) Height() int {
+    h, _ := strconv.ParseInt("7", 10, 0)
+    return int(h)
+}
+
+func (r *Rectangle) Width() int {
+    return 6
+}
+
+func (r *Rectangle) Area() int { return r.Height() * r.Width() }
+
+func main() {
+    var r Rectangle
+    fmt.Println(r.Area())
+}</code></pre>
+
+
+
+<p>In this example <code>r.Area()</code> is a simple function which calls two others. <code>r.Width()</code> can be inlined while <code>r.Height()</code>, simulated here with the <code>//go:noinline</code> annotation, cannot. <span id='easy-footnote-3-4076' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go#easy-footnote-bottom-3-4076' title='The compiler is powerful enough that it can inline complex functions like &lt;code&gt;strconv.ParseInt&lt;/code&gt;. As a experiment, try removing the &lt;code&gt;//go:noinline&lt;/code&gt; annotation and observe the result with &lt;code&gt;-gcflags=-m=2&lt;/code&gt;.'><sup>3</sup></a></span></p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go build -gcflags='-m=2' square.go                                                                                                          </strong>
+# command-line-arguments
+./square.go:12:6: cannot inline (*Rectangle).Height: marked go:noinline                                                                               
+./square.go:17:6: can inline (*Rectangle).Width with cost 2 as: method(*Rectangle) func() int { return 6 }
+./square.go:21:6: <strong>can inline (*Rectangle).Area with cost 67 as: method(*Rectangle) func() int { return r.Height() * r.Width() }                       </strong>./square.go:21:61: inlining call to (*Rectangle).Width method(*Rectangle) func() int { return 6 }                                                     
+./square.go:23:6: cannot inline main: function too complex: cost 150 exceeds budget 80                        
+./square.go:25:20: inlining call to (*Rectangle).Area method(*Rectangle) func() int { return r.Height() * r.Width() }
+./square.go:25:20: inlining call to (*Rectangle).Width method(*Rectangle) func() int { return 6 }</pre>
+
+
+
+<p>As the multiplication performed by <code>r.Area()</code> is cheap compared to the overhead of calling it, inlining <code>r.Area()</code>&#8216;s single expression is a net win even if its downstream caller to <code>r.Height()</code> remains ineligible.</p>
+
+
+
+<h3>Fast path inlining</h3>
+
+
+
+<p>The most startling example of the power of mid-stack inlining comes from 2019 when <a href="https://go-review.googlesource.com/c/go/+/148959">Carlo Alberto Ferraris improved the performance</a> of <code>sync.Mutex.Lock()</code> by allowing the fast path of the lock&#8211;the uncontended case&#8211;to be inlined into its caller. Prior to this change <code>sync.Mutex.Lock()</code> was a large function containing many hairy conditions which made it ineligible to be inlined. Even in the case where the lock was available, the caller had to pay the overhead of calling <code>sync.Mutex.Lock()</code>.</p>
+
+
+
+<p>Carlo&#8217;s change split <code>sync.Mutex.Lock()</code> into two functions (a process he dubbed <em>outlining</em>). The outer <code>sync.Mutex.Lock()</code> method now calls <code>sync/atomic.CompareAndSwapInt32()</code> and returns to the caller immediately if the CAS succeeds. If not, the function falls through to <code>sync.Mutex.lockSlow()</code> which handles the slow path required to register interest on the lock and park the goroutine.<span id='easy-footnote-4-4076' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go#easy-footnote-bottom-4-4076' title='The expression &lt;code&gt;race.Enable&lt;/code&gt; is a constant controlled by the &lt;code&gt;-race&lt;/code&gt; flag passed to the &lt;code&gt;go&lt;/code&gt; tool. It is &lt;code&gt;false&lt;/code&gt; for normal builds which allows the compiler to elide those code paths entirely.'><sup>4</sup></a></span></p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go build -gcflags='-m=2 -l=0' sync 2&gt;&amp;1 | grep '(*Mutex).Lock'</strong>
+../go/src/sync/mutex.go:72:6: can inline (*Mutex).Lock with cost 69 as: method(*Mutex) func() { if "sync/atomic".CompareAndSwapInt32(&amp;m.state, 0, mutexLocked) { if race.Enabled {&nbsp; }; return&nbsp; }; m.lockSlow() }</pre>
+
+
+
+<p>By splitting the function into an easily inlineable outer function, falling through to a complex inner function to handle the slow path Carlo&#8217;s combined mid stack inlining and the <a href="https://dave.cheney.net/2019/08/20/go-compiler-intrinsics">compiler&#8217;s support for intrinsic operations</a> to reduce the cost of an uncontended lock by 14%. Then he repeated the trick for an additional 9% saving in <code><a href="https://go-review.googlesource.com/c/go/+/152698">sync.RWMutex.Unlock()</a></code>.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Inlining optimisations in Go]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go" />
+
+		<id>https://dave.cheney.net/?p=4053</id>
+		<updated>2020-04-28T07:36:45Z</updated>
+		<published>2020-04-25T06:38:17Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="inlining" /><category scheme="https://dave.cheney.net" term="optimisation" /><category scheme="https://dave.cheney.net" term="performance" />
+		<summary type="html"><![CDATA[This is a post about how the Go compiler implements inlining and how this optimisation affects your Go code. n.b. This article focuses on gc, the de facto Go compiler from golang.org. The concepts discussed apply broadly to other Go compilers like gccgo and tinygo but may differ in implementation and efficacy. What is inlining? [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go"><![CDATA[
+<p>This is a post about how the Go compiler implements inlining and how this optimisation  affects your Go code. </p>
+
+
+
+<p><em>n.b.</em> This article focuses on <em>gc</em>, the de facto Go compiler from <a href="https://github.com/golang/go">golang.org</a>. The concepts discussed apply broadly to other Go compilers like gccgo and tinygo but may differ in implementation and efficacy.</p>
+
+
+
+<h2>What is inlining?</h2>
+
+
+
+<p>Inlining is the act of combining smaller functions into their respective callers. In the early days of computing this optimisation was typically performed by hand. Nowadays inlining is one of a class of fundamental optimisations performed automatically during the compilation process.</p>
+
+
+
+<h2>Why is inlining important?</h2>
+
+
+
+<p>Inlining is important for two reasons. The first is it removes the overhead of the function call itself. The second is it permits the compiler to more effectively apply other optimisation strategies.</p>
+
+
+
+<h3>Function call overhead</h3>
+
+
+
+<p>Calling a function<span id='easy-footnote-1-4053' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go#easy-footnote-bottom-1-4053' title='In Go, a method is just a function with a predefined formal parameter, the receiver. The relative costs of calling a free function vs a invoking a method, assuming that method is not called through an interface, are the same.'><sup>1</sup></a></span> in any language carries a cost. There are the overheads of marshalling parameters into registers or onto the stack (depending on the ABI) and reversing the process on return. Invoking a function call involves jumping the program counter from one point in the instruction stream to another which can cause a pipeline stall. Once inside the function there is usually some preamble required to prepare a new stack frame for the function to execute and a similar epilogue needed to retire the frame before returning to the caller.</p>
+
+
+
+<p>In Go a function call carries additional costs to support dynamic stack growth. On entry the amount of stack space available to the goroutine is compared to the amount required for the function. If insufficient stack space is available, the preamble jumps into the runtime logic that grows the stack by copying it to a new, larger, location. Once this is done the runtime jumps back to the start of the original function, the stack check is performed again, which now passes, and the call continues. In this way goroutines can start with a small stack allocation which grows only when needed.<span id='easy-footnote-2-4053' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go#easy-footnote-bottom-2-4053' title='Up until Go 1.14 the stack check preamble was also used by the garbage collector to stop the world by setting all active goroutine&amp;#8217;s stacks to zero, forcing them to trap into the runtime the next time they made a function call. This system was &lt;a href=&quot;https://github.com/golang/proposal/blob/master/design/24543-non-cooperative-preemption.md&quot;&gt;recently replaced&lt;/a&gt; with a mechanism which allowed the runtime to pause an goroutine without waiting for it to make a function call.'><sup>2</sup></a></span></p>
+
+
+
+<p>This check is cheap&#8211;only a few instructions&#8211;and because goroutine stacks grows geometrically the check rarely fails. Thus, the branch prediction unit inside a modern processor can hide the cost of the stack check by assuming it will always be successful. In the case where the processor mis-predicts the stack check and has to discard the work done while it was executing speculatively, the cost of the pipeline stall is relatively small compared to the cost of the work needed for the runtime to grow a goroutines stack.</p>
+
+
+
+<p>While the overhead of the generic and Go specific components of each function call are well optimised by modern processors using speculative execution techniques, those overheads cannot be entirely eliminated, thus each function call carries with it a performance cost over and above the time it takes to perform useful work. As a function call&#8217;s overhead is fixed, smaller functions pay a larger cost relative to larger ones because they tend to do less useful work per invocation.</p>
+
+
+
+<p>The solution to eliminating these overheads must therefore be to eliminate the function call itself, which the Go compiler does, under certain conditions, by replacing the call to a function with the contents of the function. This is known as <em>inlining</em> because it brings the body of the function in line with its caller.</p>
+
+
+
+<h3>Improved optimisation opportunities</h3>
+
+
+
+<p>Dr. Cliff Click describes inlining as <em>the</em> optimisation performed by modern compilers as it forms the basis for optimisations like constant propagation and dead code elimination. In effect, inlining allows the compiler to <em>see </em><i>furthe</i>r, allowing it to observe, in the context that a particular function is being called, logic that can be further simplified or eliminated entirely. As inlining can be applied recursively optimisation decisions can be made not only in the context of each individual function, but also applied to the chain of functions in a call path.</p>
+
+
+
+<h2>Inlining in action</h2>
+
+
+
+<p>The effects of inlining can be demonstrated with this small example</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import "testing"
+
+//go:noinline
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+var Result int
+
+func BenchmarkMax(b *testing.B) {
+    var r int
+    for i := 0; i &lt; b.N; i++ {
+        r = max(-1, i)
+    }
+    Result = r
+}</code></pre>
+
+
+
+<p>Running this benchmark gives the following result:<span id='easy-footnote-3-4053' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go#easy-footnote-bottom-3-4053' title='I&amp;#8217;m using the &lt;code&gt;//go:noinline&lt;/code&gt; pragma to prevent the compiler from inlining &lt;code&gt;max&lt;/code&gt;. This is because I want to isolate the effects of inlining on &lt;code&gt;max&lt;/code&gt; rather than disabling optimisations globally with &lt;code&gt;-gcflags=&#039;-l -N&#039;&lt;/code&gt;. I go into detail about the &lt;code&gt;//go:&lt;/code&gt; comments in &lt;a href=&quot;https://dave.cheney.net/2018/01/08/gos-hidden-pragmas&quot;&gt;this presentation&lt;/a&gt;.'><sup>3</sup></a></span></p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go test -bench=.&nbsp;</strong>
+BenchmarkMax-4 &nbsp; 530687617 &nbsp; &nbsp; &nbsp; &nbsp; 2.24 ns/op</pre>
+
+
+
+<p>The cost of <code>max(-1, i)</code> is around 2.24 nanoseconds on my 2015 MacBook Air. Now let&#8217;s remove the <code>//go:noinline</code> pragma and see the result:</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go test -bench=.&nbsp;</strong>
+BenchmarkMax-4 &nbsp; 1000000000 &nbsp; &nbsp; &nbsp; &nbsp; 0.514 ns/op</pre>
+
+
+
+<p>From 2.24 ns to 0.51 ns, or according to <code>benchstat</code>, a 78% improvement.</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>benchstat {old,new}.txt</strong>
+name &nbsp; old time/op&nbsp; new time/op&nbsp; delta
+Max-4&nbsp; 2.21ns ± 1%&nbsp; 0.49ns ± 6%&nbsp; -77.96%&nbsp; (p=0.000 n=18+19)</pre>
+
+
+
+<p>Where did these improvements come from? </p>
+
+
+
+<p>First, the removal of the function call and associated preamble<span id='easy-footnote-4-4053' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go#easy-footnote-bottom-4-4053' title='You can check this for yourself by comparing the output of &lt;code&gt;go test -bench=. -gcflags=-S&lt;/code&gt; with and without the &lt;code&gt;//go:noinline&lt;/code&gt; annotation.'><sup>4</sup></a></span> was a major contributor. Pulling the contents of <code>max</code> into its caller reduced the number of instructions executed by the processor and eliminated several branches.</p>
+
+
+
+<p>Now the contents of <code>max</code> are visible to the compiler as it optimises <code>BenchmarkMax</code> it can make some additional improvements. Consider that once <code>max</code> is inlined, this is what the body of <code>BenchmarkMax</code> looks like to the compiler:</p>
+
+
+
+<pre class="wp-block-code"><code>func BenchmarkMax(b *testing.B) {
+    var r int
+    for i := 0; i &lt; b.N; i++ {
+        if -1 > i {
+            r = -1
+        } else {
+            r = i
+        }
+    }
+    Result = r
+}</code></pre>
+
+
+
+<p>Running the benchmark again we see our manually inlined version performs as well as the version inlined by the compiler</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>benchstat {old,new}.txt</strong>
+name &nbsp; old time/op&nbsp; new time/op&nbsp; delta
+Max-4&nbsp; 2.21ns ± 1%&nbsp; 0.48ns ± 3%&nbsp; -78.14%&nbsp; (p=0.000 n=18+18)</pre>
+
+
+
+<p>Now the compiler has access to the result of inlining <code>max</code> into <code>BenchmarkMax</code> it can apply optimisation passes which were not possible before. For example, the compiler has noted that <code>i</code> is initialised to <code>0</code> and only incremented so any comparison with <code>i</code> can assume <code>i</code> will never be negative. Thus, the condition <code>-1 &gt; i</code> will never be true.<span id='easy-footnote-5-4053' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go#easy-footnote-bottom-5-4053' title='You can check this yourself with the &lt;code&gt;-gcflags=-d=ssa/prove/debug=on&lt;/code&gt; flag.'><sup>5</sup></a></span></p>
+
+
+
+<p>Having proved that <code>-1 &gt; i</code> will never be true, the compiler can simplify the code to</p>
+
+
+
+<pre class="wp-block-code"><code>func BenchmarkMax(b *testing.B) {
+    var r int
+    for i := 0; i &lt; b.N; i++ {
+        if false {
+            r = -1
+        } else {
+            r = i
+        }
+    }
+    Result = r
+}</code></pre>
+
+
+
+<p>and because the branch is now a constant, the compiler can eliminate the unreachable path leaving it with</p>
+
+
+
+<pre class="wp-block-code"><code>func BenchmarkMax(b *testing.B) {
+    var r int
+    for i := 0; i &lt; b.N; i++ {
+        r = i
+    }
+    Result = r
+}</code></pre>
+
+
+
+<p>Thus, through inlining and the optimisations it unlocks, the compiler has reduced the expression <code>r = max(-1, i)</code> to simply <code>r = i</code>.</p>
+
+
+
+<h2>The limits of inlining</h2>
+
+
+
+<p>In this article I&#8217;ve discussed, so called, <em>leaf</em> inlining; the act of inlining a function at the bottom of a call stack into its direct caller. Inlining is a recursive process, once a function has been inlined into its caller, the compiler may inline the resulting code into <em>its</em> caller, as so on. For example, this code </p>
+
+
+
+<pre class="wp-block-code"><code>func BenchmarkMaxMaxMax(b *testing.B) {
+    var r int
+    for i := 0; i &lt; b.N; i++ {
+        r = max(max(-1, i), max(0, i))
+    }
+    Result = r
+}</code></pre>
+
+
+
+<p>runs as fast as the previous example as the compiler is able to repeatedly apply the optimisations outlined above to reduce the code to the same <code>r = i</code> expression.</p>
+
+
+
+<p>In the next article I&#8217;ll discuss an alternative inlining strategy when the Go compiler wishes to inline a function in the middle of a call stack. Finally I&#8217;ll discuss the limits that the compiler is prepared to go to to inline code, and which Go constructs are currently beyond its capability.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[go test -v streaming output]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/03/10/go-test-v-streaming-output" />
+
+		<id>https://dave.cheney.net/?p=4048</id>
+		<updated>2020-03-10T07:03:04Z</updated>
+		<published>2020-03-10T07:03:03Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="testing" /><category scheme="https://dave.cheney.net" term="unit test" />
+		<summary type="html"><![CDATA[The testing package is one of my favourite packages in the Go standard library, not just because of its low noise approach to unit testing, but, over the lifetime of Go, it has received a steady stream of quality of life improvements driven by real world usage. The most recent example of this is, in [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/03/10/go-test-v-streaming-output"><![CDATA[
+<p>The <code>testing</code> package is one of my favourite packages in the Go standard library, not just because of its low noise approach to unit testing, but, over the lifetime of Go, it has received a steady stream of quality of life improvements driven by real world usage.</p>
+
+
+
+<p>The most recent example of this is, in Go 1.14, <code>go test -v</code> will stream <code>t.Log</code> output as it happens, rather than hoarding it til the end of the test run. Here’s an example;</p>
+
+
+
+<pre class="wp-block-code"><code>package main
+
+import (
+	"fmt"
+	"testing"
+	"time"
+)
+
+func TestLogStreaming(t *testing.T) {
+	for i := 0; i &lt; 5; i++ {
+		time.Sleep(300 * time.Millisecond)
+		fmt.Println("fmt.Println:", i)
+		t.Log("t.Log:", i)
+	}
+}</code></pre>
+
+
+
+<p><em>Note:</em> Calling <code>fmt.Println</code> inside a test is generally considered a no no as it bypasses the <code>testing</code> package’s output buffering irrespective of the <code>-v</code> flag. However, for this example, it‘s necessary to demonstrate the streaming <code>t.Log</code> change.</p>
+
+
+
+<pre class="wp-block-code"><code>% go1.13 test -v tlog_test.go
+=== RUN   TestLogStreaming
+fmt.Println: 0
+fmt.Println: 1
+fmt.Println: 2
+fmt.Println: 3
+fmt.Println: 4
+--- PASS: TestLogStreaming (1.52s)
+    tlog_test.go:13: t.Log: 0
+    tlog_test.go:13: t.Log: 1
+    tlog_test.go:13: t.Log: 2
+    tlog_test.go:13: t.Log: 3
+    tlog_test.go:13: t.Log: 4
+PASS
+ok      command-line-arguments  1.971s</code></pre>
+
+
+
+<p>Under Go 1.13 and earlier the <code>fmt.Println</code> lines output immediately. <code>t.Log</code> lines are buffered and are printed after the test completes.</p>
+
+
+
+<pre class="wp-block-code"><code>% go1.14 test -v tlog_test.go
+=== RUN   TestLogStreaming
+fmt.Println: 0
+    TestLogStreaming: tlog_test.go:13: t.Log: 0
+fmt.Println: 1
+    TestLogStreaming: tlog_test.go:13: t.Log: 1
+fmt.Println: 2
+    TestLogStreaming: tlog_test.go:13: t.Log: 2
+fmt.Println: 3
+    TestLogStreaming: tlog_test.go:13: t.Log: 3
+fmt.Println: 4
+    TestLogStreaming: tlog_test.go:13: t.Log: 4
+--- PASS: TestLogStreaming (1.51s)
+PASS
+ok      command-line-arguments  1.809s</code></pre>
+
+
+
+<p>Under Go 1.14 the <code>fmt.Println</code> and <code>t.Log</code> lines are interleaved, rather than waiting for the test to complete, demonstrating that test output is streamed when <code>go test -v</code> is used.</p>
+
+
+
+<p>This is a great quality of life improvement for integration style tests that often retry for long periods when the test is failing. Streaming <code>t.Log</code> output will help Gophers debug those test failures without having to wait until the entire test times out to receive their output. </p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Are large slices more expensive than smaller ones?]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/03/01/are-large-slices-more-expensive-than-smaller-ones" />
+
+		<id>https://dave.cheney.net/?p=4041</id>
+		<updated>2020-03-01T10:15:07Z</updated>
+		<published>2020-03-01T05:35:26Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="performance" /><category scheme="https://dave.cheney.net" term="slices" />
+		<summary type="html"><![CDATA[Programmers have a tendency to be superstitious. Particularly, when a programmer hears that copies are expensive, they start to see them everywhere, especially when they learn that, in Go, every assignment is a copy. Consider this code; x is three orders of magnitude larger than y, is the assignment of x to a more expensive [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/03/01/are-large-slices-more-expensive-than-smaller-ones"><![CDATA[
+<p>Programmers have a tendency to be superstitious. Particularly, when a programmer hears that copies are expensive, they start to see them everywhere, especially when they learn that, in Go, <em>every</em> assignment is a copy.</p>
+
+
+
+<p>Consider this code; <code>x</code> is three orders of magnitude larger than <code>y</code>, is the assignment of <code>x</code> to <code>a</code> more expensive than the assignment of <code>y</code> to <code>b</code>?</p>
+
+
+
+<pre class="wp-block-preformatted">func f() {
+       x, y := make([]byte, 9000), make([]byte, 9)
+       a := x
+       b := y
+       // ...
+ } </pre>
+
+
+
+<p>The answer is; no. <code>x</code> and <code>y</code> have the same type, <code>[]byte</code>, that is, a slice of bytes. As both variables have the same type, their assignment involves copying the same amount of data. Both assignments have the same cost.</p>
+
+
+
+<p>All slices are the same size; three machine words (three <code>uintptrs</code>). The first word in the slice is a pointer to the slice&#8217;s backing array, the storage for the slice, the second word is the slice&#8217;s length, and the third is the capacity. Assigning one slice variable to another copies just three machine words. </p>
+
+
+
+<p><em>Further reading: </em><a href="https://blog.golang.org/go-slices-usage-and-internals">Go slices: usage and internals</a> (blog.golang.org)</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[The Zen of Go]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2020/02/23/the-zen-of-go" />
+
+		<id>https://dave.cheney.net/?p=3936</id>
+		<updated>2020-03-08T10:31:13Z</updated>
+		<published>2020-02-23T06:46:10Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Small ideas" /><category scheme="https://dave.cheney.net" term="design" />
+		<summary type="html"><![CDATA[This article was derived from my GopherCon Israel 2020 presentation. It&#8217;s also quite long. If you&#8217;d prefer a shorter version, head over to the-zen-of-go.netlify.com. A recording of the presentation is available on YouTube. How should I write good code? Something that I’ve been thinking about a lot recently, when reflecting on the body of my [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2020/02/23/the-zen-of-go"><![CDATA[
+<p><em>This article was derived from my <a href="https://www.gophercon.org.il">GopherCon Israel 2020</a> presentation. It&#8217;s also quite long. If you&#8217;d prefer a shorter version, head over to <a href="https://the-zen-of-go.netlify.com">the-zen-of-go.netlify.com</a></em>.</p>
+
+
+
+<p><em>A recording of the presentation is available on <a href="https://www.youtube.com/watch?v=yd_rtwYaXps">YouTube</a>.</em></p>
+
+
+
+<hr class="wp-block-separator"/>
+
+
+
+<h2 id="_how_should_we_write_good_code">How should I write good code?</h2>
+
+
+
+<p>Something that I’ve been thinking about a lot recently, when reflecting on the body of my own work, is a common subtitle, <em>how should I write good code?</em> Given nobody actively seeks to write&nbsp;<em>bad</em>&nbsp;code, this leads to the question; <em>how do you know when you’ve written good Go code?</em></p>
+
+
+
+<p>If there’s a continuum between good and bad, how to do we know what the good parts are? What are its properties, its attributes, its hallmarks, its patterns, and its idioms?</p>
+
+
+
+<h2 id="_idiomatic_go">Idiomatic Go</h2>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" width="640" height="480" src="https://dave.cheney.net/wp-content/uploads/2020/02/1011226.jpg" alt="" class="wp-image-3939" srcset="https://dave.cheney.net/wp-content/uploads/2020/02/1011226.jpg 640w, https://dave.cheney.net/wp-content/uploads/2020/02/1011226-300x225.jpg 300w, https://dave.cheney.net/wp-content/uploads/2020/02/1011226-624x468.jpg 624w" sizes="(max-width: 640px) 100vw, 640px" /></figure>
+
+
+
+<p>Which brings me to idiomatic Go. To say that something is idiomatic is to say that it follows the style of the time. If something is not idiomatic, it is not following the prevailing style. It is unfashionable.</p>
+
+
+
+<p>More importantly, to say to someone that their code is not idiomatic does not explain&nbsp;<em>why</em>&nbsp;it&#8217;s not idiomatic. Why is this? Like all truths, the answer is found in the dictionary.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>idiom (noun): a group of words established by usage as having a meaning not deducible from those of the individual words.</p></blockquote>
+
+
+
+<p>Idioms are hallmarks of shared values. Idiomatic Go is not something you learn from a book, it’s something that you acquire by being part of a community. </p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" width="750" height="567" src="https://dave.cheney.net/wp-content/uploads/2020/02/mean-girls-you-cant-sit-with-us-main.jpg" alt="" class="wp-image-3940" srcset="https://dave.cheney.net/wp-content/uploads/2020/02/mean-girls-you-cant-sit-with-us-main.jpg 750w, https://dave.cheney.net/wp-content/uploads/2020/02/mean-girls-you-cant-sit-with-us-main-300x227.jpg 300w, https://dave.cheney.net/wp-content/uploads/2020/02/mean-girls-you-cant-sit-with-us-main-624x472.jpg 624w" sizes="(max-width: 750px) 100vw, 750px" /></figure>
+
+
+
+<p>My concern with the mantra of idiomatic Go is, in many ways, it can be exclusionary. It’s saying &#8220;you can’t sit with us.” After all, isn’t that what we mean when critique of someone’s work as non-idiomatic? They didn’t do It right. It doesn’t look right. It doesn’t follow the style of time.</p>
+
+
+
+<p>I offer that idiomatic Go is not a suitable mechanism for teaching how to write good Go code because it is defined, fundamentally, by telling someone they did it wrong. Wouldn’t it be better if the advice we gave didn’t alienate the author right at the point they were most willing to accept it?</p>
+
+
+
+<h2 id="_proverbs">Proverbs</h2>
+
+
+
+<p>Stepping away problematic idioms, what other cultural artefacts do Gophers have? Perhaps we can turn to Rob Pike’s wonderful <a href="http://go-proverbs.github.io">Go Proverbs</a>. Are these suitable teaching tools? Will these tell newcomers how to write good Go code?</p>
+
+
+
+<p>In general, I don’t think so. This is not to dismiss Pike’s work, it is just that the Go Proverbs, like Segoe Kensaku&#8217;s original, are observations, not statements of value. Again, the dictionary comes to the rescue:</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>proverb (noun): a short, well-known pithy saying, stating a general truth or piece of advice.</p></blockquote>
+
+
+
+<p>The goal of the Go Proverbs are to reveal a deeper truth about the design of the language, but how useful is advice like the <em>empty interface says nothing</em> to a novice from a language that doesn’t have structural typing?</p>
+
+
+
+<p>It&#8217;s important to recognise that, in a growing community, at any time the people learning Go far outnumber those who claim to have mastered the language. Thus proverbs are perhaps not the best teaching tool in this scenario.</p>
+
+
+
+<h2 id="_engineering_values">Engineering Values</h2>
+
+
+
+<p>Dan Luu found <a href="https://danluu.com/microsoft-culture/">an old presentation</a> by Mark Lucovsky about the engineering culture of the windows team around the windows NT-windows 2000 timeframe. The reason I mention it is Lukovsky’s description of a culture as a common way of evaluating designs and making tradeoffs.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" width="720" height="540" src="https://dave.cheney.net/wp-content/uploads/2020/02/Lucovsky.001.jpeg" alt="" class="wp-image-3944" srcset="https://dave.cheney.net/wp-content/uploads/2020/02/Lucovsky.001.jpeg 720w, https://dave.cheney.net/wp-content/uploads/2020/02/Lucovsky.001-300x225.jpeg 300w, https://dave.cheney.net/wp-content/uploads/2020/02/Lucovsky.001-624x468.jpeg 624w" sizes="(max-width: 720px) 100vw, 720px" /></figure>
+
+
+
+<p>There are many ways of discussing culture, but with respect to an engineering culture Lucovsky’s description is apt. The central idea is <em>values guide decisions in an unknown design space</em>. The values of the NT team were; portability, reliability, security, and extensibility. Engineering values are, crudely translated, the way things are done around here.</p>
+
+
+
+<h2 id="_gos_values">Go&#8217;s values</h2>
+
+
+
+<p>What are the explicit values of Go? What are the core beliefs or philosophy that define the way a Go programmer interprets the world? How are they promulgated? How are they taught? How are they enforced? How do they change over time?</p>
+
+
+
+<p>How will you, as a newly minted Go programmer, inculcate the engineering values of Go? Or, how will you, a seasoned Go professional promulgate your values to a future generations? And just so we&#8217;re clear, this process of knowledge transfer is not optional. Without new blood and new ideas, our community become myopic and wither.</p>
+
+
+
+<h3 id="_other_languages_values">The values of other languages</h3>
+
+
+
+<p>To set the scene for what I’m getting at we can look to other languages we see examples of their engineering values.</p>
+
+
+
+<p>For example, C++ (and by extension Rust) believe that a programmer <em>should not have to pay for a feature they do not use</em>. If a program does not use some computationally expensive feature of the language, then it shouldn’t be forced to shoulder the cost of that feature. This value extends from the language, to its standard library, and is used as a yardstick for judging the design of all code written in C++.</p>
+
+
+
+<p>In Java, and Ruby, and Smalltalk, the core value that <em>everything is an object</em> drives the design of programs around message passing, information hiding, and polymorphism. Designs that shoehorn a procedural style, or even a functional style, into these languages are considered to be wrong&#8211;or as Gophers would say, non idiomatic.</p>
+
+
+
+<p>Turning to our own community, what are the engineering values that bind Go programmers? Discourse in our community is often fractious, so deriving a set of values from first principles would be a formidable challenge. Consensus is critical, but exponentially more difficult as the number of contributors to the discussion increases. But what if someone had done the hard work for us.</p>
+
+
+
+<h2 id="_the_zen_of_python_go">The Zen of <s>Python</s> Go</h2>
+
+
+
+<p>Several decades ago Tim Peters sat down and penned <em><a href="https://www.python.org/dev/peps/pep-0020/">PEP-20</a></em>, the Zen of Python. Peters’ attempted to document the engineering values that he saw Guido van Rossum apply in his role as BDFL for Python.</p>
+
+
+
+<p>For the remainder of this article, I&#8217;m going to look towards the Zen of Python and ask, is there anything that can inform the engineering values of Go programmers?</p>
+
+
+
+<h2 id="_a_good_package_starts_with_a_good_name">A good package starts with a good name</h2>
+
+
+
+<p>Let’s start with something spicy,</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>“Namespaces are one honking great idea–let’s do more of those!”</p><cite>The Zen of Python, Item 19</cite></blockquote>
+
+
+
+<p>This is pretty unequivocal, Python programmers should use namespaces. Lots of them.</p>
+
+
+
+<p>In Go parlance a namespace is a package. I doubt there is any question that grouping things into packages is good for design and potentially reuse. But there might be some confusion, especially if you’re coming with a decade of experience in another language, about the right way to do this.</p>
+
+
+
+<p>In Go each package should have a purpose, and the best way to know a package&#8217;s purpose is by its name—a noun. A package&#8217;s name describes what it provides. So too reinterpret Peters&#8217; words, every Go package should have a single purpose.</p>
+
+
+
+<p>This is not a new idea, <a href="https://dave.cheney.net/2019/01/08/avoid-package-names-like-base-util-or-common">I’ve been saying this a while</a>, but why should you do this rather than approach where packages are used for fine grained taxonomy? Why, because change. </p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Design is the art of arranging code to work today, and be changeable forever.&#8221;</p><cite>Sandi Metz</cite></blockquote>
+
+
+
+<p>Change is the name of the game we&#8217;re in. What we do as programmers is manage change. When we do that well we call it design, or architecture. When we do it badly we call it technical debt, or legacy code.</p>
+
+
+
+<p>If you are writing a program that works perfectly, one time, for one fixed set of inputs then nobody cares if the code is good or bad because ultimately the output of the program is all the business cares about.</p>
+
+
+
+<p>But this is <em>never</em> true. Software has bugs, requirements change, inputs change, and very few programs are written solely to be executed once, thus your program <em>will</em> change over time. Maybe it’s you who’ll be tasked with this, more likely it will be someone else, but someone has to change that code. Someone has to maintain that code. </p>
+
+
+
+<p>So, how can we make it easy to for programs to change? Interfaces everywhere? Make everything mockable? Pernicious dependency injection? Well, maybe, for some classes of programs, but not many, those techniques will be useful. However, for the majority of programs, designing something to be flexible up front is over engineering. </p>
+
+
+
+<p>What if, instead, we take a position that rather than enhancing components, we replace them. Then the best way to know when something needs to be replaced, is when it doesn’t do what it says on the tin.</p>
+
+
+
+<p>A good package starts with choosing a good name. Think of your package’s name as an elevator pitch, using just one word, to describe what it provides. When the name no longer matches the requirement, find a replacement.</p>
+
+
+
+<h2 id="_simple_is_better_than_complex">Simplicity matters</h2>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Simple is better than complex.&#8221;</p><cite>The Zen of Python, Item 3</cite></blockquote>
+
+
+
+<p>PEP-20 says simple is better than complex, I couldn’t agree more. A couple of years ago I made this tweet;</p>
+
+
+
+<figure class="wp-block-embed-twitter wp-block-embed is-type-rich is-provider-twitter"><div class="wp-block-embed__wrapper">
+<blockquote class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Most programming languages start out aiming to be simple, but end up just settling for being powerful.</p>&mdash; Dave Cheney (@davecheney) <a href="https://twitter.com/davecheney/status/539576755254611968?ref_src=twsrc%5Etfw">December 2, 2014</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div></figure>
+
+
+
+<p>My observation, at least at the time, was that I couldn’t think of a language introduced in my life time that didn’t purport to be simple. Each new language offered as a justification, and an enticement, their inherent simplicity. But as I researched, I found that simplicity was not a core value of the many of the languages considered Go&#8217;s contemporaries. <span id='easy-footnote-1-3936' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/02/23/the-zen-of-go#easy-footnote-bottom-1-3936' title='This part of the talk had several screenshots of the landing pages for the websites for &lt;a href=&quot;https://www.ruby-lang.org/en/&quot;&gt;Ruby&lt;/a&gt;, &lt;a href=&quot;https://swift.org&quot;&gt;Swift&lt;/a&gt;, &lt;a href=&quot;https://elm-lang.org&quot;&gt;Elm&lt;/a&gt;, &lt;a href=&quot;https://golang.org&quot;&gt;Go&lt;/a&gt;, &lt;a href=&quot;https://nodejs.org/en/&quot;&gt;NodeJS&lt;/a&gt;, &lt;a href=&quot;https://www.python.org&quot;&gt;Python&lt;/a&gt;, &lt;a href=&quot;https://www.rust-lang.org&quot;&gt;Rust&lt;/a&gt;, highlighting how the language described itself.'><sup>1</sup></a></span> Maybe this is just a cheap shot, but could it be that either these languages aren’t simple, or they don’t <em>think</em> of themselves as being simple. They don’t consider simplicity to be a core value.</p>
+
+
+
+<p>Call me old fashioned, but when did being simple fall out of style? Why does the commercial software development industry continually, gleefully, forget this fundamental truth?</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>“There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult.”</p><cite>C. A. R. Hoare, The Emperor&#8217;s Old Clothes, 1980&nbsp;Turing Award&nbsp;Lecture</cite></blockquote>
+
+
+
+<p>Simple does not mean easy, we know that. Often it is more work to make something simple to use, than easy to build.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Simplicity is prerequisite for reliability.”</p><cite>Edsger W Dijkstra, EWD498, 18 June 1975</cite></blockquote>
+
+
+
+<p>Why should we strive for simplicity? Why is important that Go programs be simple? Simple doesn’t mean crude, it means readable and maintainable. Simple doesn’t mean unsophisticated, it means reliable, relatable, and understandable.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>“Controlling complexity is the essence of computer programming.”</p><cite>Brian W. Kernighan, <em>Software Tools</em>&nbsp;(1976)</cite></blockquote>
+
+
+
+<p>Whether Python abides by its mantra of simplicity is a matter for debate, but Go holds simplicity as a core value. I think that we can all agree that when it comes to Go, simple code is preferable to clever code.</p>
+
+
+
+<h2 id="_avoid_package_level_state">Avoid package level state</h2>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Explicit is better than implicit.&#8221;</p><cite><em>The Zen of Python, Item </em>2</cite></blockquote>
+
+
+
+<p>This is a place where I think Peters&#8217; was more aspirational than factual. Many things in Python are not explicit; decorators, dunder methods, and so on. Without doubt they are powerful, there’s a reason those features exists. Each feature is something someone cared enough about to do the work to implement it, especially the complicated ones. But heavy use of those features makes is harder for the reader to predict the cost of an operation.</p>
+
+
+
+<p>The good news is we have a choice, as Go programmers, to choose to make our code explicit. Explicit could mean many things, perhaps you may be thinking explicit is just a nice way of saying bureaucratic and long winded, but that’s a superficial interpretation. It’s a misnomer to focus only on the syntax on the page, to fret about line lengths and DRYing up expressions. The more valuable, in my opinon, place to be explicit are to do with coupling and with state.</p>
+
+
+
+<p>Coupling is a measure of the amount one thing depends on another. If two things are tightly coupled, they move together. An action that affects one is directly reflected in another. Imagine a train, each carriage joined&#8211;ironically the correct word is coupled&#8211;together; where the engine goes, the carriages follow.</p>
+
+
+
+<p>Another way to describe coupling is the word cohesion. Cohesion measures how well two things naturally belong together. We talk about a cohesive argument, or a cohesive team; all their parts fit together as if they were designed that way.</p>
+
+
+
+<p>Why does coupling matter? Because just like trains, when you need to change a piece of code, all the code that is tightly coupled to it must change. A prime example, someone release a new version of their API and now your code doesn’t compile.</p>
+
+
+
+<p>APIs are an unavoidable source of coupling but there are more insidious forms of coupling. Clearly everyone knows that if an API’s signature changes the data passing into and out of that call changes. It’s right there in the signature of the function; I take values of these types and return values of other types. But what if the API passed data another way? What if every time you called this API the result was based on the previous time you called that API even though you didn’t change your parameters.</p>
+
+
+
+<p>This is state, and management of state is <em>the</em> problem in computer science.</p>
+
+
+
+<pre class="wp-block-code"><code>package counter
+
+var count int
+
+func Increment(n int) int {
+        count += n
+        return count
+}</code></pre>
+
+
+
+<p>Suppose we have this simple <code>counter</code> package. You can call <code>Increment</code> to increment the counter, you can even get the value back if you <code>Increment</code> with a value of zero.</p>
+
+
+
+<p>Suppose you had to test this code, how would you reset the counter after each test? Suppose you wanted to run those tests in parallel, could you do it? Now suppose that you wanted to count more than one thing per program, could you do it?</p>
+
+
+
+<p>No, of course not. Clearly the answer is to encapsulate the <code>count</code> variable in a type.</p>
+
+
+
+<pre class="wp-block-code"><code>package counter
+
+type Counter struct {
+        count int
+}
+
+func (c *Counter) Increment(n int) int {
+        c.count += n
+        return c.count
+}</code></pre>
+
+
+
+<p>Now imagine that this problem isn’t restricted to just counters, but your applications main business logic. Can you test it in isolation? Can you test it in parallel? Can you use more than one instance at a time? If the answer those question is <em>no</em>, the reason is package level state.</p>
+
+
+
+<p>Avoid package level state. Reduce coupling and spooky action at a distance by providing the dependencies a type needs as fields on that type rather than using package variables.</p>
+
+
+
+<h2 id="_plan_for_failure_not_success">Plan for failure, not success</h2>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Errors should never pass silently.&#8221;</p><cite><em>The Zen of Python, Item 1</em>0</cite></blockquote>
+
+
+
+<p>It’s been said of languages that favour exception handling follow the Samurai principle; <em>return victorious or not at all</em>. In exception based languages functions only return valid results. If they don’t succeed then control flow takes an entirely different path.</p>
+
+
+
+<p>Unchecked exceptions are clearly an unsafe model to program in. How can you possibly write code that is robust in the presence of errors when you don’t know which statements could throw an exception? Java tried to make exceptions safer by introducing the notion of a checked exception which, to the best of my knowledge, has not been repeated in another mainstream language. There are plenty of languages which use exceptions but they all, with the singular exception of Java, do so in the unchecked variety.</p>
+
+
+
+<p>Obviously Go chose a different path. Go programmers believe that robust programs are composed from pieces that handle the failure cases <em>before</em> they handle the happy path. In the space that Go was designed for; server programs, multi threaded programs, programs that handle input over the network, dealing with unexpected data, timeouts, connection failures and corrupted data must be front and centre of the programmer&#8217;s mind if they are to produce robust programs.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;I think that error handling should be explicit, this should be a core value of the language.&#8221;</p><cite>Peter Bourgon, <a href="https://changelog.com/gotime/91">GoTime #91</a></cite></blockquote>
+
+
+
+<p>I want to echo Peter’s assertion, as it was the impetus for this article. I think so much of the success of Go is due to the explicit way errors are handled. Go programmers thinks about the failure case first. We solve the &#8220;what if…​&#8221; case first. This leads to programs where failures are handled at the point of writing, rather than the point they occur in production.</p>
+
+
+
+<p>The verbosity of</p>
+
+
+
+<pre class="wp-block-code"><code>if err != nil {
+    return err
+}</code></pre>
+
+
+
+<p>is outweighed by the value of deliberately handling each failure condition at the point at which they occur. Key to this is the cultural value of handling each and every error explicitly.</p>
+
+
+
+<h2 id="_return_early_rather_than_nesting_deeply">Return early rather than nesting deeply</h2>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Flat is better than nested.&#8221;</p><cite>The Zen of Python, Item 5</cite></blockquote>
+
+
+
+<p>This is sage advice coming from a language where indentation is the primary form of control flow. How can we interpret this advice in terms of Go? <code>gofmt</code> controls the overall whitespace of a Go program so there’s not thing doing there.</p>
+
+
+
+<p>I wrote earlier about package names, and there is probably some advice here about avoiding a complicated package hierarchy. In my experience the more a programmer tries to subdivide and taxonimise their Go codebase the more they risk hitting the dead end that is package import loops.</p>
+
+
+
+<p>I think the best application of item 5&#8217;s advice is the control flow <em>within</em> a function. Simply put, avoid control flow that requires deep indentation.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Line of sight is a straight line along which an observer has unobstructed vision.&#8221;</p><cite>May Ryer, <a href="https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88">Code: Align the happy path to the left edge</a></cite></blockquote>
+
+
+
+<p>Mat Ryer describes this idea as line of sight coding. Light of sight coding means things like:</p>
+
+
+
+<ul><li>Using guard clauses to return early if a precondition is not met.</li><li>Placing the successful return statement at the end of the function rather than inside a conditional block.</li><li>Reducing the overall indentation level of the function by extracting functions and methods.</li></ul>
+
+
+
+<p>Key to this advice is the thing that you care about, the thing that the function does, is never in danger of sliding out of sight to the right of your screen. This style has a bonus side effect that you’ll avoid pointless arguments about line lengths on your team.</p>
+
+
+
+<p>Every time you indent you add another precondition to the programmers stack, consuming one of their 7 ±2 short term memory slots. Rather than nesting deeply, keep the successful path of the function close to the left hand side of your screen.</p>
+
+
+
+<h2 id="_if_you_think_its_slow_prove_it_with_a_benchmark">If you think it’s slow, prove it with a benchmark</h2>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;In the face of ambiguity, refuse the temptation to guess.&#8221;</p><cite>The Zen of Python, Item 12</cite></blockquote>
+
+
+
+<p>Programming is based on mathematics and logic, two concepts which rarely involve the element of chance. But there are many things we, as programmers, guess about every day. What does this variable do? What does this parameter do? What happens if I pass <code>nil</code> here? What happens if I call <code>Register</code> twice? There’s actually a lot of guesswork in modern programming, especially when it comes to using libraries you didn’t write.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;APIs should be easy to use and hard to misuse.&#8221;</p><cite>Josh Bloch</cite></blockquote>
+
+
+
+<p>One of the best ways I know to help a programmer avoid having to guess is to, when building an API, <a href="http://sweng.the-davies.net/Home/rustys-api-design-manifesto">focus on the default use case</a>. Make it as easy as you can for the caller to do the most common thing. However, I’ve written and talked a lot about API design in the past, so instead my interpretation of item 12 is; <em>don’t guess about performance</em>.</p>
+
+
+
+<p>Despite how you may feel about Knuth&#8217;s advice, one of the drivers of Go’s success is its efficient execution. You can write efficient programs in Go and thus people <em>will</em> choose Go because of this. There are a lot of misconceptions about performance, so my request is, when you’re looking to performance tune your code or you’re facing some dogmatic advice like defer is slow, CGO is expensive, or always use atomics not mutexes, don’t guess.</p>
+
+
+
+<p>Don’t complicate your code because of outdated dogma, and, if you think something is slow, first prove it with a benchmark. Go has excellent benchmarking and profiling tools that come in the distribution for free. Use them to find your bottlenecks.</p>
+
+
+
+<h2 id="_goroutines">Before you launch a goroutine, know when it will stop</h2>
+
+
+
+<p>At this point I think I think I’ve mined the valuable points from PEP-20 and possibly stretched its reinterpretation beyond the point of good taste. I think that’s fine, because although this was a useful rhetorical device, ultimately we are talking about two different languages.</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;You type g o, a space, and then a function call. Three keystrokes, you can’t make it much shorter than that. Three keystrokes and you’ve just started a sub process.&#8221;</p><cite>Rob Pike, <a href="https://www.youtube.com/watch?v=rFejpH_tAHM">Simplicity is Complicated</a>, dotGo 2015</cite></blockquote>
+
+
+
+<p>The next two suggestions I’ll dedicate to goroutines. Goroutines are the signature feature of the language, our answer for first class concurrency. They are so easy to use, just put the word <code>go</code> in front of the statement and you’ve launched that function asynchronously. It’s so simple, no threads, no stack sizes, no thread pool executors, no ID’s, no tracking completion status.</p>
+
+
+
+<p>Goroutines are cheap. Because of the runtime’s ability to multiplex goroutines onto a small pool of threads (which you don’t have to manage), hundreds of thousands, millions of goroutines are easily accommodated. This opens up designs that would be not be practical under competing concurrency models like threads or evented callbacks.</p>
+
+
+
+<p>But as cheap as goroutines are, they’re not free. At a minimum there’s a few kilobytes for their stack, which, when you’re getting up into the 10^6 goroutines, does start to add up. This is not to say you shouldn’t use millions of goroutines if that is what the design calls for, but when you do, it&#8217;s critical that you keep track of them because 10^6 of anything can consume a non trivial amount of resources in aggregate.</p>
+
+
+
+<p>Goroutines are the key to resource ownership in Go. To be useful a goroutine has to do something, and that means it almost always holds reference to, or ownership of, a resource; a lock, a network connection, a buffer with data, the sending end of a channel. While that goroutine is alive, the lock is held, the network connection remains open, the buffer retained and the receivers of the channel will continue to wait for more data.</p>
+
+
+
+<p>The simplest way to free those resources is to tie them to the lifetime of the goroutine&#8211;when the goroutine exits, the resource has been freed. So while it&#8217;s near trivial to start a goroutine, before you write those three letters, g o and a space, make sure you have an answer to these questions:</p>
+
+
+
+<ul><li><strong>Under what condition will a goroutine stop?</strong> Go doesn’t have a way to tell a goroutine to exit. There is no stop or kill function, for good reason. If we cannot command a goroutine to stop, we must instead ask it, politely. Almost always this comes down to a channel operation. Range loops over a channel exit when the channel is closed. A channel will become selectable if it is closed. The signal from one goroutine to another is best expressed as a closed channel.</li><li><strong>What is required for that condition to arise?</strong> If channels are both the vehicle to communicate between goroutines and the mechanism for them to signal completion, the next question to the programmer becomes, who will close the channel, when will that happen?</li><li><strong>What signal will you use to know the goroutine has stopped?</strong> When you signal a goroutine to stop, that stopping will happen at some time in the future relative to the goroutine’s frame of reference. It might happen quickly in terms of human perception, but computers execute billions of instructions every second, and from the point of view of each goroutine, their execution of instructions is unsynchronised. The solution is often to use a channel to signal back or a waitgroup where a fan in approach is needed.</li></ul>
+
+
+
+<h2 id="_leave_concurrency_to_the_caller">Leave concurrency to the caller</h2>
+
+
+
+<p>It is likely that in any serious Go program you write there will be concurrency involved. This raises the problem, many of the libraries and code that we write fall into this a one goroutine per connection, or worker pattern. How will you manage the lifetime of those goroutines?</p>
+
+
+
+<p><code>net/http</code> is a prime example. Shutting down the server owning the listening socket is relatively straight forward, but what about a goroutines spawned from that accepting socket? <code>net/http</code> does provide a context object inside the request object which can be used to signal&#8211;to code that is listening&#8211;that the request should be canceled, thereby terminating the goroutine, however it is less clear how to know when all of these things have been done. It’s one thing to call <code>context.Cancel</code>, its another to know that the cancellation has completed.<span id='easy-footnote-2-3936' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2020/02/23/the-zen-of-go#easy-footnote-bottom-2-3936' title='I tend to pick on &lt;code&gt;net/http&lt;/code&gt; a lot, and this is not because it is bad, in fact it is the opposite, it is the most successful, oldest, most used API in the Go codebase. And because of that its design, evolution, and shortcoming have been thoroughly picked over. Think of this as flattery, not criticism.'><sup>2</sup></a></span></p>
+
+
+
+<p>The point I want to make about <code>net/http</code> is that its a counter example to good practice. Because each connection is handled by a goroutine spawned inside the <code>net/http.Server</code> type, the program, living outside the <code>net/http</code> package, does not have an ability to control the goroutines spawned for the accepting socket.</p>
+
+
+
+<p>This is an area of design that is still evolving, with efforts like go-kit&#8217;s <code>run.Group</code> and the Go team&#8217;s <a href="https://godoc.org/golang.org/x/sync/errgroup"><code>ErrGroup</code></a> which provide a framework to execute, cancel and wait on functions run asynchronously.</p>
+
+
+
+<p>The bigger design maxim here is for library writers, or anyone writing code that could be run asynchronously, leave the responsibility of starting to goroutine to your caller. Let the caller choose how they want to start, track, and wait on your functions execution.</p>
+
+
+
+<h2 id="_write_tests_to_lock_in_the_behaviour_of_your_packages_api">Write tests to lock in the behaviour of your package’s API</h2>
+
+
+
+<p>Perhaps you were hoping to read an article from me where I didn&#8217;t rant about testing. Sadly, today is not that day.</p>
+
+
+
+<p>Your tests are the contract about what your software does and does not do. Unit tests at the package level should lock in the behaviour of the package’s API. They describe, in code, what the package promises to do. If there is a unit test for each input permutation, you have defined the contract for what the code will do&nbsp;<em>in code</em>, not documentation.</p>
+
+
+
+<p>This is a contract you can assert as simply as typing&nbsp;<code>go test</code>. At any stage, you can&nbsp;<em>know</em>&nbsp;with a high degree of confidence, that the behaviour people relied on before your change continues to function after your change.</p>
+
+
+
+<p>Tests lock in api behaviour. Any change that adds, modifies or removes a public api must include changes to its tests.</p>
+
+
+
+<h2 id="_moderation_is_a_virtue">Moderation is a virtue</h2>
+
+
+
+<p>Go is a simple language, only 25 keywords. In some ways this makes the features that are built into the language stand out. Equally these are the features that the language sells itself on, lightweight concurrency, structural typing.</p>
+
+
+
+<p>I think all of us have experienced the confusion that comes from trying to use all of Go’s features at once. Who was so excited to use channels that they used them as much as they could, as often as they could? Personally for me I found the result was hard to test, fragile, and ultimately overcomplicated. Am I alone?</p>
+
+
+
+<p>I had the same experience with goroutines, attempting to break the work into tiny units I created a hard to manage hurd of Goroutines and ultimately missed the observation that most of my goroutines were always blocked waiting for their predecessor&#8211; the code was ultimately sequential and I had added a lot of complexity for little real world benefit. Who has experienced something like this?</p>
+
+
+
+<p>I had the same experience with embedding. Initially I mistook it for inheritance. Then later I recreated the fragile base class problem by composing complicated types, which already had several responsibilities, into more complicated mega types.</p>
+
+
+
+<p>This is potentially the least actionable piece of advice, but one I think is important enough to mention. The advice is always the same, all things in moderation, and Go’s features are no exception. If you can, don’t reach for a goroutine, or a channel, or embed a struct, anonymous functions, going overboard with packages, interfaces for everything, instead prefer simpler approach rather than the clever approach.</p>
+
+
+
+<h2 id="_maintainability_counts">Maintainability counts</h2>
+
+
+
+<p>I want to close with one final item from PEP-20,</p>
+
+
+
+<blockquote class="wp-block-quote is-style-large"><p>&#8220;Readability Counts.&#8221;</p><cite>The Zen of Python, Item 7</cite></blockquote>
+
+
+
+<p>So much has been said, about the importance of readability, not just in Go, but all programming languages. People like me who stand on stages advocating for Go use words like simplicity, readability, clarity, productivity, but ultimately they are all synonyms for one word&#8211;<em>maintainability</em>.</p>
+
+
+
+<p>The real goal is to write maintainable code. Code that can live on after the original author. Code that can exist not just as a point in time investment, but as a foundation for future value. It&#8217;s not that readability doesn’t matter, maintainability matters&nbsp;<em>more</em>.</p>
+
+
+
+<p>Go is not a language that optimises for clever one liners. Go is not a language which optimises for the least number of lines in a program. We’re not optimising for the size of the source code on disk, nor how long it takes to type the program into an editor. Rather, we want to optimise our code to be clear to the reader. Because its the reader who’s going to have to maintain this code.</p>
+
+
+
+<p>If you’re writing a program for yourself, maybe it only has to run once, or you’re the only person who’ll ever see it, then do what ever works for you. But if this is a piece of software that more than one person will contribute to, or that will be used by people over a long enough time that requirements, features, or the environment it runs in may change, then your goal must be for your program to be maintainable. If software cannot be maintained, then it will be rewritten; and that could be the last time your company will invest in Go.</p>
+
+
+
+<p>Can the thing you worked hard to build be maintained after you’re gone? What can you do today to make it easier for someone to maintain your code tomorrow?</p>
+
+
+
+<h4 class="has-text-align-center"><a href="https://the-zen-of-go.netlify.com">the-zen-of-go.netlify.com</a></h4>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Dynamically scoped variables in Go]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/12/08/dynamically-scoped-variables-in-go" />
+
+		<id>https://dave.cheney.net/?p=3897</id>
+		<updated>2019-12-08T03:19:10Z</updated>
+		<published>2019-12-08T01:36:27Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Small ideas" /><category scheme="https://dave.cheney.net" term="testing" />
+		<summary type="html"><![CDATA[This is a thought experiment in API design. It starts with the classic Go unit testing idiom: func TestOpenFile(t *testing.T) { f, err := os.Open("notfound") if err != nil { t.Fatal(err) } // ... } What&#8217;s the problem with this code? The assertion. if err != nil { ... } is repetitive and in the [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/12/08/dynamically-scoped-variables-in-go"><![CDATA[
+<p>This is a thought experiment in API design. It starts with the classic Go unit testing idiom:</p>
+
+
+
+<pre class="wp-block-preformatted">func TestOpenFile(t *testing.T) {
+        f, err := os.Open("notfound")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        // ...
+}</pre>
+
+
+
+<p>What&#8217;s the problem with this code? The assertion. <code>if err != nil { ... }</code> is repetitive and in the case where multiple conditions need to be checked, somewhat error prone if the author of the test uses <code>t.Error</code> not <code>t.Fatal</code>, eg:</p>
+
+
+
+<pre class="wp-block-preformatted">        f, err := os.Open("notfound")
+        if err != nil {
+                t.Error(err)
+        }
+        f.Close() // boom!</pre>
+
+
+
+<p>What&#8217;s the solution? DRY it up, of course, by moving the repetitive assertion logic to a helper:</p>
+
+
+
+<pre class="wp-block-preformatted">func TestOpenFile(t *testing.T) {
+ &nbsp; &nbsp; &nbsp;  f, err := os.Open("notfound")
+ &nbsp; &nbsp; &nbsp;  check(t, err)
+
+  &nbsp; &nbsp; &nbsp; // ...
+}
+ 
+func check(t *testing.T, err error) {
+ &nbsp; &nbsp; &nbsp; if err != nil {
+ &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; t.Helper()
+ &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; t.Fatal(err)
+ &nbsp; &nbsp;&nbsp; &nbsp; }
+}</pre>
+
+
+
+<p>Using the <code>check</code> helper the code is a little cleaner, and clearer, <em>check the error</em>, and hopefully the indecision between <code>t.Error</code> and <code>t.Fatal</code> has been solved. The downside of abstracting the assertion to a helper function is now you need to pass a <code>testing.T</code> into <em>each and every invocation</em>. Worse, you need to pass a <code>*testing.T</code> to everything that needs to call <code>check</code>, transitively, just in case.</p>
+
+
+
+<p>This is ok, I guess, but I will make the observation that the <code>t</code> variable is only needed <em>when the assertion fails</em> &#8212; and even in a testing scenario, most of the time, most of the tests pass, so that means reading, and writing, all these <code>t</code>&#8216;s is a constant overhead for the relatively rare occasion that a test fails.</p>
+
+
+
+<p>What about if we did something like this instead?</p>
+
+
+
+<pre class="wp-block-preformatted">func TestOpenFile(t *testing.T) {
+ &nbsp; &nbsp; &nbsp;  f, err := os.Open("notfound")
+ &nbsp; &nbsp; &nbsp;&nbsp; check(err)
+ 
+ &nbsp; &nbsp;  &nbsp; // ...
+}
+ 
+func check(err error) {
+&nbsp; &nbsp; &nbsp; &nbsp; if err != nil {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; panic(err.Error())
+&nbsp; &nbsp; &nbsp; &nbsp; }
+}</pre>
+
+
+
+<p>Yeah, that&#8217;ll work, but it has a few problems</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go test</strong>
+--- FAIL: TestOpenFile (0.00s)
+panic: open notfound: no such file or directory [recovered]
+&nbsp; &nbsp; &nbsp; &nbsp; panic: open notfound: no such file or directory
+
+goroutine 22 [running]:
+testing.tRunner.func1(0xc0000b4400)
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/go/src/testing/testing.go:874 +0x3a3
+panic(0x111b040, 0xc0000866f0)
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/go/src/runtime/panic.go:679 +0x1b2
+github.com/pkg/expect_test.check(...)
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/src/github.com/pkg/expect/expect_test.go:18
+github.com/pkg/expect_test.TestOpenFile(0xc0000b4400)
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/src/github.com/pkg/expect/expect_test.go:10 +0xa1
+testing.tRunner(0xc0000b4400, 0x115ac90)
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/go/src/testing/testing.go:909 +0xc9
+created by testing.(*T).Run
+&nbsp; &nbsp; &nbsp; &nbsp; /Users/dfc/go/src/testing/testing.go:960 +0x350
+exit status 2</pre>
+
+
+
+<p>Let&#8217;s start with the good; we didn&#8217;t have to pass a <code>testing.T</code> every place we call <code>check</code>, the test fails immediately, and we get a nice message in the panic &#8212; albeit twice. But <em>where</em> the assertion failed is hard to see. It occurred on <code>expect_test.go:11</code> but you&#8217;d be forgiven for not knowing that.</p>
+
+
+
+<p>So <code>panic</code> isn&#8217;t really a good solution, but there&#8217;s something in this stack trace that is &#8212; can you see it? Here&#8217;s a hint, <code>github.com/pkg/expect_test.TestOpenFile(0xc0000b4400)</code>.</p>
+
+
+
+<p><code>TestOpenFile</code> has a <code>t</code> value, it was passed to it by <code>tRunner</code>, so there&#8217;s a <code>testing.T</code> in memory at address <code>0xc0000b4400</code>. What if we could get access to that <code>t</code> inside <code>check</code>? Then we could use it to call <code>t.Helper</code> and <code>t.Fatal</code>. Is that possible?</p>
+
+
+
+<h2>Dynamic scoping</h2>
+
+
+
+<p>What we want is to be able to access a variable whose declaration is neither global, or local to the function, but somewhere higher in the call stack. This is called <em>dynamic scoping</em>. Go doesn&#8217;t support dynamic scoping, but it turns out, for restricted cases, we can fake it. I&#8217;ll skip to the chase:</p>
+
+
+
+<pre class="wp-block-preformatted">// getT returns the address of the testing.T passed to testing.tRunner
+// which called the function which called getT. If testing.tRunner cannot
+// be located in the stack, say if getT is not called from the main test
+// goroutine, getT returns nil.
+func getT() *testing.T {
+&nbsp; &nbsp; &nbsp; &nbsp; var buf [8192]byte
+&nbsp; &nbsp; &nbsp; &nbsp; n := runtime.Stack(buf[:], false)
+&nbsp; &nbsp; &nbsp; &nbsp; sc := bufio.NewScanner(bytes.NewReader(buf[:n]))
+&nbsp; &nbsp; &nbsp; &nbsp; for sc.Scan() {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var p uintptr
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; n, _ := fmt.Sscanf(sc.Text(), "testing.tRunner(%v", &amp;p)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if n != 1 {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return (*testing.T)(unsafe.Pointer(p))
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; return nil
+}</pre>
+
+
+
+<p>We know that each <code>Test</code> is called by the <code>testing</code> package in its own goroutine (see the stack trace above). The <code>testing</code> package launches the test via a function called <code>tRunner</code> which takes a <code>*testing.T</code> and a <code>func(*testing.T)</code> to invoke. Thus we grab a stack trace of the current goroutine, scan through it for the line beginning with <code>testing.tRunner</code> &#8212; which can only be the <code>testing</code> package as <code>tRunner</code> is a private function &#8212; and parse the address of the first parameter, which is a pointer to a <code>testing.T</code>. With a little <code>unsafe</code> we convert the raw pointer back to a <code>*testing.T</code> and we&#8217;re done.</p>
+
+
+
+<p>If the search fails then it is likely that <code>getT</code> wasn&#8217;t called from a <code>Test</code>. This is actually ok because the reason we needed the <code>*testing.T</code> was to call <code>t.Fatal</code> and the testing package already requires that <code>t.Fatal</code> be called from the <a href="https://golang.org/pkg/testing/#T.FailNow">main test goroutine</a>.</p>
+
+
+
+<pre class="wp-block-preformatted">import "github.com/pkg/expect"
+
+func TestOpenFile(t *testing.T) {
+&nbsp; &nbsp; &nbsp; &nbsp; f, err := os.Open("notfound")
+&nbsp; &nbsp; &nbsp; &nbsp; expect.Nil(err)
+ 
+&nbsp; &nbsp; &nbsp; &nbsp; // ...
+}</pre>
+
+
+
+<p>Putting it all together we&#8217;ve eliminated the assertion boilerplate and possibly made the expectation of the test a little clearer to read,<em> after opening the file <code>err</code> is expected to be nil</em>.</p>
+
+
+
+<h2>Is this fine?</h2>
+
+
+
+<p>At this point you should be asking, <em>is this fine?</em> And the answer is, no, this is not fine. You should be screaming internally at this point. But it&#8217;s probably worth introspecting those feelings of revulsion.</p>
+
+
+
+<p>Apart from the inherent fragility of scrobbling around in a goroutine&#8217;s call stack, there are some serious design issues:</p>
+
+
+
+<ol><li>The <code>expect.Nil</code>&#8216;s behaviour now depends on <em>who called it</em>. Provided with the same arguments it may have different behaviour depending on where it appears in the call stack &#8212; this is unexpected.</li><li>Taken to the extreme dynamic scoping effective brings into the scope of a single function all the variables passed into any function that preceded it. It is a side channel for passing data in to and out of functions that is not explicitly documented in function declaration.</li></ol>
+
+
+
+<p>Ironically these are precisely the critiques I have of <a href="https://dave.cheney.net/2017/01/26/context-is-for-cancelation"><code>context.Context</code></a>. I&#8217;ll leave it to you to decide if they are justified.</p>
+
+
+
+<h2>A final word</h2>
+
+
+
+<p>This is a bad idea, no argument there. This is not a pattern you should ever use in production code. But, this isn&#8217;t production code, it&#8217;s a test, and perhaps there are different rules that apply to test code. After all, we use mocks, and stubs, and monkey patching, and type assertions, and reflection, and helper functions, and build flags, and global variables, all so we can test our code effectively. None of those, uh, <em>hacks</em> will ever show up in the production code path, so is it really the end of the world?</p>
+
+
+
+<p>If you&#8217;ve read this far perhaps you&#8217;ll agree with me that as unconventional as this approach is, not having to pass a <code>*testing.T</code> into every function that could possibly need to assert something transitively, makes for clearer test code. </p>
+
+
+
+<p>So maybe, in this case, the ends do justify the means.</p>
+
+
+
+<hr class="wp-block-separator"/>
+
+
+
+<p>If you&#8217;re interested, I&#8217;ve put together a <a href="https://github.com/pkg/expect">small assertion library</a> using this pattern. <em>Caveat emptor</em>.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Internets of Interest #15: The Queen of the Skies]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/12/05/internets-of-interest-15-the-queen-of-the-skies" />
+
+		<id>https://dave.cheney.net/?p=3894</id>
+		<updated>2019-12-05T07:33:13Z</updated>
+		<published>2019-12-05T06:49:41Z</published>
+		<category scheme="https://dave.cheney.net" term="Internets of interest" />
+		<summary type="html"><![CDATA[If, like me, you&#8217;re a commercial aviation otaku, this walkthrough of an enthusiast built 747 cockpit simulator should be highly relevant to your interests.]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/12/05/internets-of-interest-15-the-queen-of-the-skies"><![CDATA[
+<p>If, like me, you&#8217;re a commercial aviation otaku, this walkthrough of an enthusiast built 747 cockpit simulator should be highly relevant to your interests.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="EEVblog #1268 - DIY Boeing 747 Cockpit Simulator Full Tour" width="625" height="352" src="https://www.youtube.com/embed/Ug7xa-7sako?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p></p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Complementary engineering indicators]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/12/04/complementary-engineering-indicators" />
+
+		<id>https://dave.cheney.net/?p=3882</id>
+		<updated>2019-12-04T10:04:55Z</updated>
+		<published>2019-12-04T09:46:26Z</published>
+		<category scheme="https://dave.cheney.net" term="Small ideas" />
+		<summary type="html"><![CDATA[Last year I had the opportunity to watch Cat Swetel&#8217;s presentation The Development Metrics You Should Use (but Don’t). The information that could be gleaned from just tracking the start and finish date of work items was eye opening. If you&#8217;re using an issue tracker this information is probably already (perhaps with some light data [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/12/04/complementary-engineering-indicators"><![CDATA[
+<p>Last year I had the opportunity to watch Cat Swetel&#8217;s presentation <em><a href="https://www.youtube.com/watch?v=cW3yM-K2M08">The Development Metrics You Should Use (but Don’t)</a></em>. The information that could be gleaned from just tracking the start and finish date of work items was eye opening. If you&#8217;re using an issue tracker this information is probably already (perhaps with some light data munging) available &#8212; no need for TPS reports. Additionally, statistics obtained by data mining your project&#8217;s issue tracker are, perhaps, less likely to be juked.</p>
+
+
+
+<p>Around the time I saw Cat&#8217;s presentation I finished reading Andy Grove&#8217;s <em>High Output Management</em>. The hidden gem in this book (assuming becoming a meeting powerhouse isn&#8217;t your bag) was Grove&#8217;s notion of indicator pairs. An example of a paired indicator might be the number of sales deals closed paired with the customer retention rate. The underling principle being optimising for one indicator will have an adverse impact on the other. In the example, overly aggressive or deceptive tactics could superficially raise the number of sales made, but would be reflected in a dip in the retention rate as customers returned the product or terminated their service prematurely.</p>
+
+
+
+<p>These ideas lead me to thinking about indicators you could use for a team delivering a software product. Could those indicators be derived cheaply from the hand to hand combat of software delivery? Could they be structured in a way that aggressively pursuing one metric would be reflected negatively in another? I think so.</p>
+
+
+
+<p>These are the three metrics that I&#8217;ve been using to track the health of the project that I lead.</p>
+
+
+
+<ul><li>Date; was the software done when we said it would be done. If you prefer this indicator as a scalar, how many days difference is there between the ship date agreed on at the start of the sprint/milestone/whatever and what was the actual date that you considered it done.</li><li>Completeness; when the software is done, how many of the things we said we&#8217;re going to do actually got delivered in that release.</li><li>Defects reported; once the software is in the field, what is the rate of bugs reported.</li></ul>
+
+
+
+<p>It is relatively easy, for example, to hit a delivery date if you aggressively descope anything risky or simply don&#8217;t do it. But in doing so this lack of promised functionality would impact the completeness metric.</p>
+
+
+
+<p>Conversely, it&#8217;s straight forward to hit your milestone&#8217;s completeness target if you let the release date slip and slip. Bringing both the metics into line requires good estimation skills to judge how much can be attempted in milestone and provide direct feedback if your estimation skills needed work.</p>
+
+
+
+<p>The third indicator, defects reported in the field, acts as a check on the other two. It would be easy to consistent hit your delivery date with 100% feature completion if your team does a shoddy job. The high fives and :tada: emojis will be short lived if each release brings with it a swathe of high priority bug reports. This indicator also tends to have a second order effect, rushed features to meet a deadline tend to generate remedial work in the following milestones, crowding out promised work or blowing later deadlines.</p>
+
+
+
+<p>I consider these to be complementary metrics, they should be considered together, as a group, rather than individually. Ideally your team should be delivering what you promised, when you promised it, with a low defect rate. But more importantly, if that isn&#8217;t the case, if one of the indicators is unhealthy, addressing it shouldn&#8217;t result in the problem moving to another.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Internets of interest #14: UNIX v0]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/11/18/internets-of-interest-14-unix-v0" />
+
+		<id>https://dave.cheney.net/?p=3876</id>
+		<updated>2019-11-17T16:04:20Z</updated>
+		<published>2019-11-17T16:04:20Z</published>
+		<category scheme="https://dave.cheney.net" term="History" /><category scheme="https://dave.cheney.net" term="Internets of interest" />
+		<summary type="html"><![CDATA[Read more over at the Living Computer Museum’s restoration page.]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/11/18/internets-of-interest-14-unix-v0"><![CDATA[
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="LCM+L PDP-7 booting and running UNIX Version 0" width="625" height="352" src="https://www.youtube.com/embed/pvaPaWyiuLA?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p>Read more over at the <a href="https://livingcomputers.org/Blog/Restoring-UNIX-v0-on-a-PDP-7-A-look-behind-the-sce.aspx">Living Computer Museum’s restoration page. </a></p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Internets of interest: Warner Losh on the first ten years of UNIX]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/11/16/internets-of-interest-warner-losh-on-the-first-ten-years-of-unix" />
+
+		<id>https://dave.cheney.net/?p=3873</id>
+		<updated>2019-11-16T11:22:19Z</updated>
+		<published>2019-11-16T11:21:46Z</published>
+		<category scheme="https://dave.cheney.net" term="Internets of interest" />
+		<summary type="html"><![CDATA[UNIX turns 50 this year which means 7th edition Research UNIX is that 40.]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/11/16/internets-of-interest-warner-losh-on-the-first-ten-years-of-unix"><![CDATA[
+<p>UNIX turns 50 this year which means 7th edition Research UNIX is that 40. <br></p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="7th Edition Unix at 40 by Warner Losh" width="625" height="352" src="https://www.youtube.com/embed/FTlzaDgzPY8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></figure>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Use internal packages to reduce your public API surface]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/10/06/use-internal-packages-to-reduce-your-public-api-surface" />
+
+		<id>https://dave.cheney.net/?p=3848</id>
+		<updated>2019-10-06T04:47:01Z</updated>
+		<published>2019-10-06T04:43:54Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="pkg" /><category scheme="https://dave.cheney.net" term="project layout" />
+		<summary type="html"><![CDATA[In the beginning, before the go tool, before Go 1.0, the Go distribution stored the standard library in a subdirectory called pkg/ and the commands which built upon it in cmd/. This wasn&#8217;t so much a deliberate taxonomy but a by product of the original make based build system. In September 2014, the Go distribution [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/10/06/use-internal-packages-to-reduce-your-public-api-surface"><![CDATA[
+<p>In the beginning, before the <code>go</code> tool, before Go 1.0, the Go distribution stored the standard library in a subdirectory called <code>pkg/</code> and the commands which built upon it in <code>cmd/</code>. This wasn&#8217;t so much a deliberate taxonomy but a by product of the original <code>make</code> based build system. In <a href="https://groups.google.com/forum/m/#!msg/golang-dev/c5AknZg3Kww/OFLmvGyfNR0J">September 2014</a>, the Go distribution dropped the <code>pkg/</code> subdirectory, but then this tribal knowledge had set root in large Go projects and continues to this day.</p>
+
+
+
+<p>I tend to view empty directories inside a Go project with suspicion. Often they are a hint that the module&#8217;s author may be trying to create a taxonomy of packages rather than ensuring each package&#8217;s name, and thus its enclosing directory, <a href="https://dave.cheney.net/2019/01/08/avoid-package-names-like-base-util-or-common">uniquely describes its purpose</a>. While the symmetry with <code>cmd/</code> for <code>package main</code> commands is appealing, a directory that exists only to hold other packages is a potential design smell.</p>
+
+
+
+<p>More importantly, the boilerplate of an empty <code>pkg/</code> directory distracts from the more useful idiom of an <code>internal/</code> directory. <code>internal/</code> is a special directory name recognised by the <code>go</code> tool which will prevent one package from being imported by another unless both share a common ancestor. Packages within an <code>internal/</code> directory are therefore said to be <em>internal packages</em>.</p>
+
+
+
+<p>To create an internal package, place it within a directory named <code>internal/</code>. When the <code>go</code> command sees an import of a package with <code>internal/</code> in the import path, it verifies that the importing package is within the tree rooted at the <em>parent</em> of the <code>internal/</code> directory.</p>
+
+
+
+<p>For example, a package <code>/a/b/c/internal/d/e/f</code> can only be imported by code in the directory tree rooted at <code>/a/b/c</code>. It cannot be imported by code in <code>/a/b/g</code> or in any other repository. </p>
+
+
+
+<p>If your project contains multiple packages you may find you have some exported symbols which are intended to be used by other packages in your project, but are not intended to be part of your project’s public API. Although Go has limited visibility modifiers&#8211;public, exported, symbols and private, non exported, symbols&#8211;internal packages provide a useful mechanism for controlling visibility to parts of your project which would otherwise be considered part of its public versioned API.</p>
+
+
+
+<p>You can, of course, promote internal packages later if you want to commit to supporting that API; just move them up a directory level or two. The key is this process is <em>opt-in</em>. As the author, internal packages give you control over which symbols in your project&#8217;s public API without being forced to glob concepts together into unwieldy mega packages to avoid exporting them.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Be wary of functions which take several parameters of the same type]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/09/24/be-wary-of-functions-which-take-several-parameters-of-the-same-type" />
+
+		<id>https://dave.cheney.net/?p=3842</id>
+		<updated>2019-09-24T10:20:40Z</updated>
+		<published>2019-09-24T10:20:22Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" />
+		<summary type="html"><![CDATA[APIs should be easy to use and hard to misuse. — Josh Bloch A good example of a simple looking, but hard to use correctly, API is one which takes two or more parameters of the same type. Let’s compare two function signatures: What’s the difference between these functions? Obviously one returns the maximum of [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/09/24/be-wary-of-functions-which-take-several-parameters-of-the-same-type"><![CDATA[
+<blockquote class="wp-block-quote is-style-large"><p>APIs should be easy to use and hard to misuse.</p><cite>— Josh Bloch</cite></blockquote>
+
+
+
+<p>A good example of a simple looking, but hard to use correctly, API is one which takes two or more parameters of the same type. Let’s compare two function signatures:</p>
+
+
+
+<pre class="wp-block-code"><code>func Max(a, b int) int
+func CopyFile(to, from string) error</code></pre>
+
+
+
+<p>What’s the difference between these functions? Obviously one returns the maximum of two numbers, the other copies a file, but that’s not the important thing.</p>
+
+
+
+<pre class="wp-block-code"><code>Max(8, 10) // 10
+Max(10, 8) // 10</code></pre>
+
+
+
+<p><code>Max</code> is&nbsp;<em>commutative</em>; the order of its parameters does not matter. The maximum of eight and ten is ten regardless of if I compare eight and ten or ten and eight.</p>
+
+
+
+<p>However, this property does not hold true for&nbsp;<code>CopyFile</code>.</p>
+
+
+
+<pre class="wp-block-code"><code>CopyFile("/tmp/backup", "presentation.md")
+CopyFile("presentation.md", "/tmp/backup")</code></pre>
+
+
+
+<p>Which one of these statements made a backup of your presentation and which one overwrite your presentation with last week’s version? You can’t tell without consulting the documentation. A code reviewer cannot know if you’ve got the order correct without consulting the documentation.</p>
+
+
+
+<p>The general advice is to try to avoid this situation. Just like long parameter lists, indistinct parameter lists are a design smell.</p>
+
+
+
+<h2>A challenge</h2>
+
+
+
+<p>When this situation is unavoidable my solution to this class of problem is to introduce a helper type which will be responsible for calling <code>CopyFile</code> correctly.</p>
+
+
+
+<pre class="wp-block-code"><code>type Source string
+
+func (src Source) CopyTo(dest string) error {
+	return CopyFile(dest, string(src))
+}
+
+func main() {
+	var from Source = "presentation.md"
+	from.CopyTo("/tmp/backup")
+}</code></pre>
+
+
+
+<p>In this way <code>CopyFile</code> is always called correctly and, given its poor API can possibly be made private, further reducing the likelihood of misuse.</p>
+
+
+
+<p>Can you suggest a better solution?</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Don&#8217;t force allocations on the callers of your API]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/09/05/dont-force-allocations-on-the-callers-of-your-api" />
+
+		<id>https://dave.cheney.net/?p=3821</id>
+		<updated>2019-09-05T11:24:43Z</updated>
+		<published>2019-09-05T10:44:32Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="performance" />
+		<summary type="html"><![CDATA[This is a post about performance. Most of the time when worrying about the performance of a piece of code the overwhelming advice should be (with apologies to Brendan Gregg) don&#8217;t worry about it, yet. However there is one area where I counsel developers to think about the performance implications of a design, and that [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/09/05/dont-force-allocations-on-the-callers-of-your-api"><![CDATA[
+<p>This is a post about performance. Most of the time when worrying about the performance of a piece of code the overwhelming advice should be (with apologies to Brendan Gregg) <em>don&#8217;t worry about it, yet.</em> However there is one area where I counsel developers to think about the performance implications of a design, and that is API design.</p>
+
+
+
+<p>Because of the high cost of retrofitting a change to an API&#8217;s signature to address performance concerns, it&#8217;s worthwhile considering the performance implications of your API&#8217;s design on its caller.</p>
+
+
+
+<h2>A tale of two API designs</h2>
+
+
+
+<p>Consider these two <code>Read</code> methods:</p>
+
+
+
+<pre class="wp-block-preformatted">func (r *Reader) Read(buf []byte) (int, error)
+func (r *Reader) Read() ([]byte, error)</pre>
+
+
+
+<p>The first method takes a <code>[]byte</code> buffer and returns the number of bytes read into that buffer and possibly an <code>error</code> that occurred while reading. The second takes no arguments and returns some data as a <code>[]byte</code> or an <code>error</code>. </p>
+
+
+
+<p>This first method should be familiar to any Go programmer, it&#8217;s <code><a href="https://golang.org/pkg/io/#Reader">io.Reader.Read</a></code>. As ubiquitous as <code>io.Reader</code> is, it&#8217;s not the most convenient API to use. Consider for a moment that <code>io.Reader</code> is the only Go interface in widespread use that returns <em>both</em> a result <em>and</em> an error. Meditate on this for a moment. The standard Go idiom, checking the error and iff it is <code>nil</code> is it safe to consult the other return values, does not apply to <code>Read</code>. In fact the caller must do the opposite. First they must record the number of bytes read into the buffer, reslice the buffer, process that data, and only then, consult the error. This is an unusual API for such a common operation and one that frequently catches out newcomers. </p>
+
+
+
+<h2>A trap for young players?</h2>
+
+
+
+<p>Why is it so? Why is one of the central APIs in Go&#8217;s standard library written like this? A superficial answer might be <code>io.Reader</code>&#8216;s signature is a reflection of the underlying <code><a href="http://man7.org/linux/man-pages/man2/read.2.html">read(2)</a></code> syscall, which is indeed true, but misses the point of this post.</p>
+
+
+
+<p>If we compare the API of <code>io.Reader</code> to our alternative, <code>func Read() ([]byte, error)</code>, this API seems easier to use. Each call to <code>Read()</code> will return the data that was read, no need to reslice buffers, no need to remember the special case to do this before checking the error. Yet this is not the signature of <code>io.Reader.Read</code>. Why would one of Go&#8217;s most pervasive interfaces choose such an awkward API? The answer, I believe, lies in the performance implications of the APIs signature on the <em>caller</em>.</p>
+
+
+
+<p>Consider again our alternative <code>Read</code> function, <code>func Read() ([]byte, error)</code>. On each call <code>Read</code> will read some data into a buffer<span id='easy-footnote-1-3821' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2019/09/05/dont-force-allocations-on-the-callers-of-your-api#easy-footnote-bottom-1-3821' title='This API has other problems, such as, &lt;em&gt;how much data should be read?&lt;/em&gt; or &lt;em&gt;should it try to read as much as possible, or return promptly if the read would block?&lt;/em&gt;'><sup>1</sup></a></span> and return the buffer to the caller. Where does this buffer come from? Who allocates it? The answer is the buffer is allocated <em>inside</em> <code>Read</code>. Therefore each call to <code>Read</code> is guaranteed to allocate a buffer which would escape to the heap. The more the program reads, the faster it reads data, the more streams of data it reads concurrently, the more pressure it places on the garbage collector.</p>
+
+
+
+<p>The standard libraries&#8217; <code>io.Reader.Read</code> forces the caller to supply a buffer because if the caller is concerned with the number of allocations their program is making this is precisely the kind of thing they want to control. Passing a buffer into <code>Read</code> puts the control of the allocations into the caller&#8217;s hands. If they aren&#8217;t concerned about allocations they can use higher level helpers like <code><a href="https://golang.org/pkg/io/ioutil/#ReadAll">ioutil.ReadAll</a></code> to read the contents into a <code>[]byte</code>, or <code><a href="https://golang.org/pkg/bufio/#Scanner">bufio.Scanner</a></code> to stream the contents instead.</p>
+
+
+
+<p>The opposite, starting with a method like our alternative <code>func Read() ([]byte, error)</code> API, prevents callers from pooling or reusing allocations&#8211;no amount of helper methods can fix this. As an API author, if the API cannot be changed you&#8217;ll be forced to add a second form to your API taking a supplied buffer and reimplementing your original API in terms of the newer form. Consider, for example, <code><a href="https://golang.org/src/io/io.go?s=13136:13214#L378">io.CopyBuffer</a></code>. Other examples of retrofitting APIs for performance reasons are the <code><a href="https://golang.org/cl/43990043">fmt</a></code><a href="https://golang.org/cl/43990043"> package</a> and the <code><a href="https://golang.org/cl/44080043">net/http</a></code><a href="https://golang.org/cl/44080043"> package</a> which drove the introduction of the <code>sync.Pool</code> type precisely because the Go 1 guarantee prevented the APIs of those packages from changing.</p>
+
+
+
+<hr class="wp-block-separator"/>
+
+
+
+<p>If you want to commit to an API for the long run, consider how its design will impact the size and frequency of allocations the caller will have to make to use it.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Go compiler intrinsics]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/08/20/go-compiler-intrinsics" />
+
+		<id>https://dave.cheney.net/?p=3803</id>
+		<updated>2019-08-20T20:48:11Z</updated>
+		<published>2019-08-20T10:50:18Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" />
+		<summary type="html"><![CDATA[Go allows authors to write functions in assembly if required. This is called a stub or forward declaration. package asm // Add returns the sum of a and b. func Add(a int64, b int64) int64 Here we&#8217;re declaring Add, a function which takes two int64&#8216;s and returns their sum.Add is a normal Go function declaration, [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/08/20/go-compiler-intrinsics"><![CDATA[
+<p>Go allows authors to write functions in assembly if required. This is called a <em>stub</em> or <em>forward</em> declaration.</p>
+
+
+
+<pre class="wp-block-preformatted">package asm
+
+// Add returns the sum of a and b.
+func Add(a int64, b int64) int64</pre>
+
+
+
+<p>Here we&#8217;re declaring <code>Add</code>, a function which takes two <code>int64</code>&#8216;s and returns their sum.<code>Add</code> is a normal Go function declaration, except it is missing the function body.</p>
+
+
+
+<p>If we were to try to compile this package the compiler, justifiably, complains;</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go build</strong>
+examples/asm
+./decl.go:4:6: missing function body</pre>
+
+
+
+<p>To satisfy the compiler we must supply a body for <code>Add</code> via assembly, which we do by adding a <code>.s</code> file in the same package.</p>
+
+
+
+<pre class="wp-block-preformatted">TEXT ·Add(SB),$0-24
+        MOVQ a+0(FP), AX
+        ADDQ b+8(FP), AX
+        MOVQ AX, ret+16(FP)
+        RET</pre>
+
+
+
+<p>Now we can build, test, and use our <code>Add</code> function just like normal Go code. But, there&#8217;s a problem, assembly functions cannot be inlined. </p>
+
+
+
+<p>This has long been a complaint by Go developers who want to use assembly either for performance or to access operations which are not exposed in the language. Some examples would be vector instructions, atomic instructions, and so on. Without the ability to inline assembly functions writing these functions in Go can have a relatively large overhead.</p>
+
+
+
+<pre class="wp-block-preformatted">var Result int64
+
+func BenchmarkAddNative(b *testing.B) {
+        var r int64
+        for i := 0; i &lt; b.N; i++ {
+                r = int64(i) + int64(i)
+        }
+        Result = r 
+}
+
+func BenchmarkAddAsm(b *testing.B) {
+        var r int64
+        for i := 0; i &lt; b.N; i++ {
+                r = Add(int64(i), int64(i))
+        }
+        Result = r
+ }</pre>
+
+
+
+<pre class="wp-block-preformatted">BenchmarkAddNative-8&nbsp; &nbsp; 1000000000 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.300 ns/op
+BenchmarkAddAsm-8 &nbsp; &nbsp; &nbsp; 606165915&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1.93 ns/op</pre>
+
+
+
+<p>Over the years there have been various proposals for an inline assembly syntax similar to gcc&#8217;s <code>asm(...)</code> directive. None have been accepted by the Go team. Instead, Go has added <em>intrinsic functions</em><span id='easy-footnote-1-3803' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2019/08/20/go-compiler-intrinsics#easy-footnote-bottom-1-3803' title='This may not be their official name, however the word is in common use inside the compiler and its tests'><sup>1</sup></a></span>.</p>
+
+
+
+<p>An intrinsic function is Go code written in regular Go. These functions are known the the Go compiler which contains replacements which it can substitute during compilation. As of Go 1.13 the packages which the compiler knows about are:</p>
+
+
+
+<ul><li><code>math/bits</code></li><li><code>sync/atomic</code></li></ul>
+
+
+
+<p>The functions in these packages have baroque signatures but this lets the compiler, if your architecture supports a more efficient way of performing the operation, transparently replace the function call with comparable native instructions.</p>
+
+
+
+<p>For the remainder of this post we&#8217;ll study two different ways the Go compiler produces more efficient code using intrinsics.</p>
+
+
+
+<h2>Ones count</h2>
+
+
+
+<p>Population count, the number of <code>1</code> bits in a word, is an important cryptographic and compression primitive. Because this is an important operation most modern CPUs provide a native hardware implementation.</p>
+
+
+
+<p>The <code>math/bits</code> package exposes support for this operation via the <code>OnesCount</code> series of functions. The various <code>OnesCount</code> functions are recognised by the compiler and, depending on the CPU architecture and the version of Go,  will be replaced with the native hardware instruction.</p>
+
+
+
+<p>To see how effective this can be lets compare three different ones count implementations. The first is Kernighan&#8217;s&nbsp;Algorithm<span id='easy-footnote-2-3803' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2019/08/20/go-compiler-intrinsics#easy-footnote-bottom-2-3803' title='The C Programming Language 2nd Ed, 1998'><sup>2</sup></a></span>.</p>
+
+
+
+<pre class="wp-block-preformatted">func kernighan(x uint64) int {
+        var count int
+        for ; x &gt; 0; x &amp;= (x - 1) {
+                count++
+ &nbsp; &nbsp; &nbsp;  }
+ &nbsp; &nbsp; &nbsp;  return count &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+} &nbsp; &nbsp; </pre>
+
+
+
+<p>This algorithm has a maximum loop count of the number of bits set; the more bits set, the more loops it will take.</p>
+
+
+
+<p>The second algorithm is taken from Hacker&#8217;s Delight via <a href="https://github.com/golang/go/issues/14813">issue 14813</a>. </p>
+
+
+
+<pre class="wp-block-preformatted">func hackersdelight(x uint64) int {
+        const m1 = 0x5555555555555555
+        const m2 = 0x3333333333333333
+        const m4 = 0x0f0f0f0f0f0f0f0f
+        const h01 = 0x0101010101010101
+
+        x -= (x &gt;&gt; 1) &amp; m1
+        x = (x &amp; m2) + ((x &gt;&gt; 2) &amp; m2)
+        x = (x + (x &gt;&gt; 4)) &amp; m4
+        return int((x * h01) &gt;&gt; 56)
+ } </pre>
+
+
+
+<p>Lots of clever bit twiddling allows this version to run in constant time and optimises very well if the input is a constant (the whole thing optimises away if the compiler can figure out the answer at compiler time).</p>
+
+
+
+<p>Let&#8217;s benchmark these implementations against <code>math/bits.OnesCount64</code>.</p>
+
+
+
+<pre class="wp-block-preformatted">var Result int
+
+func BenchmarkKernighan(b *testing.B) {
+        var r int
+        for i := 0; i &lt; b.N; i++ {
+                r = kernighan(uint64(i))
+        }
+        Result = r
+}
+
+func BenchmarkPopcnt(b *testing.B) {
+        var r int
+        for i := 0; i &lt; b.N; i++ {
+                r = hackersdelight(uint64(i))
+        }
+        Result = r
+}
+
+func BenchmarkMathBitsOnesCount64(b *testing.B) {
+        var r int
+        for i := 0; i &lt; b.N; i++ {
+                r = bits.OnesCount64(uint64(i))
+        }
+        Result = r
+}</pre>
+
+
+
+<p>To keep it fair, we&#8217;re feeding each function under test the same input; a sequence of integers from zero to <code>b.N</code>. This is fairer to Kernighan&#8217;s method as its runtime increases with the number of one bits in the input argument.<span id='easy-footnote-3-3803' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2019/08/20/go-compiler-intrinsics#easy-footnote-bottom-3-3803' title='As extra credit homework, try passing &lt;code&gt;0xdeadbeefdeadbeef&lt;/code&gt; to each function under test and observe the results.'><sup>3</sup></a></span></p>
+
+
+
+<pre class="wp-block-preformatted">BenchmarkKernighan-8&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 100000000 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 11.2 ns/op
+BenchmarkPopcnt-8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 618312062&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2.02 ns/op
+BenchmarkMathBitsOnesCount64-8&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1000000000 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.565 ns/op </pre>
+
+
+
+<p>The winner by nearly 4x is <code>math/bits.OnesCount64</code>, but is this really using a hardware instruction, or is the compiler just doing a better job at optimising this code? Let&#8217;s check the assembly</p>
+
+
+
+<pre class="wp-block-preformatted">% <strong>go test -c</strong>
+% <strong>go tool objdump -s MathBitsOnesCount popcnt-intrinsic.test</strong>
+TEXT examples/popcnt-intrinsic.BenchmarkMathBitsOnesCount64(SB) /examples/popcnt-intrinsic/popcnt_test.go
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f8610 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65488b0c2530000000&nbsp; &nbsp; &nbsp; MOVQ GS:0x30, CX
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f8619 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 483b6110&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CMPQ 0x10(CX), SP
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f861d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7668&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JBE 0x10f8687
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f861f &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4883ec20&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; SUBQ $0x20, SP
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f8623 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48896c2418&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ BP, 0x18(SP)
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f8628 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488d6c2418&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; LEAQ 0x18(SP), BP
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f862d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b442428&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ 0x28(SP), AX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8632 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 31c9&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XORL CX, CX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8634 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 31d2&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XORL DX, DX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8636 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eb03&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JMP 0x10f863b
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8638 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48ffc1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INCQ CX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f863b &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48398808010000&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CMPQ CX, 0x108(AX)
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8642 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7e32&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JLE 0x10f8676
+<strong> &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8644 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 803d29d5150000&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CMPB $0x0, runtime.x86HasPOPCNT(SB)</strong>
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f864b &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 740a&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JE 0x10f8657
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f864d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4831d2&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XORQ DX, DX
+<strong> &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8650 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f3480fb8d1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; POPCNT CX, DX // math/bits.OnesCount64</strong>
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8655 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ebe1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JMP 0x10f8638
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f8657 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48894c2410&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ CX, 0x10(SP)
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f865c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48890c24&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ CX, 0(SP)
+<strong> &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8660 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e87b28f8ff&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CALL math/bits.OnesCount64(SB)</strong>
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8665 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b542408&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ 0x8(SP), DX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f866a &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b442428&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ 0x28(SP), AX
+ &nbsp; popcnt_test.go:47 &nbsp; &nbsp; 0x10f866f &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b4c2410&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ 0x10(SP), CX
+ &nbsp; popcnt_test.go:48 &nbsp; &nbsp; 0x10f8674 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ebc2&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JMP 0x10f8638
+ &nbsp; popcnt_test.go:50 &nbsp; &nbsp; 0x10f8676 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 48891563d51500&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ DX, examples/popcnt-intrinsic.Result(SB)
+ &nbsp; popcnt_test.go:51 &nbsp; &nbsp; 0x10f867d &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b6c2418&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ 0x18(SP), BP
+ &nbsp; popcnt_test.go:51 &nbsp; &nbsp; 0x10f8682 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4883c420&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ADDQ $0x20, SP
+ &nbsp; popcnt_test.go:51 &nbsp; &nbsp; 0x10f8686 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c3&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; RET
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f8687 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e884eef5ff&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CALL runtime.morestack_noctxt(SB)
+ &nbsp; popcnt_test.go:45 &nbsp; &nbsp; 0x10f868c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; eb82&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; JMP examples/popcnt-intrinsic.BenchmarkMathBitsOnesCount64(SB)
+ &nbsp; :-1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x10f868e &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT $0x3
+ &nbsp; :-1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0x10f868f &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cc&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT $0x3 </pre>
+
+
+
+<p>There&#8217;s quite a bit going on here, but the key take away is on line 48 (taken from the source code of the <code>_test.go</code> file) the program is using the x86 <code>POPCNT</code> instruction as we hoped. This turns out to be faster than bit twiddling.</p>
+
+
+
+<p>Of interest is the comparison two instructions prior to the <code>POPCNT</code>,</p>
+
+
+
+<pre class="wp-block-preformatted"><strong>CMPB $0x0, runtime.x86HasPOPCNT(SB)</strong></pre>
+
+
+
+<p>As not all intel CPUs support <code>POPCNT</code> the Go runtime records at startup if the CPU has the necessary support and stores the result in <code>runtime.x86HasPOPCNT</code>. Each time through the benchmark loop the program is checking <em>does the CPU have POPCNT support</em> before it issues the <code>POPCNT</code> request. </p>
+
+
+
+<p>The value of <code>runtime.x86HasPOPCNT</code> isn&#8217;t expected to change during the life of the program&#8217;s execution so the result of the check should be highly predictable making the check relatively cheap.</p>
+
+
+
+<h2>Atomic counter</h2>
+
+
+
+<p>As well as generating more efficient code, intrinsic functions are just regular Go code, the rules of inlining (including mid stack inlining) apply equally to them.</p>
+
+
+
+<p>Here&#8217;s an example of an atomic counter type. It&#8217;s got methods on types, method calls several layers deep, multiple packages, etc.</p>
+
+
+
+<pre class="wp-block-preformatted">import (
+         "sync/atomic"
+)
+
+type counter uint64
+
+func (c counter) get() uint64 {
+         return atomic.LoadUint64((uint64)(c))
+}
+
+func (c counter) inc() uint64 {
+        return atomic.AddUint64((uint64)(c), 1)
+}
+
+func (c counter) reset() uint64 {
+        return atomic.SwapUint64((uint64)(c), 0)
+}
+
+var c counter
+
+func f() uint64 {
+        c.inc()
+        c.get()
+        return c.reset()
+}</pre>
+
+
+
+<p>You&#8217;d be forgiven for thinking this would have a lot of overhead. However, because of the interaction between inlining and compiler intrinsics, this code collapses down to efficient native code on most platforms.</p>
+
+
+
+<pre class="wp-block-preformatted">TEXT main.f(SB) examples/counter/counter.go
+ &nbsp; counter.go:23 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512e0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 90&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NOPL
+ &nbsp; counter.go:29 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512e1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b801000000&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVL $0x1, AX
+ &nbsp; counter.go:13 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512e6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488d0d0bca0800&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; LEAQ main.c(SB), CX
+<strong> &nbsp; counter.go:13 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512ed &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f0480fc101&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; LOCK XADDQ AX, 0(CX) // c.inc
+</strong> &nbsp; counter.go:24 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512f2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 90&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NOPL
+<strong> &nbsp; counter.go:10 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512f3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488b05fec90800&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MOVQ main.c(SB), AX // c.get
+</strong> &nbsp; counter.go:25 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512fa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 90&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NOPL
+ &nbsp; counter.go:16 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512fb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 31c0&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XORL AX, AX
+<strong> &nbsp; counter.go:16 &nbsp; &nbsp; &nbsp; &nbsp; 0x10512fd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 488701&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XCHGQ AX, 0(CX) // c.reset
+</strong> &nbsp; counter.go:16 &nbsp; &nbsp; &nbsp; &nbsp; 0x1051300 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c3&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; RET </pre>
+
+
+
+<p>By way of explanation. The first operation, <code>counter.go:13</code> is <code>c.inc</code> a <code>LOCK</code>ed <code>XADDQ</code>, which on x86 is an atomic increment. The second, <code>counter.go:10</code> is <code>c.get</code> which on x86, due to its strong memory consistency model, is a regular load from memory. The final operation, <code>counter.go:16</code>, <code>c.reset</code> is an atomic exchange of the address in <code>CX</code> with <code>AX</code> which was zeroed on the previous line. This puts the value in <code>AX</code>, zero, into the address stored in <code>CX</code>. The value previously stored at <code>(CX)</code> is discarded.</p>
+
+
+
+<h2>Conclusion</h2>
+
+
+
+<p>Intrinsics are a neat solution that give Go programmers access to low level architectural operations without having to extend the specification of the language. If an architecture doesn&#8217;t have a specific <code>sync/atomic</code> primitive (like some ARM variants), or a <code>math/bits</code> operation, then the compiler transparently falls back to the operation written in pure Go.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Clear is better than clever]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/07/09/clear-is-better-than-clever" />
+
+		<id>https://dave.cheney.net/?p=3748</id>
+		<updated>2019-07-09T07:09:51Z</updated>
+		<published>2019-07-08T13:11:46Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="Programming" /><category scheme="https://dave.cheney.net" term="Small ideas" />
+		<summary type="html"><![CDATA[This article is based on my GopherCon Singapore 2019 presentation. In the presentation I referenced material from my post on declaring variables and my GolangUK 2017 presentation on SOLID design. For brevity those parts of the talk have been elided from this article. If you prefer, you can watch the recording of the talk. Readability [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/07/09/clear-is-better-than-clever"><![CDATA[
+<p><em>This article is based on my </em><a href="https://2019.gophercon.sg/"><em>GopherCon Singapore 2019</em></a><em> presentation. In the presentation I referenced material from my post <a href="https://dave.cheney.net/2014/05/24/on-declaring-variables">on declaring variables</a> and my <a href="https://dave.cheney.net/2016/08/20/solid-go-design">GolangUK 2017 presentation on SOLID design</a>. For brevity those parts of the talk have been elided from this article. If you prefer, you can <a href="https://www.youtube.com/watch?v=NwEuRO_w8HE">watch the recording of the talk</a>.</em> </p>
+
+
+
+<hr class="wp-block-separator"/>
+
+
+
+<p>Readability is often cited as one of Go’s core tenets, I disagree. In this article I&#8217;ll discuss the differences between clarity and readability, show you what I mean by clarity and how it applies to Go code, and argue that Go programmers should strive for clarity&#8211;not just readability&#8211;in their programs.</p>
+
+
+
+<h2>Why would I read your code?</h2>
+
+
+
+<p>Before I pick apart the difference between clarity and readability, perhaps the question to ask is, &#8220;why would I read your code?&#8221; To be clear, when I say <em>I</em>, I don’t mean me, I mean you. And when I say <em>your code</em> I also mean you, but in the third person. So really what I’m asking is, &#8220;why would <em>you read</em> another person’s code?&#8221;</p>
+
+
+
+<p>I think Russ Cox, paraphrasing Titus Winters, put it best:</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Software engineering is what happens to programming when you add time and other programmers.</p><cite><em>–</em>Russ Cox, GopherCon Singapore 2018</cite></blockquote>
+
+
+
+<p>The answer to the question, “why would I read your code” is, because we have to work together.&nbsp;Maybe we don’t work in the same office, or live in the same city, maybe we don’t even work at the same company, but we do collaborate on a piece of software, or more likely consume it as a dependency.</p>
+
+
+
+<p>This is the essence of Russ and Titus&#8217; observation; software engineering is the collaboration of software engineers over time. I have to read your code, and you read mine, so that I can understand it, so that you can maintain it, and in short, so that any programmer can change it.</p>
+
+
+
+<p>Russ is making the distinction between software programming and software engineering. The former is a program you write for yourself, the latter is a program, ​a project, a service, a product, ​that many people will contribute to over time. Engineers will come and go, teams will grow and shrink, requirements will change, features will be added and bugs fixed. This is the nature of software engineering.</p>
+
+
+
+<h2>We don&#8217;t read code, we decode it</h2>
+
+
+
+<blockquote class="wp-block-quote"><p>It was sometime after that presentation that I finally realized the obvious: Code is not literature. We don’t read code, we <em>decode</em> it.</p><cite><em>–</em><a href="http://www.gigamonkeys.com/code-reading/">Peter Seibel</a></cite></blockquote>
+
+
+
+<p>The author Peter Seibel suggests that programs are not read, but are instead decoded. In hindsight this is obvious, after all we call it source code, not source literature. The source code of a program is an intermediary form, somewhere between our concept&#8211;what’s inside our heads&#8211;and the computer’s executable notation.</p>
+
+
+
+<p>In my experience, the most common complaint when faced with a foreign codebase written by someone, or some team, is the code is unreadable.&nbsp;Perhaps you agree with me?</p>
+
+
+
+<p>But readability as a concept is subjective.&nbsp;Readability is nit picking about line length and variable names. Readability is holy wars about brace position. Readability is the hand to hand combat of style guides and code review guidelines that regulate the use of whitespace.</p>
+
+
+
+<h2>Clarity ≠ Readability</h2>
+
+
+
+<p>Clarity, on the other hand, is the property of the code on the page. Clear code is independent of the low level details of function names and indentation because clear code is concerned with what the code is doing, not just how it is written down.</p>
+
+
+
+<p>When you or I say that a foreign codebase is unreadable, what I think what we really mean is, <em>I don’t understand it</em>. For the remainder of this article I want to try to explore the difference between clear code and code that is simply readable, because the goal is not how quickly you can read a piece of code, but how quickly you can grasp its meaning.</p>
+
+
+
+<h2>Keep to the left</h2>
+
+
+
+<p>Go programs are traditionally written in a style that favours guard clauses and preconditions. This encourages the successful path to proceed down the page rather than indented inside a conditional block. Mat Ryer calls this <a href="https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88">line of sight coding</a>, because, the active part of your function is not at risk of sliding out of sight beyond the right hand margin of your screen.</p>
+
+
+
+<p>By keeping conditional blocks short, and for the exceptional condition, we avoid nested blocks and potentially complex value shadowing. The successful flow of control continues down the page. At every point in the sequence of statements, if you’ve arrived at that point, you are confident that a growing set of preconditions holds true. </p>
+
+
+
+<pre class="wp-block-preformatted">func ReadConfig(path string) (*Config, error) {
+ &nbsp; &nbsp; &nbsp;  f, err := os.Open(path)
+        if err != nil {
+                return nil, err
+        }
+        defer f.Close()
+ &nbsp; &nbsp; &nbsp; &nbsp;// ...
+ } </pre>
+
+
+
+<p>The canonical example of this is the classic Go error check idiom; <code>if err != nil</code> then return it to the caller, else continue with the function. We can generalise this pattern a little and in pseudocode we have:</p>
+
+
+
+<pre class="wp-block-preformatted">if <em>some condition</em> {
+        // true: cleanup
+        return
+ }
+ // false: continue </pre>
+
+
+
+<p>If<em> some condition</em> is true, then return to the caller, else continue onwards towards the end of the function.&nbsp;</p>
+
+
+
+<p>This form holds true for all preconditions, error checks, map lookups, length checks, and so forth. The exact form of the precondition’s check changes, but the pattern is always the same; the cleanup code is inside the block, terminating with a return, the success condition lies outside the block, and is only reachable if the precondition is false.</p>
+
+
+
+<p>Even if you are unsure what the preceding and succeeding code does, how the precondition is formed, and how the cleanup code works, it is clear to the reader that this is a guard clause.</p>
+
+
+
+<h2>Structured programming</h2>
+
+
+
+<p>Here we have a <code>comp</code> function that takes two <code>int</code>s and returns an <code>int</code>;</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+        if a &lt; b {
+                return -1
+        }
+        if a &gt; b {
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; return 1
+ &nbsp; &nbsp; &nbsp; &nbsp;}
+ &nbsp; &nbsp; &nbsp; &nbsp;return 0
+} </pre>
+
+
+
+<p>The <code>comp</code> function is written in a similar form to guard clauses from earlier. If <code>a</code> is less than <code>b</code>, the return -1 path is taken. If <code>a</code> is greater than <code>b</code>, the return 1 path is taken. Else, <code>a</code> and <code>b</code> are by induction equal, so the final return 0 path is taken.</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+        if <em>condition A</em> {
+                <em>body</em> A
+        }
+ &nbsp; &nbsp; &nbsp; &nbsp;if <em>condition</em> B {
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <em>body B</em>
+ &nbsp; &nbsp; &nbsp; &nbsp;}
+ &nbsp; &nbsp; &nbsp; &nbsp;return 0
+} </pre>
+
+
+
+<p>The problem with <code>comp</code> as written is, unlike the guard clause, someone maintaining this function has to read all of it. To understand when 0 is returned, the reader has to consult the conditions <em>and the body</em> of each clause. This is reasonable when you&#8217;re dealing with functions which fit on a slide, but in the real world complicated functions&#8211;​the ones we’re paid for our expertise to maintain&#8211;are rarely slide sized, and their conditions and bodies are rarely simple.</p>
+
+
+
+<p>Let’s address the problem of making it clear under which condition 0 will be returned:</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+        if a &lt; b {
+                return -1
+        } else if a &gt; b {
+ &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; return 1
+ &nbsp; &nbsp; &nbsp; &nbsp;} else {
+ &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; return 0
+ &nbsp; &nbsp; &nbsp; &nbsp;}
+} </pre>
+
+
+
+<p>Now, although this code is not what anyone would argue is readable&#8211;​long chains of <code>if else if</code> statements are broadly discouraged in Go&#8211;​it is clearer to the reader that zero is only returned if none of the conditions are met. </p>
+
+
+
+<p>How do we know this? The Go spec declares that each function that returns a value must end in a terminating statement. This means that the body of all conditions must return a value. Thus, this does not compile:</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+&nbsp; &nbsp; &nbsp; &nbsp; if a &gt; b {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; a = b // does not compile
+&nbsp; &nbsp; &nbsp; &nbsp; } else if a &lt; b {
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return 1
+  &nbsp; &nbsp; &nbsp; } else {
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return 0
+ &nbsp;&nbsp; &nbsp; &nbsp; }
+}</pre>
+
+
+
+<p>Further, it is now clear to the reader that this code isn’t actually a series of conditions. This is an example of selection. Only one path can be taken regardless of the operation of the condition blocks. Based on the inputs one of -1, 0, or 1 will always be returned.&nbsp;</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+ &nbsp; &nbsp; &nbsp;  if a &lt; b {
+ &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; return -1
+ &nbsp; &nbsp; &nbsp;  } else if a &gt; b {
+ &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; return 1
+ &nbsp; &nbsp; &nbsp;  } else {
+ &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; return 0
+ &nbsp; &nbsp; &nbsp;  }
+} </pre>
+
+
+
+<p>However this code is hard to read as each of the conditions is written differently, the first is a simple <code>if a &lt; b</code>, the second is the unusual <code>else if a &gt; b</code>, and the last conditional is actually unconditional.</p>
+
+
+
+<p>But it turns out there is a statement which we can use to make our intention much clearer to the reader; <code>switch</code>.</p>
+
+
+
+<pre class="wp-block-preformatted">func comp(a, b int) int {
+&nbsp; &nbsp; &nbsp; &nbsp; switch {
+&nbsp; &nbsp; &nbsp; &nbsp; case a &lt; b:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return -1
+&nbsp; &nbsp; &nbsp; &nbsp; case a &gt; b:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return 1
+&nbsp; &nbsp; &nbsp; &nbsp; default:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return 0
+&nbsp; &nbsp; &nbsp; &nbsp; }
+} </pre>
+
+
+
+<p>Now it is clear to the reader that this is a selection. Each of the selection conditions are documented in their own case statement, rather than varying <code>else</code> or <code>else if</code> clauses.</p>
+
+
+
+<p>By moving the default condition inside the switch, the reader only has to consider the cases that match their condition, as none of the cases can fall out of the switch block because of the default clause.<span id='easy-footnote-1-3748' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='https://dave.cheney.net/2019/07/09/clear-is-better-than-clever#easy-footnote-bottom-1-3748' title='The &lt;code&gt;fallthrough&lt;/code&gt; keyword complicates this analysis, hence the general disapproval of &lt;code&gt;fallthrough&lt;/code&gt; in switch statements.'><sup>1</sup></a></span></p>
+
+
+
+<blockquote class="wp-block-quote"><p>Structured programming submerges <em>structure</em> and emphasises <em>behaviour</em></p><cite><em>–Richard Bircher,&nbsp;</em><a href="https://www.amazon.com/Limits-Software-People-Projects-Perspectives/dp/0201433230"><em>The limits of software</em></a></cite></blockquote>
+
+
+
+<p>I found this quote recently and I think it is apt. My arguments for clarity are in truth arguments intended to emphasise the behaviour of the code, rather than be side tracked by minutiae of the structure itself. Said another way, what is the code trying to do, <em>not how is it is trying to do it</em>.</p>
+
+
+
+<h2>Guiding principles</h2>
+
+
+
+<p>I opened this article with a discussion of readability vs clarity and hinted that there were other principles of well written Go code. It seems fitting to close on a discussion of those other principles.</p>
+
+
+
+<p>Last year <a href="https://www.slideshare.net/bcantrill/platform-values-rust-and-the-implications-for-system-software">Bryan Cantrill gave a wonderful presentation on operating system principles</a>, wherein he highlighted that different operating systems focus on different principles. It is not that they ignore the principles that differ between their competitors, just that when the chips are down, they prioritise a core set. So what is that core set of principles for Go?</p>
+
+
+
+<h3>Clarity</h3>
+
+
+
+<p>If you were going to say readability, hopefully I’ve provided you with an alternative.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Programs must be written for people to read, and only incidentally for machines to execute.</p><cite><em>–Hal Abelson and Gerald Sussman</em>. <em>Structure and Interpretation of Computer Programs</em> </cite></blockquote>
+
+
+
+<p>Code is read many more times than it is written. A single piece of code will, over its lifetime, be read hundreds, maybe thousands of times. It will be read hundreds or thousands of times because it must be understood. Clarity is important because all software, not just Go programs, is written by people to be read by other people. The fact that software is also consumed by machines is secondary.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>The most important skill for a programmer is the ability to effectively communicate ideas.</p><cite><em>–Gastón Jorquera</em> </cite></blockquote>
+
+
+
+<p>Legal documents are double spaced to aide the reader, but to the layperson that does nothing to help them comprehend what they just read. Readability is a property of how easy it was to read the words on the screen. Clarity, on the other hand, is the answer to the question &#8220;did you understand what you just read?&#8221;.</p>
+
+
+
+<p>If you’re writing a program for yourself, maybe it only has to run once, or you’re the only person who’ll ever see it, then do what ever works for you. But if this is a piece of software that more than one person will contribute to, or that will be used by people over a long enough time that requirements, features, or the environment it runs in may change, then your goal must be for your program to be maintainable.</p>
+
+
+
+<p>The first step towards writing maintainable code is making sure intent of the code is clear.</p>
+
+
+
+<h3>Simplicity</h3>
+
+
+
+<p>The next principle is obviously simplicity. Some might argue the most important principle for any programming language, perhaps the most important principle full stop.</p>
+
+
+
+<p>Why should we strive for simplicity? Why is important that Go programs be simple?</p>
+
+
+
+<blockquote class="wp-block-quote"><p>The ability to simplify means to eliminate the unnecessary so that the necessary may speak</p><cite><em>–Hans Hofmann</em> </cite></blockquote>
+
+
+
+<p>We’ve all been in a situation where we say &#8220;I can’t understand this code&#8221;. We’ve all worked on programs we were scared to make a change because we worried that it’ll break another part of the program; a part you don’t understand and don’t know how to fix.&nbsp;</p>
+
+
+
+<p>This is complexity. Complexity turns reliable software in unreliable software. Complexity is what leads to unmaintainable software. Complexity is what kills software projects. Clarity and simplicity are interlocking forces that lead to maintainable software.</p>
+
+
+
+<h3>Productivity</h3>
+
+
+
+<p>The last Go principle I want to highlight is productivity. Developer productivity boils down to this; how much time do you spend doing useful work verses waiting for your tools or hopelessly lost in a foreign code-base? Go programmers should feel that they can get a lot done with Go.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>“I&nbsp;started another compilation, turned my chair around to face Robert, and started asking pointed questions. Before the compilation was done, we&#8217;d roped Ken in and had decided to do something.”</p><cite><em>–Rob Pike, <a href="https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html">Less is Exponentially more</a></em><a href="https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html"> </a></cite></blockquote>
+
+
+
+<p>The joke goes that Go was designed while waiting for a C++ program to compile. Fast compilation is a key feature of Go and a key recruiting tool to attract new developers. While compilation speed remains a constant battleground, it is fair to say that compilations which take minutes in other languages, take seconds in Go. This helps Go developers feel as productive as their counterparts working in dynamic languages without the maintenance issues inherent in those languages.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Design is the art of arranging code to work <em>today</em>, and be changeable&nbsp; <em>forever.</em></p><cite><em>–Sandi Metz</em> </cite></blockquote>
+
+
+
+<p>More fundamental to the question of developer productivity, Go programmers realise that code is written to be read and so place the act of reading code above the act of writing it. Go goes so far as to enforce, via tooling and custom, that all code be formatted in a specific style. This removes the friction of learning a project specific dialect and helps spot mistakes because they just look incorrect.</p>
+
+
+
+<p>Go programmers don’t spend days debugging inscrutable compile errors. They don’t waste days with complicated build scripts or deploying code to production. And most importantly they don’t spend their time trying to understand what their coworker wrote.</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Complexity is anything that makes software hard to understand or to modify.</p><cite><em>–John Ousterhout</em>, <a href="https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201/ref=sr_1_3?ie=UTF8&amp;qid=1524677319&amp;sr=8-3&amp;keywords=john+ousterhout">A Philosophy of Software Design</a></cite></blockquote>
+
+
+
+<p>Something I know about each of you reading this post is you will eventually leave your current employer. Maybe you’ll be moving on to a new role, or perhaps a promotion, perhaps you’ll move cities, or follow your partner overseas. Whatever the reason, we must all consider the succession of the maintainership of the programs we create.</p>
+
+
+
+<p>If we strive to write programs that are clear, programs that are simple, and to focus on the productivity of those working with us that will set all Go programmers in good stead.</p>
+
+
+
+<p>Because if we don’t, as we move from job to job, we’ll leave behind programs which cannot be maintained. Programs which cannot be changed. Programs which are too hard to onboard new developers, and programs which feel like career digression for those that work on them.</p>
+
+
+
+<p>If software cannot be maintained, then it will be rewritten; and that could be the last time your company invests in Go.</p>
+]]></content>
+		
+			</entry>
+		<entry>
+		<author>
+			<name>Dave Cheney</name>
+							<uri>http://dave.cheney.net/</uri>
+						</author>
+
+		<title type="html"><![CDATA[Sydney High Performance Go workshop]]></title>
+		<link rel="alternate" type="text/html" href="https://dave.cheney.net/2019/07/05/sydney-high-performance-go-workshop" />
+
+		<id>https://dave.cheney.net/?p=3746</id>
+		<updated>2019-07-05T12:29:58Z</updated>
+		<published>2019-07-05T12:29:57Z</published>
+		<category scheme="https://dave.cheney.net" term="Go" /><category scheme="https://dave.cheney.net" term="high performance go" /><category scheme="https://dave.cheney.net" term="training" /><category scheme="https://dave.cheney.net" term="workshop" />
+		<summary type="html"><![CDATA[On the 17th of July I&#8217;ll be giving a version of my High Performance Go workshop updated for the upcoming changes in Go 1.13. The event is free, as in puppy, however numbers are limited due to the venue size. The event will be held in the Sydney CBD, the address will be provided to [&#8230;]]]></summary>
+
+					<content type="html" xml:base="https://dave.cheney.net/2019/07/05/sydney-high-performance-go-workshop"><![CDATA[
+<p>On the 17th of July I&#8217;ll be giving a version of my <a href="https://dave.cheney.net/high-performance-go">High Performance Go workshop</a> updated for the upcoming changes in Go 1.13. The event is free, as in puppy, however numbers are limited due to the venue size. The event will be held in the Sydney CBD, the address will be provided to registered attendees closer to the date.</p>
+
+
+
+<p>You can find a <a href="https://dave.cheney.net/high-performance-go">link to the workshop description and syllabus here</a>.</p>
+
+
+
+<p>You can find a <a href="https://www.eventbrite.com/e/sydney-high-performance-go-workshop-tickets-64796869180">link to the registration page here</a>.</p>
+
+
+
+<h3>No show policy</h3>
+
+
+
+<p>If you register for the event then don&#8217;t show up you are be depriving someone else of the opportunity to participate. You can cancel you registration at any time up to 23:59 on the 16th.  <strong>If you are a no show you will be expected to make a <em>meaningful</em> donation to a charity of my choosing.</strong></p>
+]]></content>
+		
+			</entry>
+	</feed>

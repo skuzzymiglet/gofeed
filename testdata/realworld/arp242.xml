@@ -1,0 +1,1558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>arp242.net</title>
+    <description>Website of Martin Tournoij/arp242/Carpetsmoker. I write about stuff, occasionally.</description>
+    <link>https://www.arp242.net/</link>
+    <atom:link href="https://www.arp242.net/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 30 Sep 2020 05:20:25 +0000</pubDate>
+    <lastBuildDate>Wed, 30 Sep 2020 05:20:25 +0000</lastBuildDate>
+    <item>
+      <title>Freedom is not simple</title>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/freedom.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/freedom.html</guid>
+      <category>Politics</category>
+      <description>&lt;p&gt;There’s a mistake I often see people make when it comes to the concept of
+“freedom”: the assumption that it’s a simple one-dimensional metric that can
+either increase or decrease; something you can assign a rating from 0 to 100 to.&lt;/p&gt;
+
+&lt;p&gt;In reality this is often not the case. My neighbour’s freedom to play music at
+4am limits my freedom to have a good night’s rest. Does this increase or
+decrease freedom?&lt;/p&gt;
+
+&lt;p&gt;In many cases “freedom” tends to be a trade-off; increased freedom for one
+person or group often decreases freedom for others to some degree. Hell, even
+&lt;em&gt;that&lt;/em&gt; is a simplistic take as it’s usually a complex multi-dimensional chart.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;There are all sorts of examples of this; my big gripe with hardline “big-L”
+Libertarianism is that it often seems to pretend these trade-offs don’t exist
+and that “freedom” is some sort of thing you can just assign a single number to.
+That doesn’t mean that the libertarian position is invalid or “wrong”; I just
+wish they were more honest and thoughtful about this, with themselves and with
+others.&lt;/p&gt;
+
+&lt;p&gt;Things like freedom or speech or religion can infringe on other people’s
+freedoms. If I say that all Jews should be kicked in the face whenever you see
+one this limits Jewish people’s freedom live a life without fear of being kicked
+in the face. It’s widely acknowledged in almost every jurisdiction that inciting
+violence is not a good trade-off, and not covered by freedom of speech.&lt;/p&gt;
+
+&lt;p&gt;If a business rejects the patronage of people based on their skin colour or
+other personal attributes due to their religion increases the freedom of the
+business owner, but decreases the freedom of those affected by such rejections.&lt;/p&gt;
+
+&lt;p&gt;All of this is classic Paradox of Tolerance stuff, just phrased in a different
+way.&lt;/p&gt;
+
+&lt;p&gt;When people say “GPL&lt;sup id=&quot;fnref:gpl&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:gpl&quot; class=&quot;footnote&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt; increases freedom” then they’re right. When others
+say “GPL limits freedom compared to MIT” then they’re right too. It’s just a
+matter about &lt;em&gt;which&lt;/em&gt; freedoms exactly we’re talking about, and for &lt;em&gt;who&lt;/em&gt;.
+&lt;!--
+Indeed, the entire Free Software movement seems like a typical failure of
+appreciating these kind of trade-offs when it comes to freedom.
+--&gt;&lt;/p&gt;
+
+&lt;p&gt;Perhaps more controversial: your freedom to drive a car impedes on my freedom to
+breath air without particulates, or my freedom to walk or cycle to the store
+without risk of getting injured, never mind the dominating influence on public
+infrastructure (why shouldn’t our children have the freedom to play on the
+street?) As a society we’ve decided that the personal freedom of owning a car is
+more important, but that doesn’t mean it doesn’t limit some freedoms.&lt;/p&gt;
+
+&lt;p&gt;Well, and so forth…&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;There are also many cases where increased freedom doesn’t limit other people’s
+freedom; for example my freedom to have consensual sexual relationships with
+whomever I choose doesn’t limit anyone else’s freedom. But not infrequently when
+I see someone talking about freedom in absolutes I find they’ve failed to fully
+appreciated all perspectives of the issue, especially on complex topics which
+affect more than just the private lives of people.&lt;/p&gt;
+&lt;div class=&quot;postscript&quot; role=&quot;doc-endnotes&quot;&gt;&lt;strong&gt;Footnotes&lt;/strong&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:gpl&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;For people who happen to not be programmers, see e.g.
+    &lt;a href=&quot;https://www.fsf.org/about/what-is-free-software&quot;&gt;What is free software?&lt;/a&gt;
+    The GPL is a software license intended to promote a certain idea of
+    “software freedom”; that is, the freedom to modify and share programs.
+    This is not an endorsement of Free Software as a philosophy by the way. &lt;a href=&quot;#fnref:gpl&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>Analytics on personal websites</title>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/personal-analytics.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/personal-analytics.html</guid>
+      <category>GoatCounter</category>
+      <category>Web</category>
+      <description>&lt;p&gt;Sometimes I see people dismiss any analytics on personal websites as “vanity
+statistics”, or even outright dismiss it as “spyware”. I don’t think that’s the
+case, but then again since I’m working on an analytics app so of course I would
+say that 🙃 I did write GoatCounter specifically for my personal use on this
+website long before I had any plans with it (first pageview: May 21st 2019).&lt;/p&gt;
+
+&lt;p&gt;It’s sometimes useful to have an indication what people are reading, or if
+anyone is reading something at all. For a while I maintained a &lt;a href=&quot;/vimlog&quot;&gt;Vim
+ChangeLog&lt;/a&gt; as I felt it would be useful to have such a thing.&lt;sup id=&quot;fnref:vim&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:vim&quot; class=&quot;footnote&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;
+Maintaining that is quite labour-intensive and boring, and it turned out no one
+was actually reading it; so I stopped maintaining it. Without &lt;em&gt;some&lt;/em&gt; form of
+analytics, I would have no way of knowing this.&lt;/p&gt;
+
+&lt;p&gt;There are some other projects as well where this is useful; e.g. &lt;a href=&quot;/the-art-of-unix-programming&quot;&gt;The Art of
+Unix Programming&lt;/a&gt;, or
+&lt;a href=&quot;https://bestasciitable.com&quot;&gt;bestasciitable.com&lt;/a&gt;. It’s just useful to know how
+popular such projects are before I choose to spend more time on them.&lt;/p&gt;
+
+&lt;p&gt;I considered ‘archiving’ &lt;a href=&quot;/autoreply.html&quot;&gt;How to detect automatically generated
+emails&lt;/a&gt; as I thought it wasn’t all that interesting after all;
+I just wrote that after writing an email system years ago.&lt;sup id=&quot;fnref:email&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:email&quot; class=&quot;footnote&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt; Turns out
+quite a few people end up there from Google and bug-trackers and such, so guess
+it’s more useful than I thought! Instead of archiving it, I spent some time
+copy-editing and polishing it.&lt;/p&gt;
+
+&lt;p&gt;I’d also like to have &lt;em&gt;some&lt;/em&gt; insight when people link things on Hacker News or
+whatnot. I’m hardly obsessed with what people say about my writings (I
+intentionally ignore most of Reddit) but lot of what I’ve written has been
+nuanced, corrected, clarified, or otherwise improved after reading insightful
+and constructive criticism in comment threads. There’s quite some value in it.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;As for “vanity stats” or “stats to stroke your ego”: I think that’s actually a
+valid use case as well. After you spent quite a bit of your spare time writing
+an article it’s just nice to know people are actually reading it. There’s
+nothing wrong with being validated – it’s a basic psychological need and I’m not
+a fan of casually dismissing it.&lt;/p&gt;
+
+&lt;p&gt;I have similar feelings about “fake internet points” on Stack Overflow and the
+like by the way; if I spend some time writing an in-depth answer then it’s just
+nice to get some feedback that it’s useful for people. I especially get a lot of
+satisfaction out of answers that keep getting upvotes for years.&lt;/p&gt;
+
+&lt;p&gt;Stack Overflow also keeps some “analytics” and shows you how many people have
+viewed your answers: &lt;em&gt;“Estimated number of times people viewed your helpful
+posts (based on page views of your questions and questions where you wrote
+highly-ranked answers)”&lt;/em&gt;. Right now it shows ~1.7m people reached for Stack
+Overflow, and ~1.9m people reached for Vi &amp;amp; Vim Stack Exchange. 3.6 million in
+total.&lt;/p&gt;
+
+&lt;p&gt;This is a &lt;em&gt;very&lt;/em&gt; imperfect and crude number for all sorts of reasons, but even
+when drastically slashed it still means my answers have been helpful to at least
+hundreds of thousands of people. I think that’s pretty neat, and I don’t think
+there’s anything wrong with “stroking my ego” with this.&lt;/p&gt;
+
+&lt;p&gt;You can make similar arguments about upvotes on Hacker News or Reddit, or even
+“likes” on Instagram. That’s not to say that there aren’t all sorts of real
+negative effects to all of this either – some people get fixated on the points
+and will game the hell out of the system to get more of them, among other more
+subtle effects – but let’s not be so quick to dismiss it all either.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;As a little postscript, I’m having a hard time writing about this sort of stuff
+as I really don’t want this site to turn in to an advertisement channel for
+GoatCounter, or give the impression that it is. On the other hand it’s what I
+spend most of my time doing and thinking about at the moment. I considered
+starting a GoatCounter-specific blog but 1) effort, and 2) I’d rather not
+incentivise myself to &lt;em&gt;actually&lt;/em&gt; start writing blogspam. For what it’s worth,
+this is not a new opinion and I wrote about some of this stuff &lt;a href=&quot;https://meta.stackoverflow.com/a/340180/660921&quot;&gt;years ago
+already&lt;/a&gt;.
+I’ve got a few more that I’d like to write as I think I’ve got something
+interesting to say, but I’ll try to mix it up with some other things 😅&lt;/p&gt;
+&lt;div class=&quot;postscript&quot; role=&quot;doc-endnotes&quot;&gt;&lt;strong&gt;Footnotes&lt;/strong&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:vim&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Vim’s development model is a bit quirky: every commit is a new “version”
+    or “patchlevel”, and actual versions (8.2, 8.3, etc.) are released
+    sporadicly, and the tagging of such versions is kind of arbitrary. Most
+    distros ship with Vim &lt;code&gt;8.2.&amp;lt;some-patch-level&amp;gt;&lt;/code&gt;, and figuring out what
+    supports which features is not an easy task as a plugin author. Also,
+    people are missing out on new features simply because they don’t know
+    they exists. &lt;a href=&quot;#fnref:vim&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:email&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;I think I wrote it around 2015 or so, I don’t know why I didn’t
+      publish it until years later. I get distracted 😅 &lt;a href=&quot;#fnref:email&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>Let’s not be pedantic about “Open Source”</title>
+      <pubDate>Fri, 03 Jul 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/open-source.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/open-source.html</guid>
+      <category>Open source</category>
+      <description>&lt;p&gt;Another day, another &lt;em&gt;“it’s not true open source, you’re not allowed to call it
+that!”&lt;/em&gt; thread on Hacker News.&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt; This seems to pop up every few weeks or so
+and today I’m sufficiently peeved by it to write something about it.&lt;/p&gt;
+
+&lt;p&gt;Here’s the thing: I don’t think you, the Open Source Initiative (OSI), or anyone
+else gets to single-handedly define a &lt;em&gt;One True Definition of Open Source&lt;/em&gt;. Even
+if the OSI would have unambiguously coined the term &lt;em&gt;Open Source&lt;/em&gt; (which is
+complicated, more on that later) then that still doesn’t mean they get to be the
+arbiter of all usage of it; it’s just not how language works. If &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_generic_and_genericized_trademarks&quot;&gt;trademarks can
+be come generic&lt;/a&gt; then so can neologisms such as Open Source.&lt;/p&gt;
+
+&lt;p&gt;Whether you like it or not for many people – especially those not deeply
+invested in the entire movement – &lt;em&gt;Open Source&lt;/em&gt; means “there is access to the
+source code in some way”, with varying levels of things you are and aren’t
+allowed to do with it. They generally don’t mean “it fits the definition
+according to this checklist some organisation drafted”.&lt;/p&gt;
+
+&lt;p&gt;I have nothing against the &lt;a href=&quot;https://opensource.org/osd&quot;&gt;&lt;em&gt;Open Source Definition&lt;/em&gt;&lt;/a&gt; (OSD), but judging
+all usage of &lt;em&gt;Open Source&lt;/em&gt; by it is unworkable. Correcting millions of people
+that “using it wrong” is not a good strategy for accomplishing anything
+meaningful – certainly not for promoting the use of Open Source.&lt;/p&gt;
+
+&lt;p&gt;Some say we need a new term for Open Source software that doesn’t meet all the
+OSD criteria. Supplanting a wide-used term with some neologism is a very hard
+task, and I’m doubtful that it will be successful. Wikipedia has
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Source-available_software&quot;&gt;Source-available software&lt;/a&gt;, but it seems like a clunky term and the
+difference is subtle and lost on many. I’ve rarely seen it used.&lt;/p&gt;
+
+&lt;p&gt;Is it messy, confusing, and annoying? Sure. But language employed by millions of
+people across different cultures and views always is. In 2020 the Free Software
+Foundation is still trying to get people to say &lt;a href=&quot;https://www.gnu.org/proprietary/proprietary-insecurity.en.html&quot;&gt;“crackers” instead of
+“hackers”&lt;/a&gt; and have &lt;a href=&quot;https://www.gnu.org/philosophy/words-to-avoid.html&quot;&gt;an entire list of common things you should be
+saying different&lt;/a&gt;. The entire thing is a massive turn-off for anyone
+concerned with things that actually matter.&lt;sup id=&quot;fnref:lang&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:lang&quot; class=&quot;footnote&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;So did the OSI invent the term “Open Source”? That’s a tricky question because
+what does “inventing a term” mean, especially when the term is composed of a
+common adjective and noun?&lt;/p&gt;
+
+&lt;p&gt;If we look at Google ngram we can see that open source was already &lt;a href=&quot;https://books.google.com/ngrams/graph?content=open+source%2Copen-source%2Cfree+software&amp;amp;case_insensitive=on&amp;amp;year_start=1970&amp;amp;year_end=2008&amp;amp;corpus=15&amp;amp;smoothing=3&amp;amp;share=&amp;amp;direct_url=t4%3B%2Copen%20source%3B%2Cc0%3B%2Cs0%3B%3BOpen%20Source%3B%2Cc0%3B%3Bopen%20source%3B%2Cc0%3B%3BOpen%20source%3B%2Cc0%3B.t4%3B%2Copen%20-%20source%3B%2Cc0%3B%2Cs0%3B%3Bopen%20-%20source%3B%2Cc0%3B%3BOpen%20-%20source%3B%2Cc0%3B%3BOpen%20-%20Source%3B%2Cc0%3B.t4%3B%2Cfree%20software%3B%2Cc0%3B%2Cs0%3B%3Bfree%20software%3B%2Cc0%3B%3BFree%20Software%3B%2Cc0%3B%3BFree%20software%3B%2Cc0%3B%3BFREE%20SOFTWARE%3B%2Cc0&quot;&gt;gaining
+traction in the mid-90s&lt;/a&gt;.&lt;sup id=&quot;fnref:osint&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:osint&quot; class=&quot;footnote&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt; If you look at the &lt;a href=&quot;https://books.google.com/ngrams/graph?content=open+source%2COpen+Source%2COpen+source%2Copen-source&amp;amp;year_start=1970&amp;amp;year_end=2008&amp;amp;corpus=15&amp;amp;smoothing=3&amp;amp;share=&amp;amp;direct_url=t1%3B%2Copen%20source%3B%2Cc0%3B.t1%3B%2COpen%20Source%3B%2Cc0%3B.t1%3B%2COpen%20source%3B%2Cc0%3B.t1%3B%2Copen%20-%20source%3B%2Cc0&quot;&gt;case-sensitive
+version&lt;/a&gt; then you can see that “Open Source” specifically got a big
+boost in 2003. Below you can see some usage of “open source” I found in a quick
+Usenet search; I’m sure there are more examples to be found on mailing lists,
+old websites, etc. but searching that is not so easy.&lt;/p&gt;
+
+&lt;p&gt;I have no doubt that Christine Peterson is honest in her retelling of &lt;a href=&quot;https://opensource.com/article/18/2/coining-term-open-source-software&quot;&gt;How I
+coined the term ‘Open Source’&lt;/a&gt;; she probably came up with it
+independently, or perhaps she had seen it before and subconsciously “remembered”
+the term.&lt;/p&gt;
+
+&lt;p&gt;“Open” was (and remains) a common adjective added to all sorts of stuff: Open
+Linux, OpenDOS, OpenGL, OpenBSD, OpenStep, X/Open (later: Open Software
+Foundation, The Open Group), Common Open Software Environment, OpenVMS, etc.
+etc. etc.&lt;/p&gt;
+
+&lt;p&gt;In short, the origins of “Open source” as a term are a lot more convoluted than
+is often made out to be. The OSI was certainly important popularizing the term,
+but this doesn’t mean they single-handedly invented it, much less have control
+over how anyone uses it.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Various usages of &lt;em&gt;open source&lt;/em&gt; found in a quick Usenet search with Google
+Groups. I tried downloading the Internet Archives for better searching/numbers,
+but that doesn’t seem to work at the moment, so this will have to do.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/alt.religion.computers/aJfOfVrUkHM/uXNuWwufDU0J&quot;&gt;1990&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;BSD’s open source policy meant that user developed software&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/sci.crypt/_696x9zT8MI/AMO9lJLuQwIJ&quot;&gt;1990&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;My primary concern is that those policies must comply with the U.S.
+Constitution and thereby allow the free dissemination of open-source/published
+material – including software (ESPECIALLY FREE SOFTWARE) which is developed
+directly from published algorithms.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/lojban/g8xNNRIuago/cz0Qu9-oA_4J&quot;&gt;1991&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;For U**X, apparently some vendors distinguish in price or availability between
+human-readable-source, and encoded-but-compilable- source which isn’t very
+readable but is only intended to make the program portable to systems other
+than the vendor’s standard version. If you specified U**X source in #2,
+indicate interest and price for either or both versions.  Note that because of
+version control, we may be slower to releasing an open-source version.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/gnu.misc.discuss/JGycfvQTXFU/Lckx5_NILpUJ&quot;&gt;1991&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;One can still choose to do the port from the open source in the traditional way.&lt;/p&gt;
+
+  &lt;p&gt;[..]&lt;/p&gt;
+
+  &lt;p&gt;Now it is perfectly reasonable for customers (and prospective customers) to
+lobby HP to release source code with its product.&lt;/p&gt;
+
+  &lt;p&gt;[..]&lt;/p&gt;
+
+  &lt;p&gt;Open source for a user-oriented package like ‘WordPerfect’ might create more
+problems than it would solve.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.os.linux/06y4cr6wr7o/fZPOOaIMCCYJ&quot;&gt;1993&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The GPL and the open source code have made Linux the success that it is.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/forum/#!msg/comp.os.ms-windows.programmer.win32/WoBvPB0U9Co/wXfpq5nEJTYJ&quot;&gt;1993&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Anyone else into “Source Code for NT”? The tools and stuff I’m writing for NT
+will be released with source. If there are “proprietary” tricks that MS wants
+to hide, the only way to subvert their hoarding is to post source that
+illuminates (and I don’t mean disclosing stuff obtained by a non-disclosure
+agreement). Open Source is best for everyone in the long run.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.sys.mac.wanted/e8zEy_lUJzM/y7uAkLzp3FgJ&quot;&gt;1993&lt;/a&gt;
+– this one is interesting, as it very explicitly uses “open source” in a way
+that’s not compatible with the OSD:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The closest comparable product sold by Softek today costs $4000 including open source.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.sys.ibm.pc.hardware.video/xpsh-qviIDg/WccQsMeWgbAJ&quot;&gt;1994&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This agreement would prevent open distribution of source code, so the XFree86
+team has chosen to not support Diamond products rather than give up open
+source code distribution.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.lang.pascal/E1KKvudEEck/YWawkPwIF_wJ&quot;&gt;1994&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I think that you are much better off with open source code than with .TPU
+files or obfuscated source.  When you find bugs or need to make changes
+because conditions have changed, you can do the fixes.  You won’t be relying
+on someone who may have gone out of business or lost interest in the code.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.sys.mac.programmer/wL7-5b8cbqo/rHbk90cySMEJ&quot;&gt;1994&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The main problem is that the mac doesn’t really have any large scale open
+source projects.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.dsp/iQnkdJM6shI/kmKxr353f5IJ&quot;&gt;1995&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I need open-source code or open-software for KL(Karhunen and Loeve) transform
+of images. Does anyone know of site information to get this?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.graphics.raytracing/6oZasTgNo1A/Vv2qZq-Ha4sJ&quot;&gt;1995&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Can anyone direct me to a modeler that has an open source code. Anything will
+do.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.xent.com/FoRK-archive/fall96/0269.html&quot;&gt;1996&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Caldera announces open source code model for dos&lt;/p&gt;
+
+  &lt;p&gt;[..]&lt;/p&gt;
+
+  &lt;p&gt;Caldera believes an open source code model benefits the industry in many ways.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/d/msg/comp.os.linux.misc/PuxwpzAQJhw/yG-jwNypIvsJ&quot;&gt;1997&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Canopy provides open source code for former Willows crossBplatform technology:
+Windows API/ABI&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;postscript&quot; role=&quot;doc-endnotes&quot;&gt;&lt;strong&gt;Footnotes&lt;/strong&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;At least this time it’s reasonably civil; last time people got accused of
+  deliberately spreading misinformation and trying to deceive people… &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:lang&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;I dislike language pedantry in general; “irregular” is a word, split
+     infinitives is perfectly correct English, and so forth. Everyone has
+     their own likes and dislikes when it comes to language, which is only
+     natural, but don’t pretend your preferences are authoritative, and
+     certainly don’t badger people when they don’t adhere to them. &lt;a href=&quot;#fnref:lang&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:osint&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Part of this is probably that “open source” is also used in the
+      intelligence community: &lt;a href=&quot;https://en.wikipedia.org/wiki/Open-source_intelligence&quot;&gt;Open source intelligence&lt;/a&gt;,
+      which especially in the past was typically just called “open source”. &lt;a href=&quot;#fnref:osint&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>Some zshrc tricks</title>
+      <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/zshrc.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/zshrc.html</guid>
+      <category>Unix</category>
+      <description>&lt;p&gt;Some useful “tricks” from my &lt;code&gt;~/.zshrc&lt;/code&gt;; &lt;a href=&quot;https://github.com/arp242/dotfiles/blob/master/zsh/zshrc&quot;&gt;full version here&lt;/a&gt;. Not all of
+this is “copy/paste ready” but it should give you some inspiration to build
+your own stuff :-)&lt;/p&gt;
+
+&lt;p&gt;General tip: I found the &lt;a href=&quot;http://zsh.sourceforge.net/Guide/&quot;&gt;User’s Guide to ZSH&lt;/a&gt; very helpful when learning
+about zsh. It hasn’t been updated in a while and isn’t even finished, but found
+it’s quite well-written and useful. Go read it!&lt;/p&gt;
+
+&lt;h2 id=&quot;directory-shortcuts&quot;&gt;Directory shortcuts &lt;a href=&quot;#directory-shortcuts&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Define directory shortcuts with &lt;code&gt;hash -d&lt;/code&gt; so you can use &lt;code&gt;cd ~x&lt;/code&gt; and &lt;code&gt;vim
+~x/file&lt;/code&gt; instead of &lt;code&gt;cd /very/long/and/often/accessed/path&lt;/code&gt;. Some examples:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;# Directory shortcuts
+hash -d pack=$HOME/.cache/vim/pack/plugins/start
+hash -d vim=/usr/share/vim/vim82
+hash -d d=$HOME/code/arp242.net/_drafts
+hash -d p=$HOME/code/arp242.net/_posts
+hash -d go=/usr/lib/go/src
+hash -d c=$HOME/code
+hash -d gc=$HOME/code/goatcounter
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So if I have an idea for a new post here I just type &lt;code&gt;vi ~d/$(td)-idea.markdown&lt;/code&gt;
+and presto (td is &lt;code&gt;alias td='echo $(date +%Y-%m-%d)'&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;If you put &lt;code&gt;%~&lt;/code&gt; in your &lt;code&gt;PROMPT&lt;/code&gt; then the short version will show up there, too:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ PROMPT='[%~]$ '
+[~]$ cd ~/.cache/vim/pack/plugins/start
+[~/.cache/vim/pack/plugins/start]$ hash -d pack=$HOME/.cache/vim/pack/plugins/start
+[~pack]$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A related little helper I have is &lt;code&gt;hashcwd&lt;/code&gt;, to quickly add the current
+directory in case you find yourself in a (very) long path taking up all your
+screen space or want to make a temporary “bookmark”:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;hashcwd() { hash -d &quot;$1&quot;=&quot;$PWD&quot; }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;[~/go/pkg/mod/golang.org/x/tools@v0.0.0-20200519205726-57a9e4404bf7/go/analysis]$ hashcwd a
+[~a]$ 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;filter-history-completion-with-what-you-typed&quot;&gt;Filter history completion with what you typed &lt;a href=&quot;#filter-history-completion-with-what-you-typed&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Make up and down arrow take what’s typed on the commandline in to account. E.g.
+if you type &lt;code&gt;ls&lt;/code&gt; and press up it will only find history entries that start with
+&lt;code&gt;ls&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+bindkey '^[[A'  up-line-or-beginning-search    # Arrow up
+bindkey '^[OA'  up-line-or-beginning-search
+bindkey '^[[B'  down-line-or-beginning-search  # Arrow down
+bindkey '^[OB'  down-line-or-beginning-search
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I use this a lot, and is the #1 thing I miss if it’s not available.&lt;/p&gt;
+
+&lt;p&gt;You can also use &lt;code&gt;history-incremental-search-backward&lt;/code&gt; to search the entire
+commandline, but I never cared for it much as &lt;code&gt;ls&lt;/code&gt; will match a&lt;strong&gt;ls&lt;/strong&gt;amixer,
+too&lt;strong&gt;ls&lt;/strong&gt;, t&lt;strong&gt;ls&lt;/strong&gt;, tota&lt;strong&gt;ls&lt;/strong&gt;, docker &lt;strong&gt;ls&lt;/strong&gt;, and probably more.&lt;/p&gt;
+
+&lt;h2 id=&quot;easier-path&quot;&gt;Easier PATH &lt;a href=&quot;#easier-path&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Many systems link &lt;code&gt;/bin&lt;/code&gt; to &lt;code&gt;/usr/bin&lt;/code&gt; and storing all of those in PATH isn’t
+too useful. Some helper functions to prepend or append to &lt;code&gt;PATH&lt;/code&gt; which also
+check if the path exists so it’s easier to write a portable zshrc:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;typeset -U path  # No duplicates
+path=()
+
+_prepath() {
+    for dir in &quot;$@&quot;; do
+        dir=${dir:A}
+        [[ ! -d &quot;$dir&quot; ]] &amp;amp;&amp;amp; return
+        path=(&quot;$dir&quot; $path[@])
+    done
+}
+_postpath() {
+    for dir in &quot;$@&quot;; do
+        dir=${dir:A}
+        [[ ! -d &quot;$dir&quot; ]] &amp;amp;&amp;amp; return
+        path=($path[@] &quot;$dir&quot;)
+    done
+}
+
+_prepath /bin /sbin /usr/bin /usr/sbin /usr/games
+_prepath /usr/pkg/bin   /usr/pkg/sbin   # NetBSD
+_prepath /usr/X11R6/bin /usr/X11R6/sbin # OpenBSD
+_prepath /usr/local/bin /usr/local/sbin
+
+_prepath &quot;$HOME/go/bin&quot;                # Go
+_prepath &quot;$HOME/.local/bin&quot;            # My local stuff.
+if [[ -d &quot;$HOME/.gem/ruby&quot; ]]; then    # Ruby
+    for d in &quot;$HOME/.gem/ruby/&quot;*; do
+        _postpath &quot;$d/bin&quot;;
+    done
+fi
+
+unfunction _prepath
+unfunction _postpath
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;easier-alias&quot;&gt;Easier alias &lt;a href=&quot;#easier-alias&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;A little &lt;code&gt;_exist&lt;/code&gt; helper to check if a binary exists is similarly useful for a
+portable zshrc:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;_exists() { (( $+commands[$1] )) }
+
+_exists vim      &amp;amp;&amp;amp; export EDITOR=vim
+_exists less     &amp;amp;&amp;amp; export PAGER=less
+_exists bsdtar   &amp;amp;&amp;amp; alias tar='bsdtar'
+_exists htop     &amp;amp;&amp;amp; alias top='htop'
+
+if _exists vim; then
+    alias vim=&quot;vim -p&quot;
+    alias vi=&quot;vim&quot;
+fi
+
+unfunction _exists
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;edit-ag-and-grep-results&quot;&gt;Edit ag and grep results &lt;a href=&quot;#edit-ag-and-grep-results&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;“ag edit” and “grep edit” to quickly open stuff found with &lt;code&gt;ag&lt;/code&gt; or &lt;code&gt;grep&lt;/code&gt; in
+Vim:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;# &quot;ag edit&quot; and &quot;grep edit&quot;.
+age() {
+    vim \
+        +'/\v'&quot;${1/\//\\/}&quot; \
+        +':silent tabdo :1 | normal! n' \
+        +':tabfirst' \
+        -p $(ag &quot;$@&quot; | cut -d: -f1 | sort -u)
+}
+grepe() {
+    vim \
+        +'/\v'&quot;${1/\//\\/}&quot; \
+        +':silent tabdo :1 | normal! n' \
+        +':tabfirst' \
+        -p $(grep &quot;$@&quot; | cut -d: -f1 | sort -u)
+}
+
+$ ag pattern
+[.. check if results look right ..]
+
+$ age pattern
+[open in Vim]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This will also search for the pattern with &lt;code&gt;/pattern&lt;/code&gt; in Vim and move to the
+first match for every tab (yes, I use Vim tabs, in spite of Vim-purist
+philosophy that they’re bad).&lt;/p&gt;
+
+&lt;p&gt;Caveat: the Vim regexp syntax isn’t quite the same as extended POSIX or PCRE, so
+the pattern doesn’t always work as expect in Vim. It works most of the time
+though.&lt;/p&gt;
+
+&lt;p&gt;Caveat 2: sometimes I use this to check if I have the expected results:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ ag pattern | less
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then I modify it &lt;code&gt;age&lt;/code&gt; while forgetting to remove the &lt;code&gt;less&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ age pattern | less
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Vim will not like this 😅 Not sure if we can write something to be a bit smarter
+about this. Ideally &lt;em&gt;I&lt;/em&gt; would be smarter, but alas I am not.&lt;/p&gt;
+
+&lt;h2 id=&quot;global-aliases&quot;&gt;Global aliases &lt;a href=&quot;#global-aliases&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;You can define global aliases with &lt;code&gt;alias -g&lt;/code&gt;, which will work everywhere. I use
+it to make piping stdout and stderr to less or Vim a bit easier:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;alias -g VV=' |&amp;amp; vim -'
+alias -g LL=' |&amp;amp; less'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ ls LL
+$ go test -v VV
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Bonus Vim tip&lt;/em&gt;: convert a buffer to “scratch” with:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-vim&quot;&gt;&lt;code&gt;&quot; Convert buffer to and from scratch.
+command S
+    \  if &amp;amp;buftype is# 'nofile' | setl swapfile buftype= bufhidden=
+    \| else                     | setl noswapfile buftype=nofile bufhidden=hide | endif
+    \| echo printf('swapfile=%s buftype=%s bufhidden=%s', &amp;amp;swapfile, &amp;amp;buftype, &amp;amp;bufhidden)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then use:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;alias -g VV=' |&amp;amp; vim +S -'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Use &lt;code&gt;:S&lt;/code&gt; from Vim to make it a regular buffer again.&lt;/p&gt;
+
+&lt;h2 id=&quot;playground-environment&quot;&gt;Playground environment &lt;a href=&quot;#playground-environment&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Set up a quick “tmp go” environment for testing; I mostly use Go these days, but
+this can be done for other languages as well:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;tgo() {
+    tmp=&quot;$(mktemp -p /tmp -d &quot;tgo_$(date +%Y%m%d)_XXXXXXXX&quot;)&quot;
+    printf 'package main\n\nfunc main() {\n\n}\n' &amp;gt; &quot;$tmp/main.go&quot;
+    printf 'package main\n\nfunc TestMain(t *testing.T) {\n\n}\n\n' &amp;gt; &quot;$tmp/main_test.go&quot;
+    printf 'func BenchmarkMain(b *testing.B) {\n\tb.ReportAllocs()\n\tfor n := 0; n &amp;lt; b.N; n++ {\n\t}\n}\n' &amp;gt;&amp;gt; &quot;$tmp/main_test.go&quot;
+
+    printf 'module %s\n' &quot;$(basename &quot;$tmp&quot;)&quot; &amp;gt; &quot;$tmp/go.mod&quot;
+    (
+        cd &quot;$tmp&quot;
+        vim -p main.go main_test.go
+        echo &quot;$tmp&quot;
+    )
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It will create a &lt;code&gt;main.go&lt;/code&gt; and &lt;code&gt;main_test.go&lt;/code&gt; in &lt;code&gt;/tmp/&lt;/code&gt; with some useful
+boilerplate and a &lt;code&gt;go.mod&lt;/code&gt; so it’s recognized as a module (required to get
+&lt;code&gt;gopls&lt;/code&gt; etc. to work well) and opens the whole shebang in Vim.&lt;/p&gt;
+
+&lt;p&gt;This &lt;em&gt;won’t&lt;/em&gt; be removed after Vim exits on purpose, so you won’t lose your
+prototype.&lt;/p&gt;
+
+&lt;h2 id=&quot;run-stored-sql-queries&quot;&gt;Run stored SQL queries &lt;a href=&quot;#run-stored-sql-queries&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;I have a bunch of scripts in &lt;code&gt;~/docs/sql/scripts&lt;/code&gt; to get some stats and whatnot
+from PostgreSQL. This adds a &lt;code&gt;sql&lt;/code&gt; command with tab-completion
+to that directory and runs &lt;code&gt;psql&lt;/code&gt; with some useful flags:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;sql() {
+    cmd=&quot;psql -X -P linestyle=unicode -P null=NULL goatcounter&quot;
+    f=&quot;$HOME/docs/sql/scripts/$1&quot;
+    if [[ -f &quot;$f&quot; ]]; then
+        eval &quot;$cmd&quot; &amp;lt; &quot;$HOME/docs/sql/scripts/$1&quot; | less -S
+    else
+        eval &quot;$cmd&quot; &amp;lt;&amp;lt;&amp;lt; &quot;$1&quot; | less -S
+    fi
+}
+_sql() { _files -W ~/docs/sql/scripts }
+compdef _sql sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If the file doesn’t exist then the query is just run:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ sql ls-inactive.sql
+
+$ sql 'select * from sites'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;less -S&lt;/code&gt; prevents wrapping long lines, which I find more useful for tabular
+output.&lt;/p&gt;
+
+&lt;h2 id=&quot;shortcuts-to-edit-commandline&quot;&gt;Shortcuts to edit commandline &lt;a href=&quot;#shortcuts-to-edit-commandline&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Custom mappings to preform some common substitutions, use &lt;code&gt;&amp;lt;C-r&amp;gt;&lt;/code&gt; to prepend
+&lt;code&gt;doas&lt;/code&gt; to the commandline, or &lt;code&gt;&amp;lt;C-r&amp;gt;&lt;/code&gt; to replace the first word with &lt;code&gt;rm&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;insert_doas() { zle beginning-of-line; zle -U &quot;doas &quot; }
+replace_rm()  { zle beginning-of-line; zle delete-word; zle -U &quot;rm &quot; }
+
+zle -N insert-doas insert_doas
+zle -N replace-rm replace_rm
+
+bindkey '^s'    insert-doas
+bindkey '^r'    replace-rm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>GoatCounter 1.2: unique visits, events, password auth, and more</title>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/goatcounter-1.2.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/goatcounter-1.2.html</guid>
+      <category>GoatCounter</category>
+      <description>&lt;p&gt;GoatCounter 1.2 is out. Some highlights:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Unique visit tracking&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;GoatCounter now tracks “visits” in addition to pageviews. This is probably the
+most-requested feature.&lt;/p&gt;
+
+    &lt;p&gt;The way this works is that a hash of the IP address, User-Agent, siteID, and a
+salt (which changes every 8 hours) is generated for every pageview and used to
+link up individual pageviews during this 8-hours. After that, everything is
+“forgotten” and subsequent visits are not connected.&lt;/p&gt;
+
+    &lt;p&gt;There’s a longer doc on how this works and the rationale at &lt;a href=&quot;https://github.com/zgoat/goatcounter/blob/master/docs/sessions.markdown&quot;&gt;docs/sessions.markdown&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Password authentication&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;I thought that email-based authentication would be simpler and more
+user-friendly, but I was wrong about that (&lt;a href=&quot;/email-auth.html&quot;&gt;some context&lt;/a&gt;).
+This version supports password authentication, and the email auth will be
+removed in the next version as there’s little point to keep maintaining it,
+and removing it will reduce the maintenance burden.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Bot detection&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;A lot of web traffic is generated by bots, but you rarely want this to show up
+in your analytics stats.&lt;/p&gt;
+
+    &lt;p&gt;Blocking 100% of bots that go out of their way to mark as regular browsers is
+almost impossible without invasive profiling, but the current solution seems
+to work better than most other (public) ones I could find. Google Analytics
+probably still does a better job at this, as they can link up data from
+reCAPTCHA and whatnot, but &lt;em&gt;not&lt;/em&gt; doing this is probably considered an
+advantage by most users ;-)&lt;/p&gt;
+
+    &lt;p&gt;I spent a &lt;em&gt;long&lt;/em&gt; time looking at existing solutions and the GoatCounter logs;
+it’s one of those unsexy things that doesn’t really show in the UI 😅 There’s
+probably still a bit that can be improved here; it’s an on-going process.&lt;/p&gt;
+
+    &lt;p&gt;The pageviews are still stored in the database, just marked as “bot” and not
+shown anywhere except in the export. I might make an option for showing them
+in the future.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Events&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;There’s now better support to track events, such as people following an
+external link or clicking a button. The count.js script automatically binds to
+elements with the &lt;code&gt;data-goatcounter-click&lt;/code&gt; attribute set, and they’re marked
+as “event” in the backend. See the “site code” docs in the backend for
+details.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Better support for campaigns&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;The tracking script now sends the query parameters separately so it’s easier
+to track campaign parameters from the URL, such as &lt;code&gt;utm_campaign&lt;/code&gt; and &lt;code&gt;ref&lt;/code&gt;.
+If such a parameter is present it will override the referrer from the HTTP
+header.&lt;/p&gt;
+
+    &lt;p&gt;This also means people should see fewer duplicates such as &lt;code&gt;/path&lt;/code&gt; and
+&lt;code&gt;/path?utm_source=some-random-newsletter-that-linked-your-site&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;Still some work to be done to give some better insight in this, such as
+separating out “top referrers” and “campaigns”.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;WordPress plugin&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;There’s now a &lt;a href=&quot;https://github.com/zgoat/goatcounter-wordpress&quot;&gt;WordPress plugin&lt;/a&gt;; turned out that adding GoatCounter to
+WordPress isn’t as easy as just “paste site code in some setting field” as
+WordPress doesn’t really offer such a field.&lt;/p&gt;
+
+    &lt;p&gt;It’s pretty basic (I’m not a WordPress dev), and I’ll slowly continue adding
+some more options to make several common customisations easier.&lt;/p&gt;
+
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Many small improvements and bug fixes&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;It’s almost 2 months of work, and there have been many small changes, fixes,
+and improvements. I didn’t keep track of them all 😅&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As always these changes have been live on goatcounter.com as they’re being
+developed in CI fashion.&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s next? &lt;a href=&quot;#whats-next&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;I’d like to make more frequent smaller releases; 1.2 has a few big changes that
+impact quite a lot. One reason I waited a bit with the 1.2 release is so that I
+can have a “big” release for “advertising” purposes 😎 Right now the only
+advertising I’ve done was a Lobsters and HN thread in January, which gave me a
+surprising amount traffic, but now is probably the time to step up the
+advertisement/marketing thing a wee bit. Having a product is great and all, but
+if no one has ever heard of it it’s kinda useless (also see financials below).&lt;/p&gt;
+
+&lt;p&gt;Some specific things on the short-term agenda:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;I’m really pushing the limits of the flexbox-based bar charts; showing both
+unique visits and pageviews in the same chart is a bit clunky (although it
+does work), and having thousands of DOM elements can actually be quite slow.&lt;/p&gt;
+
+    &lt;p&gt;I did a review of various JavaScript charting libraries, and decided to go
+with d3, since this gives me a lot of power without having to include a
+megabyte of JavaScript.&lt;/p&gt;
+
+    &lt;p&gt;This will also give me the opportunity to improve the a11y of the charts,
+since they’re not very usable with a screen reader right now.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add OS stats, as well as improve the User-Agent parsing. The library I use for
+this now is pretty suboptimal, and there doesn’t seem to be a better one for
+Go right now. I think I’ll have to write my own one (&lt;em&gt;update since I wrote this
+last week: I already made &lt;a href=&quot;https://github.com/zgoat/gadget/&quot;&gt;a library&lt;/a&gt; and &lt;a href=&quot;https://github.com/zgoat/goatcounter/pull/261&quot;&gt;a PR&lt;/a&gt; for this&lt;/em&gt;).&lt;/p&gt;
+
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Send daily/weekly/monthly email reports, so you don’t have to log in every day
+to see how your site is doing. Shouldn’t be too hard to add, and quite a few
+people have requested this.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Start thinking about adding “goals” and “funnels”; now that we track visits,
+we can have some insight in this. Probably not too hard technically, just need
+to think about a good UI.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;status-of-goatcountercom-financials&quot;&gt;Status of goatcounter.com, financials &lt;a href=&quot;#status-of-goatcountercom-financials&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;GoatCounter has about 600 active sites – where “active” means “received at last
+one pageview in the last 3 days” – and 1,000 sites in total. There are about
+75,000 pageviews/day on average, with the biggest spike being 745,033 in a day.&lt;/p&gt;
+
+&lt;p&gt;I’ve been meaning to create a maintained “financials” page, but haven’t gotten
+around to it yet. A quick overview of the financials as of May 10th:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;Income
+
+  Personal plans      23, € 44
+  Personal plus plans  4, € 20
+  Business plans       3, € 45
+  GitHub Sponsors     15, €142 (×2 from pledged amount, since GitHub doubles it)
+  One time donations   2, € 58
+  Patreon             16, € 24 (platform costs already deducted)
+
+Expenses
+
+  Stripe costs           -€ 14
+  Linode VPS             -€ 22
+  Heroku                 -€  7 (Chat widget; easier than running NodeJS myself)
+
+Total revenue: €290
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Not too bad considering it’s fairly new and I did almost no marketing at all,
+but to make it truly sustainable roughly €2,000/month (before tax) is needed, so
+still some way to go 😅&lt;/p&gt;
+
+&lt;p&gt;There are about 61 people who contribute financially, so it’s a subscriber rate
+of about 9%. I’m not entirely sure what an average free/subscriber ratio is for
+these kind of things, but 9% seems fairly good to me.&lt;/p&gt;
+
+&lt;p&gt;One piece of rather good news is that I applied for a grant from &lt;a href=&quot;https://nlnet.nl/PET/&quot;&gt;NLnet’s NGI0
+“Privacy Enhancing Technologies”&lt;/a&gt; fund and got approved, giving me €25,000
+over the next year or so. This is pretty critical because without it I’d have to
+find a regular day-job sooner rather than later since I haven’t had any serious
+income since February last year, and my bank account is not exactly at an
+all-time high 😬&lt;/p&gt;
+
+&lt;p&gt;This will allow me to work on GoatCounter for the next year if I’m careful
+enough with my money, by which time it should hopefully be profitable enough to
+be sustainable.&lt;/p&gt;
+
+&lt;p&gt;All in all, things seem to be going in the right direction, somewhat to my own
+surprise 😅&lt;/p&gt;
+
+</description>
+    </item>
+    <item>
+      <title>Experiences with email-based login</title>
+      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/email-auth.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/email-auth.html</guid>
+      <category>GoatCounter</category>
+      <category>Email</category>
+      <category>UX</category>
+      <description>&lt;p&gt;GoatCounter 1.2 (due to be released later today or tomorrow) will switch from
+email-based authentication to password authentication.&lt;/p&gt;
+
+&lt;p&gt;The way it originally worked is that you would sign up with your email, and to
+login a “magic link” with a secret token would be emailed to you, which will set
+the cookie and log you in.&lt;/p&gt;
+
+&lt;p&gt;I did it like this after a &lt;a href=&quot;https://lobste.rs/s/kkfmoi/getting_toasty_observations_on_burnout#c_9d1rd6&quot;&gt;suggestions/discussion at Lobste.rs&lt;/a&gt; last year,
+and I thought it would be easier to implement (it’s not) and easier for users
+(it’s not).&lt;/p&gt;
+
+&lt;p&gt;Some problems I encountered:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Some (perhaps even many?) people use password managers, and for them the whole
+email thing is an annoyingly different workflow. The built-in Firefox password
+manager has actually seen quite a few nice improvements recently, making it
+easier than ever.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Getting 100% of emails delivered is hard and requires quite some setup.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s harder to get the self-hosted setup running, since emails are a hard
+requirement.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If you lose access to your email, you lose access to your account.&lt;/p&gt;
+
+    &lt;p&gt;One issue I had is people misspelling their email during signup, so they were
+immediately locked out of their account. This is an issue especially on
+GoatCounter since people choose a domain code (&lt;code&gt;mycode.goatcounter.com&lt;/code&gt;)
+during signup, and this code is now “taken” if they choose to re-register.&lt;/p&gt;
+
+    &lt;p&gt;It’s pretty hard to test if an email is deliverable without sending an actual
+email (and even then you don’t know, as the receiving server may silently drop
+it or classify it as spam).&lt;/p&gt;
+
+    &lt;p&gt;I got quite a few “undeliverable email” returns from the “please set a
+password”-announcement I sent this morning, and these people will never be
+able to login unless they email me and ask me to change their email manually.
+I presume these are inactive accounts, but still…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;I found it annoying to use myself:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Go to arp242.goatcounter.com&lt;/li&gt;
+      &lt;li&gt;Enter my email.&lt;/li&gt;
+      &lt;li&gt;Go to FastMail.&lt;/li&gt;
+      &lt;li&gt;Wait 10 seconds to 5 minutes for the email to arrive.&lt;/li&gt;
+      &lt;li&gt;Click the link, opening a new logged-in goatcounter tab.&lt;/li&gt;
+      &lt;li&gt;Close the old goatcounter tab where I filled in my email and FastMail tab.&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;Whereas with password auth it’s:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Go to arp242.goatcounter.com&lt;/li&gt;
+      &lt;li&gt;Enter my email and password.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s quite a bit of code to deal with various edge cases, allowing people to
+configure the From address, etc. The code is neither simpler nor shorter than
+just using password auth.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It’s harder in development. I added some special code to show the signin link
+when using &lt;code&gt;-dev&lt;/code&gt; so I didn’t have to copy it from the GoatCounter logs, but
+meh.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The signin links doesn’t always work: they’re valid only once and I &lt;em&gt;think&lt;/em&gt;
+some “preview” or “prefetch” logic accessed the URL and invalidated it, but I
+never quite got to the bottom of it in spite of quite a bit of effort (I never
+experienced it myself, just got user reports).&lt;/p&gt;
+
+    &lt;p&gt;This is fixable by allowing the link to be re-used within 15 minutes or so,
+but this was really the straw that made me implement the password auth.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In some other use cases it might work better, but for GoatCounter it didn’t
+really work very well (the Lobsters thread linked above has some people report
+different experiences).&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;I considered allowing both email and password auth, but that’s more code to
+maintain and more flags in the CLI, so figured it’s best to just remove the
+email auth. I’m not sure if anyone truly likes it.&lt;/p&gt;
+
+&lt;p&gt;In my own experience outside of GoatCounter as a user I find logging in with
+some magic token (Medium sends emails, Tinder sends SMS) annoying in general.
+Then again, I also find logging in with a strong password on mobile annoying and
+the value of some token-based auth is probably greater there. I’m not sure what
+the best solution is here, but I do know that forcing &lt;em&gt;everyone&lt;/em&gt; to use
+token-based authentication is probably not a good idea.&lt;/p&gt;
+
+&lt;p&gt;The Firefox password sync solved most of my issues here. I was wary of syncing
+passwords from the browser for a long time, but found myself changing and
+re-using passwords just to log in on mobile, which is even less secure.&lt;/p&gt;
+
+&lt;p&gt;I might bring back some token-based auth in the future as an auxiliary method,
+sending tokens over SMS or Telegram is probably easier here. But for now,
+there’s bigger fish to fry in GoatCounter.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Storing files in .git</title>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/dot-git.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/dot-git.html</guid>
+      <category>Programming</category>
+      <description>&lt;p&gt;When working on projects I often want to keep some private files around: “TODO”
+notes, work-in-progress commit messages, various reference files, etc.&lt;/p&gt;
+
+&lt;p&gt;For a long time I stored everything in &lt;code&gt;$HOME&lt;/code&gt;, which was typically even more
+cluttered than my actual home. My &lt;code&gt;$HOME/TODO&lt;/code&gt; was just a mess of random notes
+about random stuff.&lt;/p&gt;
+
+&lt;p&gt;At some point I realized you can just store stuff in the &lt;code&gt;.git&lt;/code&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;I typically have a &lt;code&gt;.git/todo&lt;/code&gt; which contains carious “oh I thought of this
+thing, lemme quickly write that down”-kind of notes. A lot of that doesn’t need
+to be in an issue tracker; half the time it’s just something I need to check to
+be sure, or something that doesn’t pan out.&lt;/p&gt;
+
+&lt;p&gt;I write commit messages in &lt;code&gt;.git/draft&lt;/code&gt;, and then &lt;code&gt;git commit -eF .git/draft&lt;/code&gt; to
+use it.&lt;/p&gt;
+
+&lt;p&gt;For my bot detection library I have a long list of &lt;code&gt;User-Agent&lt;/code&gt; headers, IP
+addresses (and reverse lookups/internet registry data) to detect patterns. It’s
+clearly part of the project, but won’t be readily usable for anyone else and
+doesn’t really need to be in git itself.&lt;/p&gt;
+
+&lt;p&gt;I figured this was a small handy tip worth sharing ;-)&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>The problems with hard wrapping email body text</title>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/email-wrapping.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/email-wrapping.html</guid>
+      <category>Email</category>
+      <category>UX</category>
+      <description>&lt;p&gt;I think that hard-wrapping email body at 78&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt; characters is not a good idea,
+as it makes it harder for people to read your emails. The problem is that when
+you hard-wrap you mandate a minimum width, and the email will look borked for
+readers with a screen that’s smaller than 78 characters. So something like this:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;I am a coffee broker and I live at 37 Laurier Canal. It is not my habit to
+write novels or similar things, and therefore it took some time before I
+decided to order some reams of paper and started writing the book that you,
+dear reader, have just opened, and that you should read if you are a coffee
+broker, or if you are anything else. 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Appears like this on my phone:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;I am a coffee broker and I live at 37 Laurier
+Canal. It is not my habit to
+write novels or similar things, and therefore it
+took some time before I
+decided to order some reams of paper and
+started writing the book that you,
+dear reader, have just opened, and that you
+should read if you are a coffee
+broker, or if you are anything else. 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The forced linebreaks are intermingled with the wrapping linebreaks, and there
+is no way the client can figure out if a hard wrap is meaningful and can be
+safely omitted; the result is not great and rather annoying to read. This is a
+common issue on phones, but also on desktop clients with some UI chrome and a
+small(ish) reading pane such as the 3-pane “Outlook layout”.&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Wrapping by character count is incorrect with proportional (non-monospace) fonts
+anyway, which is what the overwhelming majority of people use. In my font the
+first two lines appear two words shorter than the lines below. Not a huge issue,
+but looks weird.&lt;/p&gt;
+
+&lt;p&gt;Wide lines are hard to read, but email clients can still enforce a maximum
+width; there is nothing preventing that. It’s actually common to do this on
+websites by setting &lt;code&gt;max-width: ...&lt;/code&gt; on the main text body (as this site does).
+I don’t see why this can’t work for email (and many clients do this already,
+bit more on this later).&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;For years I was careful in wrapping emails; I mostly use the FastMail web UI
+these days as I don’t use email much, and investing in mutt or whatnot is not a
+good ROI for me. I would copy to/from Vim to properly wrap stuff. At some point
+I realized I wasn’t sure what the practical advantages there are for this, other
+than “it’s considered good practice”. But why?&lt;/p&gt;
+
+&lt;p&gt;I’ve searched extensively to find &lt;em&gt;practical&lt;/em&gt; reasons for hard-wrapping text,
+and I’ve not managed to find any. Usually it’s either stated as a given that you
+should do it, or it’s claimed this is mandated by the standard.&lt;/p&gt;
+
+&lt;p&gt;What does &lt;a href=&quot;https://tools.ietf.org/html/rfc5322#section-2.1.1&quot;&gt;RFC5322&lt;/a&gt; say about it?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Each line of characters MUST be no more than 998 characters, and SHOULD be no
+more than 78 characters, excluding the CRLF.&lt;/p&gt;
+
+  &lt;p&gt;The 998 character limit is due to limitations in many implementations that
+send, receive, or store messages which simply cannot handle more than 998
+characters on a line.&lt;/p&gt;
+
+  &lt;p&gt;[..]&lt;/p&gt;
+
+  &lt;p&gt;The more conservative 78 character recommendation is to accommodate the many
+implementations of user interfaces that display these messages which may
+truncate, or disastrously wrap, the display of more than 78 characters per
+line, in spite of the fact that such implementations are non-conformant to the
+intent of this specification (and that of [RFC5321] if they actually cause
+information to be lost).  Again, even though this limitation is put on
+messages, it is incumbent upon implementations that display messages to handle
+an arbitrarily large number of characters in a line (certainly at least up to
+the 998 character limit) for the sake of robustness.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There are a few things to note about this: the first is that it talks about
+“line of characters”; SMTP is a line-oriented protocol, so (very) long lines can
+cause issues, hence the 998 limit. This is transparently fixed in practically
+every email client with &lt;code&gt;quoted-printable&lt;/code&gt;; this email:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre&gt;&lt;code&gt;Content-Transfer-Encoding: quoted-printable
+
+hello=
+world
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Gets rendered on a single line (&lt;code&gt;helllo world&lt;/code&gt;); SMTP sees two lines, but the
+user sees one.&lt;/p&gt;
+
+&lt;p&gt;The second is that is explicitly mentions that email clients that don’t handle
+long lines as non-conformant.&lt;/p&gt;
+
+&lt;p&gt;It seems to me that “hard-wrap all text at 78 characters” is a misreading of the
+standard and a confusion between “how things should be sent on the wire” and
+“how things should be displayed”. The standard also doesn’t allow NULL bytes,
+but that’s why we have base64 so we can send pictures and whatnot.&lt;/p&gt;
+
+&lt;p&gt;The previous RFC 2822 from 2001 (which is replaced by 5322) has a similar
+message. &lt;a href=&quot;https://tools.ietf.org/html/rfc822&quot;&gt;RFC 822&lt;/a&gt; from 1984 doesn’t mention wrapping of body text at
+all as far as I can find, but does mention the wrapping (“folding”) problem, in
+the context of headers:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: Some display software often can selectively fold lines, to suit the
+display terminal. In such cases, sender-provided folding can interfere with
+the display software.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As far as I can see, there is nothing in any standard preventing you from
+writing an email where entire paragraphs are just on a single line.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;There’s a middle-ground between hard wrapping and long lines: &lt;em&gt;format flowed&lt;/em&gt;
+(&lt;a href=&quot;https://tools.ietf.org/html/rfc3676&quot;&gt;RFC 3676&lt;/a&gt;), which distinguishes between “hard” and “soft” line
+breaks. The idea is that email clients can still display the soft breaks as-is
+if they want to, but you can also “reflow” them to fit the screen width. This is
+basically how Markdown works (the original, not the “GitHub flavoured
+Markdown”).&lt;/p&gt;
+
+&lt;p&gt;But it’s not widely supported, in spite of being around since 1999. Presumably
+the reason for this is that simply writing long lines and having the email
+client break them at its discretion works well enough for the vast majority of
+users.&lt;/p&gt;
+
+&lt;p&gt;This isn’t perfect since sometimes you really &lt;em&gt;don’t&lt;/em&gt; want the email client to
+insert line breaks; this, again, is easily solved for most people by just using
+HTML email and a &lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt; tag.&lt;/p&gt;
+
+&lt;p&gt;The people who insist on hard-wrapped emails are usually also opposed to HTML
+email. This is part of a certain mindset that I’ve come to call &lt;em&gt;Hacker
+Conservatism&lt;/em&gt;. Things like email were invented in the 70s, and refined in the
+80s, but since then a lot of things have changed. In &lt;em&gt;Hacker Conservative&lt;/em&gt;
+circles there seems to be a lack of understanding that not everyone uses
+computers as they do, and that the old way is the &lt;em&gt;One True Way&lt;/em&gt;, any
+pragmatical issues many people run in to be damned!&lt;/p&gt;
+
+&lt;p&gt;“Educating” an entire population on how to do it “correct” because they’re all
+“wrong” seems not just like a fool’s errand, but also rather arrogant. You’re
+essentially just saying everyone should adjust to your personal preferences.
+Meh.&lt;/p&gt;
+
+&lt;p&gt;So these days I just write paragraphs on a single line&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;, which will look
+great for everyone unless you’re not soft-wrapping the text, but that is a
+choice you’re making yourself.&lt;/p&gt;
+
+&lt;div class=&quot;postscript&quot; role=&quot;doc-endnotes&quot;&gt;&lt;strong&gt;Footnotes&lt;/strong&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Some encourage 78, others 76 or 72; I will stick to 78 here. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;I’m not sure if Outlook was actually the first to come up with it –
+  probably not – but it’s the most common client where it’s used by default
+  today. This layout is unasable on my laptop because the screen isn’t large
+  enough. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;The motivation for writing this was someone telling me off for doing this. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>Statically compiling Go programs</title>
+      <pubDate>Sat, 11 Apr 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/static-go.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/static-go.html</guid>
+      <category>Go</category>
+      <description>&lt;p&gt;Go creates static binaries by default unless you use cgo to call C code, in
+which case it will create a dynamically linked library. Turns out that using cgo
+is more common than many people assume as the &lt;code&gt;os/user&lt;/code&gt; and &lt;code&gt;net&lt;/code&gt; packages use
+cgo, so importing either (directly or indirectly) will result in a dynamic
+binary.&lt;/p&gt;
+
+&lt;p&gt;The easiest way to check if your program is statically compiled is to run &lt;code&gt;file&lt;/code&gt;
+on it:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ file test.dynamic | tr , '\n'
+test.dynamic: ELF 64-bit LSB executable
+ x86-64
+ version 1 (SYSV)
+ dynamically linked
+ interpreter /lib/ld-linux-x86-64.so.2
+ Go BuildID=LxsDWU_fMQ9Cox6y4bSV/fdMBNuZAmOuPSIKb2RXJ/rcazy_d6AbaoNtes-qID/nRiDtV1fOY2eoEVlyqnu
+ not stripped
+
+$ file test.static | tr , '\n'
+test.static:  ELF 64-bit LSB executable
+ x86-64
+ version 1 (SYSV)
+ statically linked
+ Go BuildID=hz56qplN20RU01EMBelb/58lm7IuCas399AWvpycN/BGETSDXvSFKK3BUjfgon/5xa5xLDJTC90556SUlNh
+ not stripped
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Notice the “dynamically linked” and “statically linked”. You can also run &lt;code&gt;ldd&lt;/code&gt;,
+but note this only works if the binary matches your system’s architecture:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ ldd test.dynamic
+test.dynamic:
+        linux-vdso.so.1 (0x00007ffe00302000)
+        libpthread.so.0 =&amp;gt; /usr/lib/libpthread.so.0 (0x00007f3f86f4a000)
+        libc.so.6 =&amp;gt; /usr/lib/libc.so.6 (0x00007f3f86d87000)
+        /lib/ld-linux-x86-64.so.2 (0x00007f3f86f80000)
+
+$ ldd test.static
+test.static:
+        not a dynamic executable
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can verify that a binary runs without external dependencies with &lt;code&gt;chroot&lt;/code&gt;
+(this requires root on most platforms):&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ chroot . ./test.static
+Hello, world!
+
+$ chroot . ./test.dynamic
+chroot: failed to run command './test.dynamic': No such file or directory
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The “No such file or directory” error is a bit obscure, but it means that the
+dynamic linker (&lt;code&gt;ld-linux&lt;/code&gt;) isn’t found. Unfortunately this is the exact same
+message as when the &lt;code&gt;test.dynamic&lt;/code&gt; itself isn’t found, so make sure you didn’t
+typo it. I’m not sure if there’s any way to get Linux to emit a more useful
+message for this.&lt;sup id=&quot;fnref:h&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:h&quot; class=&quot;footnote&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;There are two packages in the standard library that use cgo:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code&gt;os/user&lt;/code&gt; contains cgo code to use the standard C library to map user and
+group ids to user and group names. There is also a Go implementation which
+parses &lt;code&gt;/etc/passwd&lt;/code&gt; and &lt;code&gt;/etc/group&lt;/code&gt;. The advantage of using the C library is
+that it can also get user information from LDAP or NIS. If you don’t use that
+– most people don’t – then there is no real difference.&lt;/p&gt;
+
+    &lt;p&gt;On Windows there is only a Go implementation, and this doesn’t apply.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code&gt;net&lt;/code&gt; can use the C standard library to resolve domain names, but by default
+it uses the Go client. The C library has a few more features (e.g. you can
+configure &lt;code&gt;getaddrinfo()&lt;/code&gt; with &lt;code&gt;/etc/gai.conf&lt;/code&gt;) and some platforms don’t have
+a &lt;code&gt;resolv.conf&lt;/code&gt; (e.g. Android), but for most cases the Go library should work
+well.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Your binary will no longer be statically linked if your program imports one of
+those two packages, either directly through a dependency. Especially the &lt;code&gt;net&lt;/code&gt;
+one is quite common.&lt;/p&gt;
+
+&lt;p&gt;You can use the &lt;code&gt;osusergo&lt;/code&gt; and &lt;code&gt;netgo&lt;/code&gt; build tags to skip building the cgo
+parts:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ go build -tags osusergo
+$ go build -tags netgo
+$ go build -tags osusergo,netgo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For simple cases where you don’t use any other cgo code it’s probably easier to
+just disable cgo, since the cgo code is protected with &lt;code&gt;+build cgo&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ CGO_ENABLED=0 go build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;What if we want to use the cgo versions of the above? Or what if we want to use
+a cgo package such as SQLite? In those cases you can tell the C linker to
+statically link with &lt;code&gt;-extldflags&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ go build -ldflags=&quot;-extldflags=-static&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The nested &lt;code&gt;-&lt;/code&gt;s look a bit confusing and are easy to forget, so be sure to pay
+attention (or maybe that’s just me… 🤦‍♂️).&lt;sup id=&quot;fnref:f&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:f&quot; class=&quot;footnote&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Some packages – such as SQLite – may produce warnings:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ go build -ldflags=&quot;-extldflags=-static&quot;
+# test
+/usr/bin/ld: /tmp/go-link-400285317/000010.o: in function `unixDlOpen':
+/[..]/sqlite3-binding.c:39689: warning: Using 'dlopen' in statically linked
+applications requires at runtime the shared libraries from the glibc version used
+for linking
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;dlopen()&lt;/code&gt; loads shared libraries at runtime; looking at the SQLite source code
+it’s only used only for &lt;a href=&quot;https://www.sqlite.org/loadext.html&quot;&gt;dynamically loading extensions&lt;/a&gt;. This is not a
+commonly used feature so this warning can be safely ignored for most programs
+(you can verify with the chroot mentioned earlier).&lt;/p&gt;
+
+&lt;p&gt;The go-sqlite3 package &lt;a href=&quot;https://github.com/mattn/go-sqlite3/#feature--extension-list&quot;&gt;provides a build flag to disable this&lt;/a&gt;, if you
+want to make the warnings go away and ensure this feature isn’t used:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ go build -ldflags=&quot;-extldflags=-static&quot; -tags sqlite_omit_load_extension
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;os/user&lt;/code&gt; and &lt;code&gt;net&lt;/code&gt; packages will give you a similar warnings about the
+&lt;code&gt;getpwnam_r()&lt;/code&gt; etc. and &lt;code&gt;getaddrinfo()&lt;/code&gt; functions; which also depend on runtime
+configurations. You can use the tags mentioned earlier to make sure the Go code
+is used.&lt;/p&gt;
+
+&lt;p&gt;Other cgo packages may emit similar warnings; you’ll have to check the
+documentation or source code to see if they’re significant or not.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;One of Go’s nicer features is that you can cross-compile to any
+system/architecture combination from any system by just setting setting &lt;code&gt;GOOS&lt;/code&gt;
+and &lt;code&gt;GOARCH&lt;/code&gt;. I can build Windows binaries on OpenBSD with &lt;code&gt;GOOS=windows
+GOARCH=amd64 go build&lt;/code&gt;. Neat!&lt;/p&gt;
+
+&lt;p&gt;With cgo cross-compiling gets a bit trickier as cross-compiling C code is
+trickier.&lt;/p&gt;
+
+&lt;p&gt;The short version is that cross-compiling to different &lt;em&gt;architectures&lt;/em&gt; (amd64,
+arm, etc.) for the same OS isn’t too hard, but cross-compiling to different
+&lt;em&gt;operating systems&lt;/em&gt; is rather harder. It’s certainly doable, but you need the
+entire toolchain and libraries for the target OS. It’s a bit of a hassle and
+probably easier to just start a virtual machine.&lt;/p&gt;
+
+&lt;p&gt;You’ll need to install the toolchain for the target architecture (and OS, if
+you’re compiling to a different OS); if you’re on Linux your package manager
+will probably already include it, but they’re named different on different
+distros. Usually searching for &lt;code&gt;-linux-gnu&lt;/code&gt; (or &lt;code&gt;-linux-musl&lt;/code&gt;) should give you
+an overview.&lt;/p&gt;
+
+&lt;p&gt;I’m very 😎 so I use Void Linux, and for extra 😎 I want to use musl libc, so
+that’s what I’ll use in this example to cross-compile to arm and arm64; let me
+know if you have the commands for other systems and I’ll add them as well.&lt;sup id=&quot;fnref:p&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:p&quot; class=&quot;footnote&quot;&gt;[3]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;# Replace musl with gnu if you want to use GNU libc.
+$ xbps-install cross-aarch64-linux-musl cross-armv7l-linux-musleabihf
+
+$ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-musl-gcc \
+    go build -ldflags='-extldflags=-static' -o test.arm64 ./test.go
+
+$ GOOS=linux GOARCH=arm CGO_ENABLED=1 CC=armv7l-linux-musleabihf-gcc \
+    go build -ldflags='-extldflags=-static' -o test.arm ./test.go
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;aarch64 and arm64 are the same thing, just with a different name, just as x86_64
+and amd64. To confirm that it works, you can use QEMU; for example with a simple
+programs which runs &lt;code&gt;select date()&lt;/code&gt; on a :memory: database:&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-cli&quot;&gt;&lt;code&gt;$ qemu-aarch64 ./test.arm64
+&amp;lt;nil&amp;gt; 2020-04-11
+
+$ qemu-arm ./test.arm
+&amp;lt;nil&amp;gt; 2020-04-11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Huzzah!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Finally, to make releasing binaries a bit easier I wrote a small script:
+&lt;a href=&quot;https://github.com/arp242/gogo-release&quot;&gt;gogo-release&lt;/a&gt;. It’s just a glorified &lt;code&gt;for&lt;/code&gt; loop (a lot of software is,
+really) to make the above a bit easier. For non-cgo projects the defaults
+settings should work without problems. This is what I use to build GoatCounter
+(which includes SQLite):&lt;/p&gt;
+
+&lt;div class=&quot;pre-wrap&quot;&gt;
+&lt;pre class=&quot;ft-sh&quot;&gt;&lt;code&gt;matrix=&quot;
+linux amd64
+linux arm   CC=armv7l-linux-musleabihf-gcc
+linux arm64 CC=aarch64-linux-musl-gcc
+&quot;
+
+build_flags=&quot;-trimpath -ldflags='-extldflags=-static -w -s -X main.version=$tag' -tags osusergo,netgo,sqlite_omit_load_extension ./cmd/goatcounter&quot;
+
+export CGO_ENABLED=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then just run &lt;code&gt;gogo-release&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I’m not really aware of a good tool to make cross-compiling to different systems
+easier; the closest I know of is &lt;a href=&quot;https://github.com/karalabe/xgo&quot;&gt;xgo&lt;/a&gt;, which &lt;a href=&quot;https://github.com/karalabe/xgo/blob/master/docker/base/Dockerfile&quot;&gt;installs the required build
+environment in a container&lt;/a&gt;. It’s not bad (although it is &lt;a href=&quot;https://github.com/karalabe/xgo/blob/master/docker/base/build.sh&quot;&gt;a bit
+messy&lt;/a&gt;), but it only supports Linux, macOS, and Windows. This covers most
+use cases but ideally I’d like a generic solution to cover all platforms. I may
+work on this in the future, time and enthusiasm permitting 😅&lt;/p&gt;
+
+&lt;div class=&quot;postscript&quot; role=&quot;doc-endnotes&quot;&gt;&lt;strong&gt;Footnotes&lt;/strong&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:h&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;It’s a common source of confusion when a hashbang (&lt;code&gt;#!/bin/prog&lt;/code&gt;) is set
+  to a program that doesn’t exist at that location. &lt;a href=&quot;#fnref:h&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:f&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;The value of &lt;code&gt;-ldflags&lt;/code&gt; is passed to &lt;code&gt;go tool link&lt;/code&gt;, which passes the
+  value of &lt;code&gt;-extldflags&lt;/code&gt; to the C compiler.
+  There’s &lt;a href=&quot;https://github.com/golang/go/issues/26492&quot;&gt;an issue to make this easier&lt;/a&gt;. &lt;a href=&quot;#fnref:f&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:p&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Figuring them out just from the package index is a bit too much
+  work/hassle, and also untested so it may contain errors or silly typos. &lt;a href=&quot;#fnref:p&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    <item>
+      <title>GoatCounter 1.1 release</title>
+      <pubDate>Wed, 18 Mar 2020 00:00:00 +0000</pubDate>
+      <link>https://www.arp242.net/goatcounter-1.1.html</link>
+      <guid isPermaLink="true">https://www.arp242.net/goatcounter-1.1.html</guid>
+      <category>GoatCounter</category>
+      <description>&lt;p&gt;I released version 1.1 of GoatCounter today.&lt;/p&gt;
+
+&lt;p&gt;There are many changes, large and small. The most work was in revamping the CLI,
+revamping the ACME/Let’s Encrypt support so it’s easier to use, and supporting
+display in a configurable timezone. The &lt;a href=&quot;https://github.com/zgoat/goatcounter/releases/tag/v1.1.0&quot;&gt;release page&lt;/a&gt; has a more complete
+changelog.&lt;/p&gt;
+
+&lt;p&gt;I originally made everything in UTC only as that was simpler, figuring it would
+be fairly easy to add TZ support later on. Turns out that was a mistake as it
+was much harder than expected to add TZ support and the initial patch introduced
+a number of bugs, mostly related to some data being calculated over UTC, and
+some over the user’s TZ 😞&lt;/p&gt;
+
+&lt;p&gt;This pushed back the release by quite a bit; I originally wanted to release on
+Feb 29th, as I thought it would be neat to release on a leap day, but that
+didn’t happen. Ah well, better luck in four years!&lt;/p&gt;
+
+&lt;p&gt;If you’re using the goatcounter.com service then you’ve already been seeing
+these changes in the last 2 months since it generally runs on master.&lt;/p&gt;
+
+&lt;p&gt;There are no binaries for this release, as building them reliably with cgo
+(needed for SQLite) turned out to be hard to get correct for everyone. See
+&lt;a href=&quot;#130&quot;&gt;#130&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;p&gt;Compiling it from source should be easy enough though, you just need Go and a C
+compiler, both should be easily installable on pretty much all platforms.&lt;/p&gt;
+
+&lt;p&gt;For the next version I mainly want to focus on recording unique visits
+(&lt;a href=&quot;https://github.com/zgoat/goatcounter/issues/13&quot;&gt;#13&lt;/a&gt;), which is probably the most-requested feature. I’ll probably also
+add some better support for events (&lt;a href=&quot;https://github.com/zgoat/goatcounter/issues/55&quot;&gt;#55&lt;/a&gt;) and work on some minor
+enhancements. See the &lt;a href=&quot;https://github.com/zgoat/goatcounter/milestone/4&quot;&gt;version 1.2 milestone&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally a special thanks for everyone who got in touch; people forwarded some
+great ideas, feedback, bug reports, and graphics. More of that is always good 😊&lt;/p&gt;
+
+</description>
+    </item>
+  </channel>
+</rss>

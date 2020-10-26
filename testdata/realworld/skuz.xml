@@ -1,0 +1,403 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<channel><title>skuz's blog</title><description>I write code sometimes. I also dig Gruvbox. I like programs that are simple.</description>
+<pubDate>Sun, 25 Oct 2020 18:25:33 +0000</pubDate>
+<lastBuildDate>Sun, 25 Oct 2020 18:25:33 +0000</lastBuildDate>
+<item>
+<title>Shell sins</title>
+<pubDate>Sat, 24 Oct 2020 20:31:19 +0100</pubDate>
+<link>https://skuz.xyz//sh-sins.html</link>
+<description><![CDATA[
+<h1 id="Shell%20sins">Shell sins</h1>
+
+<p>You won&#39;t go to hell for these, but you should probably look at the manpage. Some programs are just limited, but hey, you can&#39;t expect every program to provide a printf function, a date formatter and handling of input from stdin.</p>
+
+<h2 id="Undeclarative%20%3Ccode%3Egrep%3C/code%3E">Undeclarative <code>grep</code></h2>
+
+<p><code>grep</code> is a true power tool in Unix, but can be abused. Here is an example (by me 😮):</p>
+
+<p><code>date --date="$(stat "$4&#47;${i%\.html}.md" | grep Modify | cut -d&#39;:&#39; -f2-</code></p>
+
+<p>Poor old skuzzymiglet then had no idea about <code>stat --printf</code>, which has useful options for printing times:</p>
+
+<pre><code>%w     time of file birth, human-readable; - if unknown
+%W     time of file birth, seconds since Epoch; 0 if unknown
+%x     time of last access, human-readable
+%X     time of last access, seconds since Epoch
+%y     time of last data modification, human-readable
+%Y     time of last data modification, seconds since Epoch
+%z     time of last status change, human-readable
+%Z     time of last status change, seconds since Epoch
+</code></pre>
+
+<p>The human-readable dates are fixed-format, so you can just <code>date "your_cool_format" --date="@$(stat --printf="%Y" whatever_you_want)"</code></p>
+
+<p>Generally, a <code>printf</code> like option is useful in programs - it discourages scraping and greatly shortens pipe sequences. But alas, most programs will need to be grepped.</p>
+
+<h2 id="Functions">Functions</h2>
+
+<p>It sounds weird but I believe functions are a shell code smell. The problem is that with a function, you expect paramater names (and types if you&#39;re a reasonable person 😀). However, you&#39;ll find it&#39;s just like command-line arguments, and if you don&#39;t have the time to use <strong>getopt(1)</strong>, you&#39;ll be addressing by index.</p>
+
+<p>Or you could just reassign to variables:</p>
+
+<p><em>(from <a href="https://www.romanzolotarev.com/ssg.html">ssg5</a>)</em></p>
+
+<pre><code>render_sitemap() {
+    urls="$1"
+    base_url="$2"
+    date="$3"
+
+    echo &#39;&#60;?xml version="1.0" encoding="UTF-8"?&#62;&#39;
+    echo &#39;&#60;urlset&#39;
+    echo &#39;xmlns:xsi="http:&#47;&#47;www.w3.org&#47;2001&#47;XMLSchema-instance"&#39;
+    echo &#39;xsi:schemaLocation="http:&#47;&#47;www.sitemaps.org&#47;schemas&#47;sitemap&#47;0.9&#39;
+    echo &#39;http:&#47;&#47;www.sitemaps.org&#47;schemas&#47;sitemap&#47;0.9&#47;sitemap.xsd"&#39;
+    echo &#39;xmlns="http:&#47;&#47;www.sitemaps.org&#47;schemas&#47;sitemap&#47;0.9"&#62;&#39;
+    echo "$urls" |
+        sed -E &#39;s#^(.*)$#&#60;url&#62;&#60;loc&#62;&#39;"$base_url"&#39;&#47;\1&#60;&#47;loc&#62;&#60;lastmod&#62;&#39;"$date"&#39;&#60;&#47;lastmod&#62;&#60;priority&#62;1.0&#60;&#47;priority&#62;&#60;&#47;url&#62;#&#39;
+    echo &#39;&#60;&#47;urlset&#62;&#39;
+}
+</code></pre>
+
+<p>But who would use this?</p>
+
+<pre><code>func render_sitemap(params []string)
+</code></pre>
+
+<p>I consider shell function with more than one parameter a contributor to write-only code.</p>
+
+<h2 id="Multiple%20text%20processors">Multiple text processors</h2>
+
+<p>The text processor hierarchy follows:</p>
+
+<ul>
+<li>single-purpose: <code>cut</code>, <code>tr</code>, <code>nl</code>, <code>sort</code>, <code>grep</code></li>
+<li>flat: regexes and sed</li>
+<li>text DSLs: Awk</li>
+<li>scripting languages: Python, Perl</li>
+</ul>
+
+<p>Generally, you should use <strong>one</strong> and only one of those specified above. Start with the lower-down tool, then instead of adding a command to the pipe use a higher-tier text processor.</p>
+
+<p>In pipes, programming languages get out of hand quickly. Putting everything in quotes and no syntax highlighting is difficult.</p>
+
+<p><em>This list will probably get a few updates in the future. For now, happy scripting!</em></p>
+]]></description>
+</item>
+<item>
+<title>5 tips</title>
+<pubDate>Sun, 08 Mar 2020 00:00:00 +0000</pubDate>
+<link>https://skuz.xyz//advice.html</link>
+<description><![CDATA[
+<h1 id="5%20tips">5 tips</h1>
+
+<p>Just 5 general tips for programming (and other things)</p>
+
+<h1 id="Do%20it%20now">Do it now</h1>
+
+<p>If you want to do something, just do it. Don&#39;t get used to a bug or error. Don&#39;t adjust to multiple keypresses. Look it up on GitHub, Stackoverflow or just Google it. It&#39;s rewarding fixing things</p>
+
+<p>I struggle to adhere to this sometimes. But it&#39;s a rule that pays off</p>
+
+<h1 id="Use%20it">Use it</h1>
+
+<p>If you make somthing, you should find a use for it yourself. If not, it&#39;s a bit pointless. For example, I started making an animation program in Go even though I&#39;ve never done animation and probably never will. And not only was the code dysfunctional, the interface was unintuitive. If you&#39;ll use something, it&#39;ll help you make it easy to use</p>
+
+<p>The exception is code excersises and the like, but they should not take long-term effort</p>
+
+<h1 id="Research">Research</h1>
+
+<p>Research for similar things. There&#39;s no worse feeling than seeing something exactly the same as yours. Even if it seems unique, look at things to find the strong points of your idea</p>
+
+<h1 id="Learn%20lightly">Learn lightly</h1>
+
+<p>Don&#39;t spend months learning simple things. With so much resources online, you don&#39;t need to memorize everything. Don&#39;t go for heavy tutorials (e.g. books over 100 pages), do something light. And make sure to do practical things, but just do the essentials.</p>
+
+<p>Good, light learning resources in my opinion:</p>
+
+<ul>
+<li><a href="https://tour.golang.org/">A Tour of Go</a> - fast-paced and practical</li>
+<li><a href="https://vuejs.org/v2/guide/index.html">Vue Essentials</a> - the introduction is packed and then there are tidy sections</li>
+</ul>
+
+<p>To polish up on skills, go for an in-depth resource like <a href="https://serious-python.com/">Serious Python</a> which expands into style, testing, packaging, optimization and even databases.</p>
+
+<h1 id="Have%20fun">Have fun</h1>
+
+<p>Have fun while programming! If it&#39;s boring or tedious, there&#39;s probably a solution. Just have an end goal in mind!</p>
+]]></description>
+</item>
+<item>
+<title>My Setup</title>
+<pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
+<link>https://skuz.xyz//setup.html</link>
+<description><![CDATA[
+<h1 id="My%20Setup">My Setup</h1>
+
+<p><img src="img/screenshot-24_03_20_018.webp" alt="setup" /><br/>
+<img src="img/screenshot-25_03_20_000.webp" alt="setup 2" /></p>
+
+<p>An update on my setup. I haven&#39;t shown it since last October and you people seem to like it.</p>
+
+<h2 id="OS:%20Arch%20Linux">OS: Arch Linux</h2>
+
+<p>I love how you get to build your system fully. Yet the rolling release model means you can install and forget, with no worries about full-system upgrades like you do in Ubuntu.</p>
+
+<h2 id="WM:%20bspwm%20(switched%20from%20i3)">WM: bspwm (switched from i3)</h2>
+
+<p>I love bspwm&#39;s binary tree tiling. It&#39;s slightly harder to set up the i3, but I recommend it to anyone with a bit of time.</p>
+
+<h2 id="Browser:%20qutebrowser">Browser: qutebrowser</h2>
+
+<p>I fell in love with this browser straight after I installed it because previously I used Firefox which required me to use my mouse. Even though I installed a vim keys plugin, I didn&#39;t use the keys. qutebrowser encouraged e to do so. </p>
+
+<h2 id="Text%20editor:%20vim">Text editor: vim</h2>
+
+<p>In a manageable 78 lines of vimrc, I&#39;ve got a multi-purpose text-editor for writing, programming and accidentaly opening binary files in <code>vifm</code>. It just accomodates everything. Also vim-like software is nice - for example qutebrowser</p>
+
+<h2 id="Bar:%20polybar">Bar: polybar</h2>
+
+<p>I don&#39;t really like polybar. 415 lines of config is excessive and the bar doesn&#39;t look that good. It&#39;s not even themeable. In the i3 days, I used <a href="https://github.com/tobi-wan-kenobi/bumblebee-status/"><code>bumblebee status</code></a> and it was fun. Just a command, themes, i3 integration. I&#39;m looking for another bar. I may hop to dwm and use dwmbar or use <a href="https://github.com/tobi-wan-kenobi/bumblebee-status/">yabar</a></p>
+
+<h2 id="File%20manager:%20vifm">File manager: vifm</h2>
+
+<p>vifm is a good, fast, vim-like file manager. I haven&#39;t had many problems with it. Its 512 lines of config are excessive, but they do include comments. Because of the builtin file-opening, my xdg-open command is pretty stupid. I may switch to <code>nnn</code>. I also tried out <a href="https://github.com/huijunchen9260/dmenufm">dmenufm</a>. I&#39;ll decide sometime</p>
+
+<h2 id="Email%20client:%20neomutt">Email client: neomutt</h2>
+
+<p>I set this up with <a href="https://github.com/LukeSmithxyz/mutt-wizard">mutt-wizard</a>. It&#39;s email - I don&#39;t really care. It works.</p>
+
+<h2 id="Matrix%20client:%20gomuks">Matrix client: gomuks</h2>
+
+<p>I discovered this a few days ago. It&#39;s a good matrix client, but doesn&#39;t support everything Riot.im does. But I look forward to contributing to it on GitHub</p>
+
+<h2 id="System%20monitor:%20ytop">System monitor: ytop</h2>
+
+<p><code>gotop</code> was really good and the migration to <code>ytop</code> was easy. It&#39;s fast and visual, and I&#39;ll keep it</p>
+
+<h1 id="TODO">TODO</h1>
+
+<ul>
+<li>I may distro-hop to Void and try out dwm</li>
+<li><a href="https://github.com/trizen/youtube-viewer">youtube-viewer</a> setup</li>
+<li>Lilypond + vim + git composition setup - I&#39;ll write an article</li>
+<li>More qutebrowser shortcuts</li>
+<li>ctrlp.vim config - tags are really slow right now</li>
+<li>Making these dotfiles portable and installing them on another computer</li>
+</ul>
+
+<p>Happy ricing!</p>
+]]></description>
+</item>
+<item>
+<title>dwm tips</title>
+<pubDate>Mon, 31 Aug 2020 11:25:55 +0100</pubDate>
+<link>https://skuz.xyz//dwm.html</link>
+<description><![CDATA[
+<h1 id="dwm%20tips">dwm tips</h1>
+
+<p>dwm is a very good window manager indeed. I started off on i3-gaps, like everyone else, but that was a terrible introduction to tiling. The manual stuff was too much.</p>
+
+<p>I later switched to bspwm, which worked like a charm. However, dwm adds to the automatic tiling by managing master (specific number of focused windows) and stack areas (everything else). It helps you focus and makes for some good layout patches.</p>
+
+<h2 id="Do%20the%20patching%20%3Cstrong%3Eyourself%3C/strong%3E">Do the patching <strong>yourself</strong></h2>
+
+<p>Don&#39;t go off others&#8217; builds. They are harder to patch and generally cause more difficulty.<br/>
+Get the newest build and start applying the patches yourself. Patching does come with some difficulties, the later you apply them, the more rejects you&#39;ll have. So be ready to do <code>nvim -p *.rej</code> to navigate the fluff.</p>
+
+<h2 id="Find%20your%20layout">Find your layout</h2>
+
+<p>For me, the <code>centeredmaster</code> layout worked best. It lets me focus on the task at hand better (centered &#62; left). When I have a few splits open in Vim, I go into monocle mode to code. It may be different for you.</p>
+
+<h2 id="Get%20a%20good%20status%20program">Get a good status program</h2>
+
+<p>Ideally, go with an intelligent status program - one that can handle signals for updating blocks (e.g. volume changes). I started off with <code>dwmbar</code>, which I hardly configured. Then I tried <code>dwmblocks</code>, and added a patch for multi-character separators, but the program terminated with <code>unknown signal</code> after a while.</p>
+
+<p>So, I decided to go with <a href="https://github.com/Stargarth/Goblocks">Goblocks</a>, which is written in Go, where it&#39;s impossible to obtain the various weird errors from C programs. It&#39;s somewhat easier to configure - just edit <code>goblocks.json</code> - and has few builtins for CPU and Memory usage (although I prefer to stick to <code>free</code> and <code>awk</code>). It&#39;s been working well for me.</p>
+
+<h2 id="Debugging">Debugging</h2>
+
+<p>Often, bugs are caused by what you feed dwm, not dwm itself. A few days ago, my dwm was using 13% of my CPU, but I tracked it down to extremely frequent updates from Goblocks. Remember, if dwm did have a high-CPU-usage bug, it would instantly use 25% (100% divided by core count), not less.</p>
+
+<p>Happy hacking!</p>
+]]></description>
+</item>
+<item>
+<title>Dotfiles</title>
+<pubDate>Sat, 11 Apr 2020 00:00:00 +0100</pubDate>
+<link>https://skuz.xyz//dotfiles.html</link>
+<description><![CDATA[
+<h1 id="Dotfiles">Dotfiles</h1>
+
+<p>My dotfiles are my most active repo on GitHub - unsurprisingly, as I change them at least once a week, and that they&#39;ll stick around much longer than the small projects. But they&#39;re not very useful to anyone other than me, here&#39;s why:</p>
+
+<ul>
+<li>My username is hardcoded (mostly fixed)</li>
+<li>Mountpoint aliases even I don&#39;t use</li>
+<li>Hardcoded network devices</li>
+<li>Pretty hard to navigate (except, perhaps, for my vimrc)</li>
+<li>No way to install - ideally I&#39;d use <a href="https://github.com/LukeSmithxyz/LARBS">LARBS</a> but I need to make a program list</li>
+</ul>
+
+<p>Unsurprisingly, trying to install my dotfiles on friends&#8217; machines, it was dirty. I had a half-assed install script, but the problem was probably the abysmal hard-coding.</p>
+
+<p>The best start for a program&#39;s config is something like vim&#39;s - zero config yields a viable text editor, and there&#39;s no wizard or something like that that creates a deep mess of comments, or even just puts it in by default. Config files should not be over 150 lines, ideally.</p>
+
+<h1 id="Porting">Porting</h1>
+
+<p>I will try to port my dotfiles to a 10-year-old, 32-bit <a href="https://support.hp.com/us-en/document/c02057767">HP ProBook 4720s</a></p>
+
+<p><img src="https://support.hp.com/doc-images/800/c02104648.gif" alt="ProBook" /></p>
+
+<p>Currently it&#39;s running Debian with default i3 (it&#39;s pretty usgle)</p>
+
+<p>Here&#39;s some tentative tips for porting:</p>
+
+<ul>
+<li>Different usernames - no one really wants your username in their configs - I&#39;m <code>chunkymiglet</code> on the ProBook</li>
+<li>Meh, just different things - keyboard layouts, multiple screens (which I don&#39;t have)</li>
+<li>Try different architechtures - 32 bit is going soon but well, it&#39;s a nice challenge</li>
+</ul>
+
+<p>That&#39;s about it</p>
+]]></description>
+</item>
+<item>
+<title>An update on hosting and the blog in general</title>
+<pubDate>Sat, 27 Jun 2020 00:00:00 +0100</pubDate>
+<link>https://skuz.xyz//srv.html</link>
+<description><![CDATA[
+<h1 id="An%20update%20on%20hosting%20and%20the%20blog%20in%20general">An update on hosting and the blog in general</h1>
+
+<p>I&#39;ve been gone for a bit, and haven&#39;t updated the blog at all.<br/>
+I&#39;m really happy to say that I&#39;m moving to a Linode VPS for hosting, so it&#39;s way easier to deploy stuff - no git commits, no waiting for rebuilds, just <code>hugo</code> and <code>rsync</code>.<br/>
+I also have a really short domain name - <code>skuz.xyz</code>.<br/>
+No english, so it&#39;s cheap (£0.60&#47;yr from Epik).</p>
+
+<p>As for the blog, I will be writing more regularly.</p>
+
+<h1 id="Project%20section%20-%20that&amp;#39;s%20for%20the%20blog,%20the%20rest%20is%20CV-ish%20stuff.">Project section - that&#39;s for the blog, the rest is CV-ish stuff.</h1>
+
+<p>I may do an article on the server - not the really basic stuff, watch <a href="https://www.youtube.com/watch?v=OWAqilIVNgE">Luke Smith&#39;s video</a> on that (it&#39;s great).<br/>
+I will look at the Linode CLI and use it in a script, and maybe at backups, benchmarks and rsync.<br/>
+I will remove Google Analytics once I set up Fathom (an open-source, minimal, privacy-respecting self-hosted alternative) within the next few days<br/>
+<code>hugo</code> is an OK blog system, it&#39;s fast, but I&#39;d love to be in control and write an SSG from scratch.<br/>
+For now though, I may dive deeper into themes and optimize my (huge) screenshots.</p>
+
+<p>Aside from that, I have Go projects in mind - I&#39;m writing a CLI metronome at the moment, and I&#39;m planning to make <a href="https://github.com/hpjansson/chafa">Chafa</a> bindings for Go.</p>
+]]></description>
+</item>
+<item>
+<title>How this site was made and how you can make your own</title>
+<pubDate>Fri, 17 Jul 2020 19:45:53 +0100</pubDate>
+<link>https://skuz.xyz//new-site.html</link>
+<description><![CDATA[
+<h1 id="How%20this%20site%20was%20made%20and%20how%20you%20can%20make%20your%20own">How this site was made and how you can make your own</h1>
+
+<p>Hugo is no more - I have switched static site generator once again and I think I did a good job.</p>
+
+<p><code>ssg</code> is a minimalistic static site generator written in POSIX shell. It automates just enough for you, and is easy to hack on (180 LoC)</p>
+
+<p>Since <a href="https://notthebe.ee/">Wolfgang</a> switched to it, I figured I would - he patched it with article list generation, so I was completely ready.</p>
+
+<p><strong>EDIT: now you can get started really easily using my <a href="https://github.com/skuzzymiglet/ssg">template repo</a>.</strong></p>
+
+<h2 id="Remove%20old%20headers">Remove old headers</h2>
+
+<p>Hugo requires headers on posts (for metadata), but they&#39;re no use to <code>ssg</code>. Optional step, depends on previous static site generator.</p>
+
+<p>I used this (naïve) command to remove the headers from my Hugo posts and replace <code>title: xyz</code> with <code># xyz</code>:</p>
+
+<p><code>for f in *.md; do sed --inplace -r &#39;1d;3,6d;s&#47;.+\"(.+)\"&#47;\# \1&#47;g&#39;;done</code></p>
+
+<p>The problem was, the <code>s</code> ran everywhere, so you got weird stuff happening to quoted text. The solution is <strong>not</strong> to use <code>g</code>, but I can&#39;t test that (I didn&#39;t make a backup).</p>
+
+<p>I then copied these to <code>src&#47;</code></p>
+
+<h2 id="Get%20%3Ccode%3Essg%3C/code%3E">Get <code>ssg</code></h2>
+
+<p>Follow <a href="https://www.romanzolotarev.com/ssg.html">the author, Roman Zolotarev&#39;s tutorial</a>, but use <a href="https://notthebe.ee/src/ssg5">Wolfgang&#39;s patched version</a> instead.</p>
+
+<p>Make sure to have <code>&#60;article&#62;&#60;&#47;article&#62;</code> in the index file - this will be populated with posts.</p>
+
+<h2 id="Style%20your%20page">Style your page</h2>
+
+<p><img src="img/site.webp" alt="Styled" /></p>
+
+<p>I decided to go with a Gruvbox-light feel, using my favourite font, IBM Plex Mono. I did use a dark feel in my old <code>lb</code> blog, but I think the off-white lets the text stand out more. I find mono fonts suitable for light reading, and they have a bit more life than Serif or Sans</p>
+
+<p>I padded my content in to the middle 50% of the screen - it&#39;s comfortable to read at that width.</p>
+
+<p>The header is common to all pages, and links to the root. This prevents the need for a <em>HOME</em> button. Links are italic (which looks <em>soo</em> nice in IBM Plex Mono)</p>
+
+<h2 id="Add%20headers">Add headers</h2>
+
+<p><img src="img/style-css.webp" alt="Headers" /></p>
+
+<p><code>ssg</code> puts the contents of <code>src&#47;_header.html</code> at the top of every page</p>
+
+<p>Make sure to add <code>&#60;html&#62;&#60;title&#62;&#60;&#47;title&#62;</code> for ssg to detect and fill. The rest needs no wrapping (except if you&#39;re an XHTML nerd).</p>
+
+<p>Grab an icon for the favicon - I just used the paint-ish picture of 433 Eros I use everywhere - and put it in <code>src&#47;favicon.png</code>. Grab an empty <code>ico</code> to put in <code>&#60;link rel="shortcut icon" href="favicon.png" type="image&#47;x-icon"&#62;</code> (<a href="https://www.romanzolotarev.com/favicon.ico">here&#39;s one</a>).</p>
+
+<p>Add a <code>&#60;link&#62;</code> for your <code>style.css</code>, and your Google Fonts link (go to <strong>Styles</strong>, select some families, and add the <code>&#60;link&#62;</code> from <strong>Embed</strong> )</p>
+
+<p>You can insert your analytics if you choose. I use <a href="https://github.com/usefathom/fathom">Fathom</a>, on my own server. It&#39;s easy to set up, easy to browse, and all under your control. You can follow <a href="https://github.com/usefathom/fathom/blob/master/docs/Installation%20instructions.md">their guide</a> - make sure to use a strong password and use <code>mktemp -u XXXXXXXX.yoursite.xyz</code> for the domain. I got it set up in an afternoon.</p>
+
+<p>After that, it&#39;s all content. I added my header, of course.</p>
+
+<h2 id="Build%20and%20deploy">Build and deploy</h2>
+
+<p><img src="img/deploy.webp" alt="deploy.sh" /></p>
+
+<p>After all the hard work, it&#39;s time to deploy. I won&#39;t go through Nginx configuration (it&#39;s really simple).</p>
+
+<p>First, it deletes <code>dst</code> (because of some bug which causes unclean rebuilds), and recreates it. Then it runs <code>.&#47;ssg5 src dst "skuzzymiglet&#39;s site" https:&#47;&#47;skuz.xyz</code> (source, destination, <code>&#60;title&#62;</code>, prefix).</p>
+
+<p>I give my self a little notice of the total weight with <code>echo "Public folder size: $(du -h --summarize dst&#47; | cut -f1)"</code>.</p>
+
+<p>Then, the <code>rsync</code> magic</p>
+
+<pre><code>rsync --delete -rz -e ssh --info=progress2 dst&#47; root@1.2.3.4:&#47;var&#47;www&#47;skuz.xyz&#47;
+</code></pre>
+
+<ul>
+<li>Delete destination files (in case I redact something)</li>
+<li><code>-r</code> recurses into directories</li>
+<li><code>-z</code> compresses during transfer</li>
+<li><code>-e ssh</code> uses SSH to transfer the files </li>
+<li><code>--info=progress2</code> - progress for <strong>all</strong> files, unlike plain <code>progress</code></li>
+<li>The directory to copy</li>
+<li><code>user@destination:&#47;directory</code></li>
+</ul>
+
+<p>There are so many other options in <code>rsync</code> so this script will probably change over time</p>
+
+<h2 id="Hedonistic%20Optimization">Hedonistic Optimization</h2>
+
+<p><img src="img/pagespeed.webp" alt="PageSpeed" /></p>
+
+<p>Even though I&#39;m a <em>minimalist</em>, my images were HUGE. My old site totalled 8M, mostly because of big, 3200x1800 PNG screenshots.</p>
+
+<p>I used <code>ffmpeg</code> to convert all images to the WEBP format, which achieves pretty small sizes. After also scaling from 3200x1800 to 2560x1440, the images were 8 times smaller.</p>
+
+<p>After running it through <a href="https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fskuz.xyz%2F">PageSpeed Insights</a>, I resized the profile on the front page to get all the way to 98 (wohoo!).</p>
+
+<p>Now you&#39;ve got yourself a nice, minimalist website. Just create articles in <code>src&#47;</code>, and precede with <code>_</code> to indicate drafts, which are excluded automatically</p>
+
+<p><code>ssg</code> can build a good site but I anticipate that I&#39;ll add many patches. I will publish a GitHub repo with some of my changes soon.</p>
+
+<p>Happy blogging!</p>
+]]></description>
+</item>
+<item>
+<title>Hello</title>
+<pubDate>Sun, 01 Mar 2020 00:00:00 +0000</pubDate>
+<link>https://skuz.xyz//hello.html</link>
+<description><![CDATA[
+<h1 id="Hello">Hello</h1>
+
+<p>Hello there! This is the first blog post here, just to combat that 404 page! I&#39;ll try to post every week from now on</p>
+]]></description>
+</item>
+</channel>
+</rss>
