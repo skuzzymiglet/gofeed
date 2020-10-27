@@ -1,12 +1,9 @@
-# gofeed
+# gofeed _**FORK** that aims to reduce dependency bloat and improve thread-safety_
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/skuzzymiglet/gofeed)](https://goreportcard.com/report/github.com/skuzzymiglet/gofeed)
 [![](https://godoc.org/github.com/skuzzymiglet/gofeed?status.svg)](http://godoc.org/github.com/skuzzymiglet/gofeed)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 ![GitHub Actions](https://github.com/skuzzymiglet/gofeed/workflows/Go/badge.svg?branch=master)
-
-
-_**FORK** that aims to reduce dependency bloat and improve thread-safety_
 
 The `gofeed` library is a robust feed parser that supports parsing both [RSS](https://en.wikipedia.org/wiki/RSS), [Atom](<https://en.wikipedia.org/wiki/Atom_(standard)>) and [JSON](https://jsonfeed.org/version/1) feeds. The library provides a universal `gofeed.Parser` that will parse and convert all feed types into a hybrid `gofeed.Feed` model. You also have the option of utilizing the feed specific `atom.Parser` or `rss.Parser` or `json.Parser` parsers which generate `atom.Feed`, `rss.Feed` and `json.Feed` respectively.
 
