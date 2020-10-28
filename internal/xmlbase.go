@@ -35,7 +35,7 @@ var (
 
 type urlStack struct {
 	u []*url.URL
-	m *sync.RWMutex
+	m *sync.Mutex // locks on any operation. TODO: rwmutex
 }
 
 func (s *urlStack) push(u *url.URL) {
@@ -45,12 +45,6 @@ func (s *urlStack) push(u *url.URL) {
 }
 
 func (s *urlStack) pop() *url.URL {
-	s.m.RLock()
-	if s == nil || len(s.u) == 0 {
-		return nil
-	}
-	s.m.RUnlock()
-	var top *url.URL
 	s.m.Lock()
 	defer s.m.Unlock()
 	top, s.u = s.u[0], s.u[1:]
@@ -58,13 +52,11 @@ func (s *urlStack) pop() *url.URL {
 }
 
 func (s *urlStack) top() *url.URL {
-	s.m.RLock()
+	s.m.Lock()
+	defer s.m.Unlock()
 	if s == nil || len(s.u) == 0 {
 		return nil
 	}
-	s.m.RUnlock()
-	s.m.Lock()
-	defer s.m.Unlock()
 	top := s.u[0]
 	return top
 }
@@ -88,7 +80,7 @@ func (b *XMLBase) FindRoot(p *xpp.XMLPullParser) (event xpp.XMLEventType, err er
 		}
 
 		if event == xpp.EndDocument {
-			return event, fmt.Errorf("Failed to find root node before document end.")
+			return event, fmt.Errorf("failed to find root node before document end.")
 		}
 	}
 	return
