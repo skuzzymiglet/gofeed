@@ -45,6 +45,7 @@ func (s *urlStack) push(u *url.URL) {
 }
 
 func (s *urlStack) pop() *url.URL {
+	var top *url.URL
 	s.m.Lock()
 	defer s.m.Unlock()
 	top, s.u = s.u[0], s.u[1:]
